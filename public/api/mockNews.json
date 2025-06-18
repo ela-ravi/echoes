@@ -1,0 +1,222 @@
+[
+  {
+    "id": "1",
+    "title": "Breaking: New Study Shows Benefits of Remote Work",
+    "sourceName": "Tech News",
+    "socialMediaUrl": "https://twitter.com/technews/status/12345",
+    "publishedAt": "2023-05-15T10:30:00Z",
+    "aiStatus": "approved",
+    "clientStatus": "Pending",
+    "categories": ["Technology", "Business"],
+    "summary": "A new study reveals significant productivity gains from remote work arrangements."
+  },
+  {
+    "id": "2",
+    "title": "Global Tech Conference 2023 Announces Keynote Speakers",
+    "sourceName": "Developer Weekly",
+    "socialMediaUrl": "https://twitter.com/devweekly/status/12346",
+    "publishedAt": "2023-05-14T15:45:00Z",
+    "aiStatus": "pending",
+    "clientStatus": "Pending",
+    "categories": ["Technology", "Events"],
+    "summary": "Leading industry experts to speak at the upcoming Global Tech Conference."
+  },
+  {
+    "id": "3",
+    "title": "New Framework Simplifies Web Development",
+    "sourceName": "Web Dev Daily",
+    "socialMediaUrl": "https://twitter.com/webdevdaily/status/12347",
+    "publishedAt": "2023-05-13T09:15:00Z",
+    "aiStatus": "rejected",
+    "clientStatus": "Rejected",
+    "categories": ["Development", "Web"],
+    "summary": "Developers rejoice as new framework promises to cut development time in half."
+  },
+  {
+    "id": "4",
+    "title": "AI Breakthrough in Medical Diagnostics",
+    "sourceName": "Health Tech Today",
+    "socialMediaUrl": "https://twitter.com/healthtech/status/12348",
+    "publishedAt": "2023-05-12T14:20:00Z",
+    "aiStatus": "approved",
+    "clientStatus": "Accepted",
+    "categories": ["AI", "Healthcare"],
+    "summary": "New AI system achieves 98% accuracy in early detection of common diseases."
+  },
+  {
+    "id": "5",
+    "title": "Renewable Energy Investments Reach Record High",
+    "sourceName": "Green Future",
+    "socialMediaUrl": "https://twitter.com/greenfuture/status/12349",
+    "publishedAt": "2023-05-11T11:10:00Z",
+    "aiStatus": "pending",
+    "clientStatus": "Pending",
+    "categories": ["Energy", "Environment"],
+    "summary": "Global investments in renewable energy sources hit all-time high in Q2 2023."
+  },
+  {
+    "id": "6",
+    "title": "Cybersecurity Threats on the Rise in 2023",
+    "sourceName": "Security Watch",
+    "socialMediaUrl": "https://twitter.com/securitywatch/status/12350",
+    "publishedAt": "2023-05-10T16:30:00Z",
+    "aiStatus": "approved",
+    "clientStatus": "Pending",
+    "categories": ["Security", "Technology"],
+    "summary": "Report shows 45% increase in sophisticated cyber attacks targeting businesses."
+  },
+  {
+    "id": "7",
+    "title": "SpaceX Launches Next Generation Satellites",
+    "sourceName": "Space Daily",
+    "socialMediaUrl": "https://twitter.com/spacedaily/status/12351",
+    "publishedAt": "2023-05-09T08:15:00Z",
+    "aiStatus": "approved",
+    "clientStatus": "Accepted",
+    "categories": ["Space", "Technology"],
+    "summary": "New satellite constellation promises global high-speed internet coverage."
+  },
+  {
+    "id": "8",
+    "title": "Blockchain Adoption Grows in Financial Sector",
+    "sourceName": "Crypto Today",
+    "socialMediaUrl": "https://twitter.com/cryptotoday/status/12352",
+    "publishedAt": "2023-05-08T13:45:00Z",
+    "aiStatus": "pending",
+    "clientStatus": "Pending",
+    "categories": ["Blockchain", "Finance"],
+    "summary": "Major banks announce blockchain integration for cross-border payments."
+  },
+  {
+    "id": "9",
+    "title": "Quantum Computing Milestone Achieved",
+    "sourceName": "Quantum Weekly",
+    "socialMediaUrl": "https://twitter.com/quantumweekly/status/12353",
+    "publishedAt": "2023-05-07T10:20:00Z",
+    "aiStatus": "approved",
+    "clientStatus": "Pending",
+    "categories": ["Quantum Computing", "Research"],
+    "summary": "Researchers achieve quantum supremacy with 256-qubit processor."
+  },
+  {
+    "id": "10",
+    "title": "Global Supply Chain Shows Signs of Recovery",
+    "sourceName": "Trade Today",
+    "socialMediaUrl": "https://twitter.com/tradetoday/status/12354",
+    "publishedAt": "2023-05-06T09:30:00Z",
+    "aiStatus": "approved",
+    "clientStatus": "Accepted",
+    "categories": ["Business", "Logistics"],
+    "summary": "Shipping delays decrease as global supply chains begin to stabilize."
+  },
+  {
+    "id": "11",
+    "title": "Electric Vehicle Sales Surge in Q2",
+    "sourceName": "Auto Future",
+    "socialMediaUrl": "https://twitter.com/autofuture/status/12355",
+    "publishedAt": "2023-05-05T14:15:00Z",
+    "aiStatus": "pending",
+    "clientStatus": "Pending",
+    "categories": ["Automotive", "Environment"],
+    "summary": "EV market share grows to 12% of all new car sales worldwide."
+  },
+  {
+    "id": "12",
+    "title": "New Privacy Regulations Take Effect",
+    "sourceName": "Data Privacy Now",
+    "socialMediaUrl": "https://twitter.com/dataprivacy/status/12356",
+    "publishedAt": "2023-05-04T11:20:00Z",
+    "aiStatus": "approved",
+    "clientStatus": "Pending",
+    "categories": ["Privacy", "Regulation"],
+    "summary": "Stricter data protection laws come into force across multiple jurisdictions."
+  },
+  {
+    "id": "13",
+    "title": "AI-Powered Drug Discovery Accelerates",
+    "sourceName": "Pharma Tech",
+    "socialMediaUrl": "https://twitter.com/pharmatech/status/12357",
+    "publishedAt": "2023-05-03T16:45:00Z",
+    "aiStatus": "approved",
+    "clientStatus": "Accepted",
+    "categories": ["AI", "Pharmaceuticals"],
+    "summary": "New algorithms reduce drug discovery timeline by 40% in clinical trials."
+  },
+  {
+    "id": "14",
+    "title": "5G Rollout Reaches Rural Areas",
+    "sourceName": "Connect Daily",
+    "socialMediaUrl": "https://twitter.com/connectdaily/status/12358",
+    "publishedAt": "2023-05-02T10:10:00Z",
+    "aiStatus": "pending",
+    "clientStatus": "Pending",
+    "categories": ["Telecom", "Technology"],
+    "summary": "Major carriers expand 5G coverage to previously underserved rural communities."
+  },
+  {
+    "id": "15",
+    "title": "Cybersecurity Skills Gap Widens",
+    "sourceName": "InfoSec News",
+    "socialMediaUrl": "https://twitter.com/infosecnews/status/12359",
+    "publishedAt": "2023-05-01T13:25:00Z",
+    "aiStatus": "approved",
+    "clientStatus": "Pending",
+    "categories": ["Security", "Education"],
+    "summary": "Report highlights growing need for cybersecurity professionals as threats increase."
+  },
+  {
+    "id": "16",
+    "title": "Augmented Reality in Retail Takes Off",
+    "sourceName": "Retail Tech",
+    "socialMediaUrl": "https://twitter.com/retailtech/status/12360",
+    "publishedAt": "2023-04-30T15:40:00Z",
+    "aiStatus": "approved",
+    "clientStatus": "Accepted",
+    "categories": ["Retail", "AR/VR"],
+    "summary": "Major retailers report increased sales after implementing AR shopping experiences."
+  },
+  {
+    "id": "17",
+    "title": "Sustainable Packaging Gains Traction",
+    "sourceName": "Eco Business",
+    "socialMediaUrl": "https://twitter.com/ecobusiness/status/12361",
+    "publishedAt": "2023-04-29T09:55:00Z",
+    "aiStatus": "pending",
+    "clientStatus": "Pending",
+    "categories": ["Sustainability", "Retail"],
+    "summary": "Consumer demand drives shift toward biodegradable and reusable packaging solutions."
+  },
+  {
+    "id": "18",
+    "title": "Edge Computing Market to Double by 2025",
+    "sourceName": "Cloud Weekly",
+    "socialMediaUrl": "https://twitter.com/cloudweekly/status/12362",
+    "publishedAt": "2023-04-28T14:20:00Z",
+    "aiStatus": "approved",
+    "clientStatus": "Pending",
+    "categories": ["Cloud", "Technology"],
+    "summary": "New report predicts rapid growth in edge computing infrastructure investments."
+  },
+  {
+    "id": "19",
+    "title": "Biotech Startup Secures Major Funding",
+    "sourceName": "Venture News",
+    "socialMediaUrl": "https://twitter.com/venturenews/status/12363",
+    "publishedAt": "2023-04-27T11:30:00Z",
+    "aiStatus": "approved",
+    "clientStatus": "Accepted",
+    "categories": ["Biotech", "Startups"],
+    "summary": "Series B funding round raises $120M for innovative gene therapy platform."
+  },
+  {
+    "id": "20",
+    "title": "Remote Work Tools See Record Adoption",
+    "sourceName": "Workplace Tech",
+    "socialMediaUrl": "https://twitter.com/workplacetech/status/12364",
+    "publishedAt": "2023-04-26T16:15:00Z",
+    "aiStatus": "pending",
+    "clientStatus": "Pending",
+    "categories": ["Technology", "Business"],
+    "summary": "Collaboration software usage grows by 78% as hybrid work becomes standard."
+  }
+]

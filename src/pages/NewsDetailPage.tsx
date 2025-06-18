@@ -1,0 +1,534 @@
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import HeaderNav from "../components/organisms/HeaderNav";
+import { API_ENDPOINTS, MOCK_ENDPOINTS } from "../config/api";
+import { INewsItem } from "../types/NewsItem";
+import { FaImage, FaVideo, FaPlay } from "react-icons/fa";
+import { SiOpenai } from "react-icons/si";
+
+type FormDataState = {
+  originalText: string;
+  summary: string;
+  keyIndividuals: string;
+  conflictingDetails: string;
+  potentialImpact: string;
+  suggestedDataPoints: string;
+};
+
+const NewsDetailPage: React.FC = () => {
+  // State hooks at the top level
+  const [newsItem, setNewsItem] = useState<INewsItem | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [overlayContent, setOverlayContent] = useState<{
+    title: string;
+    content: string;
+  } | null>(null);
+  const [showImageOverlay, setShowImageOverlay] = useState(false);
+  const [formData, setFormData] = useState<FormDataState>({
+    originalText: "",
+    summary: "",
+    keyIndividuals: "",
+    conflictingDetails: "",
+    potentialImpact: "",
+    suggestedDataPoints: "",
+  });
+
+  // Store initial form data for reset functionality
+  const [initialFormData, setInitialFormData] = useState<FormDataState>({
+    originalText: "",
+    summary: "",
+    keyIndividuals: "",
+    conflictingDetails: "",
+    potentialImpact: "",
+    suggestedDataPoints: "",
+  });
+
+  // Save form data
+  const handleSave = async () => {
+    if (!newsItem) return;
+
+    try {
+      // In a real app, you would call your API endpoint here
+      // For now, we'll just log the data and show an alert
+      console.log("Saving news item:", { id: newsItem.id, ...formData });
+
+      // Simulate API call
+      // const response = await fetch(`/api/news/${newsItem.id}`, {
+      //   method: "PUT",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(formData),
+      // });
+      // if (!response.ok) throw new Error("Failed to save changes");
+
+      // Update initial form data to current values
+      setInitialFormData(formData);
+      alert("Changes saved successfully!");
+    } catch (err) {
+      console.error("Error saving changes:", err);
+      alert("Failed to save changes. Please try again.");
+    }
+  };
+
+  // Discard changes
+  const handleDiscard = () => {
+    if (window.confirm("Are you sure you want to discard all changes?")) {
+      setFormData(initialFormData);
+    }
+  };
+
+  // Data fetching effect
+  useEffect(() => {
+    const fetchNewsDetail = async () => {
+      try {
+        // Get the news ID from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const newsId = urlParams.get("id");
+
+        if (!newsId) {
+          throw new Error("No news ID provided in the URL");
+        }
+
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch(API_ENDPOINTS.NEWS.DETAIL(newsId));
+
+        if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error("News article not found");
+          }
+          throw new Error(
+            `Failed to fetch news detail: ${response.statusText}`,
+          );
+        }
+        const data = await response.json();
+        setNewsItem(data);
+
+        // Initialize form data with the fetched news item
+        const newFormData = {
+          originalText: data.originalText || "",
+          summary: data.summary || "",
+          keyIndividuals: data.keyIndividuals || "",
+          conflictingDetails: data.conflictingDetails || "",
+          potentialImpact: data.potentialImpact || "",
+          suggestedDataPoints: data.suggestedDataPoints || "",
+        };
+
+        setFormData(newFormData);
+        setInitialFormData(newFormData);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An error occurred");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNewsDetail();
+  }, []);
+
+  // Loading and error states
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!newsItem) return <div>No data found</div>;
+
+  const TextOverlay: React.FC<{
+    title: string;
+    content: string;
+    onClose: () => void;
+  }> = ({ title, content, onClose }) => (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+      <div className="relative w-full max-w-4xl rounded-xl bg-[#1d2030] p-6">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-xl font-bold text-white">{title}</h3>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-white"
+            aria-label="Close"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+        <div className="max-h-[70vh] overflow-y-auto rounded-lg bg-[#131520] p-4 text-white whitespace-pre-wrap">
+          {content || (
+            <span className="text-gray-500">No content available</span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  if (!newsItem) {
+    return (
+      <div className="relative flex min-h-screen flex-col bg-[#131520] text-white">
+        <HeaderNav hideSearch />
+        <main className="flex flex-1 flex-col items-center justify-center p-6">
+          <h1 className="text-2xl font-bold">News Item Not Found</h1>
+          <Link to="/news" className="mt-4 text-[#4f8ef7] hover:underline">
+            Back to News List
+          </Link>
+        </main>
+      </div>
+    );
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev: FormDataState) => ({
+      ...prev,
+      [name as keyof FormDataState]: value,
+    }));
+  };
+
+  return (
+    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-[#131520] text-white">
+      <HeaderNav hideSearch />
+      <main className="flex flex-1 justify-center px-3 md:px-10 pt-24 pb-5">
+        <div className="w-full max-w-[95%] md:max-w-[90%]">
+          <h1 className="mb-4 text-[32px] font-bold leading-tight tracking-tight text-white">
+            News Item ID: {newsItem.id}
+          </h1>
+
+          <Section title="Original Raw Submission">
+            <TextArea
+              name="originalText"
+              value={formData.originalText}
+              onChange={handleChange}
+              placeholder="Original Raw Submission"
+              sectionTitle="Original Raw Submission"
+              readOnly={true}
+              setOverlayContent={setOverlayContent}
+            />
+          </Section>
+
+          <Section title="AI-Curated Summary">
+            <TextArea
+              name="summary"
+              value={formData.summary}
+              onChange={handleChange}
+              placeholder="AI-generated summary will appear here..."
+              sectionTitle="AI-Curated Summary"
+              setOverlayContent={setOverlayContent}
+            />
+          </Section>
+
+          <Section title="Key Individuals Mentioned">
+            <TextArea
+              name="keyIndividuals"
+              value={formData.keyIndividuals}
+              onChange={handleChange}
+              placeholder="List key individuals mentioned in the article..."
+              sectionTitle="Key Individuals Mentioned"
+              setOverlayContent={setOverlayContent}
+            />
+          </Section>
+
+          <Section title="Conflicting Details">
+            <TextArea
+              name="conflictingDetails"
+              value={formData.conflictingDetails}
+              onChange={handleChange}
+              placeholder="Note any conflicting information found..."
+              sectionTitle="Conflicting Details"
+              setOverlayContent={setOverlayContent}
+            />
+          </Section>
+
+          <Section title="Potential Impact">
+            <TextArea
+              name="potentialImpact"
+              value={formData.potentialImpact}
+              onChange={handleChange}
+              placeholder="Describe the potential impact of this news..."
+              sectionTitle="Potential Impact"
+              setOverlayContent={setOverlayContent}
+            />
+          </Section>
+
+          <Section title="Suggested Data Points">
+            <TextArea
+              name="suggestedDataPoints"
+              value={formData.suggestedDataPoints}
+              onChange={handleChange}
+              placeholder="List any suggested data points for further analysis..."
+              sectionTitle="Suggested Data Points"
+              setOverlayContent={setOverlayContent}
+            />
+          </Section>
+
+          {/* Media Sections */}
+          {(newsItem.aiGeneratedVideo ||
+            newsItem.aiGeneratedImage ||
+            newsItem.userUploadedImage ||
+            newsItem.userUploadedVideo) && (
+            <Section title="Media">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+                {/* User Uploaded Media Section */}
+                {(newsItem.userUploadedImage || newsItem.userUploadedVideo) && (
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-white border-b border-[#394060] pb-2">
+                      User Uploaded Content
+                    </h3>
+                    <div className="space-y-4">
+                      {newsItem.userUploadedImage && (
+                        <MediaSection
+                          title="Uploaded Image"
+                          url={newsItem.userUploadedImage}
+                          type="image"
+                          isAI={false}
+                        />
+                      )}
+                      {newsItem.userUploadedVideo && (
+                        <MediaSection
+                          title="Uploaded Video"
+                          url={newsItem.userUploadedVideo}
+                          type="video"
+                          isAI={false}
+                        />
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* AI Generated Media Section */}
+                {(newsItem.aiGeneratedVideo || newsItem.aiGeneratedImage) && (
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-white border-b border-[#394060] pb-2">
+                      AI Generated Content
+                    </h3>
+                    <div className="space-y-4">
+                      {newsItem.aiGeneratedImage && (
+                        <MediaSection
+                          title="AI Generated Image"
+                          url={newsItem.aiGeneratedImage}
+                          type="image"
+                          isAI={true}
+                        />
+                      )}
+                      {newsItem.aiGeneratedVideo && (
+                        <MediaSection
+                          title="AI Analysis Video"
+                          url={newsItem.aiGeneratedVideo}
+                          type="video"
+                          isAI={true}
+                        />
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </Section>
+          )}
+
+          {showImageOverlay && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+              onClick={() => setShowImageOverlay(false)}
+            >
+              <button
+                className="absolute top-4 right-4 text-white text-2xl bg-[#394060] rounded-full w-10 h-10 flex items-center justify-center hover:bg-[#4a527f] transition-colors"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowImageOverlay(false);
+                }}
+              >
+                &times;
+              </button>
+              <div className="relative max-w-4xl w-full max-h-[90vh]">
+                <img
+                  src="https://via.placeholder.com/1200x800"
+                  alt="AI Generated Thumbnail - Full Size"
+                  className="w-full h-full object-contain"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="flex flex-col-reverse sm:flex-row justify-between gap-4 mt-6 p-4 border-t border-[#282d43]">
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <Link
+                to="/news"
+                className="flex items-center justify-center gap-2 px-6 py-2 bg-transparent hover:bg-[#282d43] text-[#99a0c2] border border-[#394060] rounded-lg transition-colors lg:hidden"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+                Back to News
+              </Link>
+              <button
+                onClick={handleDiscard}
+                className="px-6 py-2 bg-transparent hover:bg-[#282d43] text-[#99a0c2] border border-[#f87171] rounded-lg transition-colors"
+              >
+                Discard Changes
+              </button>
+            </div>
+            <button
+              onClick={handleSave}
+              className="px-6 py-2 bg-[#4f8ef7] hover:bg-[#3b7af5] text-white rounded-lg transition-colors"
+            >
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </main>
+
+      {overlayContent && (
+        <TextOverlay
+          title={overlayContent.title}
+          content={overlayContent.content}
+          onClose={() => setOverlayContent(null)}
+        />
+      )}
+    </div>
+  );
+};
+
+// Helper Components
+const Section: React.FC<{ title: string; children: React.ReactNode }> = ({
+  title,
+  children,
+}) => (
+  <div className="mb-6">
+    <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+      {title}
+    </h2>
+    {children}
+  </div>
+);
+
+// Media Section Component
+const MediaSection: React.FC<{
+  title: string;
+  type: "image" | "video";
+  url: string;
+  isAI?: boolean;
+}> = ({ title, type, url, isAI = false }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      className="relative rounded-lg overflow-hidden border border-[#394060] bg-[#1d2030] hover:border-[#4f8ef7] transition-colors duration-200"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="flex items-center gap-2 p-3 bg-[#1d2030] border-b border-[#394060]">
+        {isAI ? (
+          <SiOpenai className="text-[#4f8ef7]" />
+        ) : type === "image" ? (
+          <FaImage className="text-[#99a2c2]" />
+        ) : (
+          <FaVideo className="text-[#99a2c2]" />
+        )}
+        <span className="text-sm font-medium text-white">{title}</span>
+      </div>
+      <div className="relative aspect-video bg-[#131520] overflow-hidden">
+        {type === "image" ? (
+          <img src={url} alt={title} className="w-full h-full object-cover" />
+        ) : (
+          <>
+            <video
+              src={url}
+              className="w-full h-full object-cover"
+              controls={isHovered}
+            />
+            {!isHovered && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                <div className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center">
+                  <FaPlay className="text-white ml-1" />
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+      <div className="p-2 text-right">
+        <span className="text-xs text-[#99a2c2]">
+          {isAI ? "AI-Generated" : "User Uploaded"}
+        </span>
+      </div>
+    </div>
+  );
+};
+
+const TextArea: React.FC<{
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  placeholder: string;
+  className?: string;
+  sectionTitle: string;
+  readOnly?: boolean;
+  setOverlayContent: (
+    content: { title: string; content: string } | null,
+  ) => void;
+}> = ({
+  name,
+  value,
+  onChange,
+  placeholder,
+  className = "",
+  sectionTitle,
+  readOnly = false,
+  setOverlayContent,
+}) => (
+  <div className="flex flex-col gap-2 py-3">
+    <div className="flex flex-1">
+      <textarea
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className={`form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#4f8ef7] min-h-36 placeholder:text-[#99a2c2] p-4 text-base font-normal leading-normal ${className}`}
+        readOnly={readOnly}
+      />
+    </div>
+    {value && (
+      <div className="flex justify-between items-center">
+        <span className="text-sm text-[#99a2c2]">
+          {value.length} characters
+        </span>
+        <button
+          type="button"
+          className="text-sm text-[#4f8ef7] hover:underline flex items-center gap-1"
+          onClick={() =>
+            setOverlayContent({
+              title: sectionTitle,
+              content: value,
+            })
+          }
+        >
+          View full content
+        </button>
+      </div>
+    )}
+  </div>
+);
+
+export default NewsDetailPage;

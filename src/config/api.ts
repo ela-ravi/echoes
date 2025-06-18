@@ -1,0 +1,58 @@
+// Using json-server as our mock API
+const API_BASE_URL = "http://localhost:3001";
+
+interface NewsListQueryParams {
+  category?: string;
+  keyword?: string;
+  reviewed?: boolean;
+  limit?: number;
+  offset?: number;
+}
+
+const buildQueryString = (
+  params: Record<string, string | number | boolean | undefined>,
+): string => {
+  const queryParams = new URLSearchParams();
+
+  // Map our parameter names to json-server's expected names
+  const paramMap: Record<string, string> = {
+    offset: "_start",
+    limit: "_limit",
+    keyword: "q",
+    // Add other parameter mappings as needed
+  };
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== "") {
+      // Use mapped parameter name if it exists, otherwise use the original
+      const paramName = paramMap[key] || key;
+      queryParams.append(paramName, String(value));
+    }
+  });
+
+  const queryString = queryParams.toString();
+  return queryString ? `?${queryString}` : "";
+};
+
+export const API_ENDPOINTS = {
+  NEWS: {
+    LIST: (params: NewsListQueryParams = {}) => {
+      const defaultParams = {
+        _limit: 10, // json-server uses _limit instead of limit
+        _start: 0, // json-server uses _start instead of offset
+        ...params,
+      };
+      // Remove the /api prefix to match json-server's endpoint
+      return `${API_BASE_URL}/news${buildQueryString(defaultParams)}`;
+    },
+    DETAIL: (id: string) => `${API_BASE_URL}/news/${id}`,
+  },
+} as const;
+
+// For development with mock data
+export const MOCK_ENDPOINTS = {
+  NEWS: {
+    LIST: "/api/mockNews.json",
+    DETAIL: "/api/mockNewsDetail.json",
+  },
+} as const;

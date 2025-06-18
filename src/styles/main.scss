@@ -1,0 +1,30 @@
+$primary: #1e40af;
+$secondary: #1e3a8a;
+
+@use "sass:color";
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+nav {
+  // background-color: $primary;
+  padding: 1rem;
+
+  ul {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+
+    li a {
+      color: white;
+      text-decoration: none;
+
+      &:hover {
+        color: color.adjust($primary, $lightness: 20%);
+      }
+    }
+  }
+}
