@@ -77,7 +77,7 @@ const NewsTable: React.FC<NewsTableProps> = ({ items }) => (
           <th className="px-4 py-3">Published At</th>
           <th className="px-4 py-3">AI Status</th>
           <th className="px-4 py-3">Client Status</th>
-          <th className="px-4 py-3">Actions</th>
+          {/* <th className="px-4 py-3">Actions</th> */}
         </tr>
       </thead>
       <tbody>
@@ -112,9 +112,9 @@ const NewsTable: React.FC<NewsTableProps> = ({ items }) => (
             <td className="px-4 py-2">
               <StatusBadge status={item.clientStatus} />
             </td>
-            <td className="px-4 py-2 text-[#99a0c2] font-bold tracking-wide">
+            {/* <td className="px-4 py-2 text-[#99a0c2] font-bold tracking-wide">
               View
-            </td>
+            </td> */}
           </tr>
         ))}
       </tbody>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import HeaderNav from "../components/organisms/HeaderNav";
-import { API_ENDPOINTS, MOCK_ENDPOINTS } from "../config/api";
+import { API_ENDPOINTS } from "../config/api";
 import { INewsItem } from "../types/NewsItem";
 import { FaImage, FaVideo, FaPlay } from "react-icons/fa";
 import { SiOpenai } from "react-icons/si";
@@ -287,7 +287,8 @@ const NewsDetailPage: React.FC = () => {
                     <div className="flex flex-col md:flex-row gap-4">
                       <div
                         className={`${
-                          !newsItem.userUploadedImage || !newsItem.userUploadedVideo
+                          !newsItem.userUploadedImage ||
+                          !newsItem.userUploadedVideo
                             ? "w-full"
                             : "w-full md:w-1/2"
                         }`}
@@ -308,16 +309,17 @@ const NewsDetailPage: React.FC = () => {
                           />
                         ) : null}
                       </div>
-                      {newsItem.userUploadedImage && newsItem.userUploadedVideo && (
-                        <div className="w-full md:w-1/2">
-                          <MediaSection
-                            title="Uploaded Video"
-                            url={newsItem.userUploadedVideo}
-                            type="video"
-                            isAI={false}
-                          />
-                        </div>
-                      )}
+                      {newsItem.userUploadedImage &&
+                        newsItem.userUploadedVideo && (
+                          <div className="w-full md:w-1/2">
+                            <MediaSection
+                              title="Uploaded Video"
+                              url={newsItem.userUploadedVideo}
+                              type="video"
+                              isAI={false}
+                            />
+                          </div>
+                        )}
                     </div>
                   </div>
                 )}
@@ -331,7 +333,8 @@ const NewsDetailPage: React.FC = () => {
                     <div className="flex flex-col md:flex-row gap-4">
                       <div
                         className={`${
-                          !newsItem.aiGeneratedImage || !newsItem.aiGeneratedVideo
+                          !newsItem.aiGeneratedImage ||
+                          !newsItem.aiGeneratedVideo
                             ? "w-full"
                             : "w-full md:w-1/2"
                         }`}
@@ -352,16 +355,17 @@ const NewsDetailPage: React.FC = () => {
                           />
                         ) : null}
                       </div>
-                      {newsItem.aiGeneratedImage && newsItem.aiGeneratedVideo && (
-                        <div className="w-full md:w-1/2">
-                          <MediaSection
-                            title="AI Generated Video"
-                            url={newsItem.aiGeneratedVideo}
-                            type="video"
-                            isAI={true}
-                          />
-                        </div>
-                      )}
+                      {newsItem.aiGeneratedImage &&
+                        newsItem.aiGeneratedVideo && (
+                          <div className="w-full md:w-1/2">
+                            <MediaSection
+                              title="AI Generated Video"
+                              url={newsItem.aiGeneratedVideo}
+                              type="video"
+                              isAI={true}
+                            />
+                          </div>
+                        )}
                     </div>
                   </div>
                 )}

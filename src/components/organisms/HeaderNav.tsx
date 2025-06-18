@@ -22,25 +22,25 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
     setSearchOpen(false);
   };
 
-  const navLinks = (
-    <>
-      <Link className="text-white" to="#">
-        Dashboard
-      </Link>
-      <Link className="text-white" to="/news">
-        News Items
-      </Link>
-      <Link className="text-white" to="#">
-        Clients
-      </Link>
-      <Link className="text-white" to="#">
-        Reports
-      </Link>
-      <Link className="text-white" to="#">
-        Settings
-      </Link>
-    </>
-  );
+  // const navLinks = (
+  //   <>
+  //     <Link className="text-white" to="#">
+  //       Dashboard
+  //     </Link>
+  //     <Link className="text-white" to="/news">
+  //       News Items
+  //     </Link>
+  //     <Link className="text-white" to="#">
+  //       Clients
+  //     </Link>
+  //     <Link className="text-white" to="#">
+  //       Reports
+  //     </Link>
+  //     <Link className="text-white" to="#">
+  //       Settings
+  //     </Link>
+  //   </>
+  // );
 
   return (
     <header className={styles.header}>
@@ -65,11 +65,11 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
           {navLinks}
         </nav> */}
 
-        {!hideSearch && (
+        {/* {!hideSearch && (
           <div className="hidden md:block max-w-xs flex-1">
             <SearchBar />
           </div>
-        )}
+        )} */}
 
         {!hideSearch && (
           <button

@@ -8,17 +8,9 @@ import styles from "./NewsListPage.module.scss";
 
 import { INewsItem } from "../types/NewsItem";
 import { API_ENDPOINTS } from "../config/api";
+import useDebounce from "../hooks/useDebounce";
 
 const PAGE_SIZE = 10;
-
-// Interface for the API response when using a real backend
-// interface NewsApiResponse {
-//   data: INewsItem[];
-//   total: number;
-//   page: number;
-//   limit: number;
-//   totalPages: number;
-// }
 
 const NewsListPage: React.FC = () => {
   const [newsItems, setNewsItems] = useState<INewsItem[]>([]);
@@ -32,6 +24,8 @@ const NewsListPage: React.FC = () => {
     keyword: "",
     reviewed: undefined as boolean | undefined,
   });
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms delay
 
   // Handle filter changes
   const handleFilterChange = (
@@ -177,6 +171,10 @@ const NewsListPage: React.FC = () => {
     };
   }, [filters]); // Only depend on filters
 
+  useEffect(() => {
+    handleFilterChange("keyword", debouncedSearchTerm || undefined);
+  }, [debouncedSearchTerm]);
+
   // Set up intersection observer for infinite scroll
   useEffect(() => {
     const currentRef = loadMoreRef.current;
@@ -260,11 +258,8 @@ const NewsListPage: React.FC = () => {
                   id="search-news"
                   type="text"
                   placeholder="Search news..."
-                  value={filters.keyword || ""}
-                  onChange={(e) =>
-                    handleFilterChange("keyword", e.target.value)
-                  }
-                  //   className={styles.searchInput}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
 
@@ -280,7 +275,6 @@ const NewsListPage: React.FC = () => {
                     { value: "technology", label: "Technology" },
                     { value: "sports", label: "Sports" },
                   ]}
-                  // className={styles.select}
                 />
               </div>
 
