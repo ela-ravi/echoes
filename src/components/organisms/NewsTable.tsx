@@ -10,8 +10,8 @@ interface CategoriesCellProps {
 
 const CategoriesCell: React.FC<CategoriesCellProps> = ({ categories }) => {
   const [open, setOpen] = useState(false);
-  const visible = open ? categories : categories.slice(0, 2);
-  const hiddenCount = categories.length - visible.length;
+  const visible = open ? categories || [] : (categories || []).slice(0, 2);
+  const hiddenCount = (categories?.length || 0) - visible.length;
 
   return (
     <div className="relative flex flex-wrap gap-1 items-center max-w-[200px]">
@@ -73,11 +73,10 @@ const NewsTable: React.FC<NewsTableProps> = ({ items }) => (
           <th className="px-4 py-3 w-[160px]">News ID</th>
           <th className="px-4 py-3">Title</th>
           <th className="px-4 py-3">Categories</th>
-          <th className="px-4 py-3">Social Media</th>
+          <th className="px-4 py-3">Similar Source</th>
           <th className="px-4 py-3">Published At</th>
           <th className="px-4 py-3">AI Status</th>
           <th className="px-4 py-3">Client Status</th>
-          {/* <th className="px-4 py-3">Actions</th> */}
         </tr>
       </thead>
       <tbody>
@@ -93,28 +92,29 @@ const NewsTable: React.FC<NewsTableProps> = ({ items }) => (
             </td>
             <td className="px-4 py-2 truncate max-w-xs">{item.title}</td>
             <td className="px-4 py-2 max-w-[220px]">
-              <CategoriesCell categories={item.categories} />
+              <CategoriesCell categories={item.categories || []} />
             </td>
             <td className="px-4 py-2 truncate max-w-[200px]">
-              <a
-                href={item.socialMediaUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#4f8ef7] hover:underline"
-              >
-                {item.sourceName}
-              </a>
+              {item.similarSourceUrl ? (
+                <a
+                  href={item.similarSourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#4f8ef7] hover:underline"
+                >
+                  {item.similarSourceName || "View Source"}
+                </a>
+              ) : (
+                <span className="text-gray-400">No similar source</span>
+              )}
             </td>
             <td className="px-4 py-2 whitespace-nowrap">{item.publishedAt}</td>
             <td className="px-4 py-2">
-              <StatusBadge status={item.aiStatus} />
+              <StatusBadge status={item.aiStatus} type="ai" />
             </td>
             <td className="px-4 py-2">
               <StatusBadge status={item.clientStatus} />
             </td>
-            {/* <td className="px-4 py-2 text-[#99a0c2] font-bold tracking-wide">
-              View
-            </td> */}
           </tr>
         ))}
       </tbody>

@@ -2,305 +2,291 @@
   "news": [
     {
       "id": "1",
-      "title": "Breaking: New Study Shows Benefits of Remote Work",
-      "sourceName": "Tech News",
-      "socialMediaUrl": "https://twitter.com/technews/status/12345",
-      "publishedAt": "2023-05-15T10:30:00Z",
-      "aiStatus": "approved",
-      "clientStatus": "Pending",
+      "title": "AI Revolutionizes Drug Discovery",
+      "similarSourceName": "BBC News",
+      "similarSourceUrl": "https://twitter.com/news/status/17696",
+      "user": "Rajesh",
+      "clientStatus": "Trusted",
+      "publishedAt": "2024-04-11T12:59:27.712615Z",
+      "aiStatus": "Failed",
       "categories": [
-        "Technology",
-        "Business"
-      ],
-      "summary": "A new study reveals significant productivity gains from remote work arrangements.",
-      "originalText": "A recent study conducted by Stanford University found that remote workers are 13% more productive than their in-office counterparts. The research, which followed 16,000 workers over 9 months, also found that work-from-home employees reported higher job satisfaction and lower attrition rates. Companies implementing remote work policies saw an average of $2,000 in savings per employee on reduced office space and overhead costs.\n\nKey findings include:\n- 13% increase in productivity\n- 50% reduction in employee attrition\n- $2,000 average savings per employee\n- 9% increase in work satisfaction\n\nThe study suggests that the flexibility of remote work leads to better work-life balance and reduced commute times, contributing to overall productivity gains.",
-      "aiGeneratedText": "A comprehensive study from Stanford University has demonstrated that remote work can significantly enhance productivity and employee satisfaction. The research, which analyzed data from 16,000 employees over nine months, revealed a 13% productivity boost among remote workers compared to their office-based colleagues.\n\nKey Highlights:\n\n1. **Productivity Boost**: Remote workers showed a consistent 13% increase in output.\n2. **Employee Retention**: Companies reported a 50% decrease in employee turnover after implementing remote work options.\n3. **Cost Efficiency**: Organizations saved an average of $2,000 per employee annually on reduced office space and operational expenses.\n4. **Job Satisfaction**: 87% of remote employees reported higher job satisfaction levels, citing better work-life balance and reduced commute times as key factors.",
-      "reviewed": true
+        "Science",
+        "Health"
+      ]
     },
     {
       "id": "2",
-      "title": "Global Tech Conference 2023 Announces Keynote Speakers",
-      "sourceName": "Developer Weekly",
-      "socialMediaUrl": "https://twitter.com/devweekly/status/12346",
-      "publishedAt": "2023-05-14T15:45:00Z",
-      "aiStatus": "pending",
+      "title": "Quantum Computing Advances Towards Real-World Applications",
+      "similarSourceName": "TechCrunch",
+      "similarSourceUrl": "https://twitter.com/techcrunch/status/56789",
+      "user": "Priya",
       "clientStatus": "Pending",
+      "publishedAt": "2024-06-17T10:00:00Z",
+      "aiStatus": "InProgress",
       "categories": [
         "Technology",
-        "Events"
-      ],
-      "summary": "The Global Tech Conference 2023 has announced its lineup of keynote speakers, featuring industry leaders from top tech companies.",
-      "reviewed": false
+        "Research"
+      ]
     },
     {
       "id": "3",
-      "title": "New AI Model Breaks Performance Records",
-      "sourceName": "AI Today",
-      "socialMediaUrl": "https://twitter.com/aitoday/status/12347",
-      "publishedAt": "2023-05-13T09:15:00Z",
-      "aiStatus": "approved",
-      "clientStatus": "Approved",
+      "title": "Global Push for Renewable Energy Intensifies",
+      "similarSourceName": "Reuters",
+      "similarSourceUrl": "https://twitter.com/reuters/status/98765",
+      "user": "Amit",
+      "clientStatus": "Trusted",
+      "publishedAt": "2024-06-16T09:30:00Z",
+      "aiStatus": "Completed",
       "categories": [
-        "Artificial Intelligence",
-        "Technology"
-      ],
-      "summary": "A new AI model has set unprecedented benchmarks in natural language processing and computer vision tasks.",
-      "reviewed": true
+        "Environment",
+        "Energy"
+      ]
     },
     {
       "id": "4",
-      "title": "Cybersecurity Threats on the Rise in 2023",
-      "sourceName": "Security Insider",
-      "socialMediaUrl": "https://twitter.com/securityinsider/status/12348",
-      "publishedAt": "2023-05-12T14:20:00Z",
-      "aiStatus": "approved",
+      "title": "Breakthrough in Personalized Cancer Therapies",
+      "similarSourceName": "Nature",
+      "similarSourceUrl": "https://twitter.com/nature/status/11223",
+      "user": "Meena",
       "clientStatus": "Pending",
+      "publishedAt": "2024-06-15T11:45:00Z",
+      "aiStatus": "InProgress",
       "categories": [
-        "Cybersecurity",
-        "Technology"
-      ],
-      "summary": "New report shows a 47% increase in sophisticated cyber attacks targeting enterprises in Q1 2023.",
-      "reviewed": true
+        "Health",
+        "Biotech"
+      ]
     },
     {
       "id": "5",
-      "title": "Sustainable Tech: The Future of Green Computing",
-      "sourceName": "Eco Tech",
-      "socialMediaUrl": "https://twitter.com/ecotech/status/12349",
-      "publishedAt": "2023-05-11T11:10:00Z",
-      "aiStatus": "pending",
-      "clientStatus": "Pending",
+      "title": "Rise of AI in Creative Industries Sparks Debate",
+      "similarSourceName": "The Verge",
+      "similarSourceUrl": "https://twitter.com/verge/status/22334",
+      "user": "Vikram",
+      "clientStatus": "Fake",
+      "publishedAt": "2024-06-14T14:00:00Z",
+      "aiStatus": "Completed",
       "categories": [
-        "Sustainability",
-        "Technology"
-      ],
-      "summary": "How tech companies are reducing their carbon footprint through innovative green computing initiatives.",
-      "reviewed": false
+        "Technology",
+        "Arts"
+      ]
     },
     {
       "id": "6",
-      "title": "The Rise of Quantum Computing: What It Means for Businesses",
-      "sourceName": "Quantum Insights",
-      "socialMediaUrl": "https://twitter.com/quantuminsights/status/12350",
-      "publishedAt": "2023-05-10T16:30:00Z",
-      "aiStatus": "approved",
-      "clientStatus": "Approved",
+      "title": "New Diplomatic Efforts to Resolve Global Conflicts",
+      "similarSourceName": "Al Jazeera",
+      "similarSourceUrl": "https://twitter.com/aljazeera/status/33445",
+      "user": "Sophia",
+      "clientStatus": "Pending",
+      "publishedAt": "2024-06-13T16:15:00Z",
+      "aiStatus": "InProgress",
       "categories": [
-        "Quantum Computing",
-        "Business"
-      ],
-      "summary": "Quantum computing is moving from theory to reality, with significant implications for industries worldwide.",
-      "reviewed": true
+        "Politics",
+        "International Relations"
+      ]
     },
     {
       "id": "7",
-      "title": "5G Rollout: Progress and Challenges in 2023",
-      "sourceName": "Connectivity Now",
-      "socialMediaUrl": "https://twitter.com/connectivitynow/status/12351",
-      "publishedAt": "2023-05-09T13:45:00Z",
-      "aiStatus": "approved",
-      "clientStatus": "Rejected",
+      "title": "Economic Slowdown Expected in Q3 Amidst Inflation Concerns",
+      "similarSourceName": "Bloomberg",
+      "similarSourceUrl": "https://twitter.com/bloomberg/status/44556",
+      "user": "John",
+      "clientStatus": "Trusted",
+      "publishedAt": "2024-06-12T08:00:00Z",
+      "aiStatus": "Completed",
       "categories": [
-        "5G",
-        "Telecom"
-      ],
-      "summary": "An in-depth look at the global 5G rollout and the challenges faced by telecom providers.",
-      "reviewed": true
+        "Economics",
+        "Finance"
+      ]
     },
     {
       "id": "8",
-      "title": "The Future of Remote Work: Hybrid Models Take Center Stage",
-      "sourceName": "Workplace Evolution",
-      "socialMediaUrl": "https://twitter.com/workplaceevo/status/12352",
-      "publishedAt": "2023-05-08T10:20:00Z",
-      "aiStatus": "approved",
-      "clientStatus": "Approved",
+      "title": "Space Tourism Takes Off: New Orbital Hotels Announced",
+      "similarSourceName": "Space.com",
+      "similarSourceUrl": "https://twitter.com/spacedotcom/status/55667",
+      "user": "Alice",
+      "clientStatus": "Pending",
+      "publishedAt": "2024-06-11T13:30:00Z",
+      "aiStatus": "InProgress",
       "categories": [
-        "Remote Work",
-        "Business"
-      ],
-      "summary": "How companies are implementing hybrid work models to balance productivity and employee satisfaction.",
-      "reviewed": true
+        "Space",
+        "Tourism"
+      ]
     },
     {
       "id": "9",
-      "title": "Blockchain Beyond Cryptocurrency: Real-World Applications",
-      "sourceName": "Blockchain Today",
-      "socialMediaUrl": "https://twitter.com/blockchaintoday/status/12353",
-      "publishedAt": "2023-05-07T15:10:00Z",
-      "aiStatus": "pending",
-      "clientStatus": "Pending",
+      "title": "New Dietary Guidelines Emphasize Plant-Based Nutrition",
+      "similarSourceName": "WHO",
+      "similarSourceUrl": "https://twitter.com/who/status/66778",
+      "user": "Bob",
+      "clientStatus": "Trusted",
+      "publishedAt": "2024-06-10T10:00:00Z",
+      "aiStatus": "Completed",
       "categories": [
-        "Blockchain",
-        "Technology"
-      ],
-      "summary": "Exploring innovative uses of blockchain technology in supply chain, healthcare, and more.",
-      "reviewed": false
+        "Health",
+        "Nutrition"
+      ]
     },
     {
       "id": "10",
-      "title": "The Impact of AI on Creative Industries",
-      "sourceName": "Creative Tech",
-      "socialMediaUrl": "https://twitter.com/creativetech/status/12354",
-      "publishedAt": "2023-05-06T11:30:00Z",
-      "aiStatus": "approved",
-      "clientStatus": "Approved",
+      "title": "Cybersecurity Threats Escalate Globally",
+      "similarSourceName": "Wired",
+      "similarSourceUrl": "https://twitter.com/wired/status/77889",
+      "user": "Charlie",
+      "clientStatus": "Pending",
+      "publishedAt": "2024-06-09T15:00:00Z",
+      "aiStatus": "InProgress",
       "categories": [
-        "AI",
-        "Creative"
-      ],
-      "summary": "How artificial intelligence is transforming art, music, and content creation.",
-      "reviewed": true
+        "Cybersecurity",
+        "Technology"
+      ]
     },
     {
       "id": "11",
-      "title": "Data Privacy in the Age of Big Tech",
-      "sourceName": "Privacy Matters",
-      "socialMediaUrl": "https://twitter.com/privacymatters/status/12355",
-      "publishedAt": "2023-05-05T09:15:00Z",
-      "aiStatus": "approved",
-      "clientStatus": "Pending",
+      "title": "Advances in AI-Powered Education Platforms",
+      "similarSourceName": "EdTech Review",
+      "similarSourceUrl": "https://twitter.com/edtech/status/88990",
+      "user": "Diana",
+      "clientStatus": "Trusted",
+      "publishedAt": "2024-06-08T11:00:00Z",
+      "aiStatus": "Completed",
       "categories": [
-        "Privacy",
-        "Technology"
-      ],
-      "summary": "Examining the ongoing challenges of data privacy in an increasingly connected world.",
-      "reviewed": true
+        "Education",
+        "AI"
+      ]
     },
     {
       "id": "12",
-      "title": "New Privacy Regulations Take Effect",
-      "sourceName": "Data Privacy Now",
-      "socialMediaUrl": "https://twitter.com/dataprivacy/status/12356",
-      "publishedAt": "2023-05-04T14:25:00Z",
-      "aiStatus": "approved",
-      "clientStatus": "Approved",
+      "title": "Global Water Scarcity Worsens, Urgent Action Needed",
+      "similarSourceName": "The Guardian",
+      "similarSourceUrl": "https://twitter.com/guardian/status/99001",
+      "user": "Evan",
+      "clientStatus": "Pending",
+      "publishedAt": "2024-06-07T09:00:00Z",
+      "aiStatus": "Failed",
       "categories": [
-        "Privacy",
-        "Regulations"
-      ],
-      "summary": "Understanding the impact of new data protection laws on businesses and consumers.",
-      "reviewed": true
+        "Environment",
+        "Water"
+      ]
     },
     {
       "id": "13",
-      "title": "AI-Powered Drug Discovery Accelerates",
-      "sourceName": "Pharma Tech",
-      "socialMediaUrl": "https://twitter.com/pharmatech/status/12357",
-      "publishedAt": "2023-05-03T16:45:00Z",
-      "aiStatus": "approved",
-      "clientStatus": "Accepted",
+      "title": "New Regulations Aim to Curb Social Media Misinformation",
+      "similarSourceName": "New York Times",
+      "similarSourceUrl": "https://twitter.com/nytimes/status/11012",
+      "user": "Fiona",
+      "clientStatus": "Fake",
+      "publishedAt": "2024-06-06T12:00:00Z",
+      "aiStatus": "InProgress",
       "categories": [
-        "AI",
-        "Pharmaceuticals"
-      ],
-      "summary": "New algorithms reduce drug discovery timeline by 40% in clinical trials."
+        "Politics",
+        "Technology"
+      ]
     },
     {
       "id": "14",
-      "title": "5G Rollout Reaches Rural Areas",
-      "sourceName": "Connect Daily",
-      "socialMediaUrl": "https://twitter.com/connectdaily/status/12358",
-      "publishedAt": "2023-05-02T10:10:00Z",
-      "aiStatus": "pending",
-      "clientStatus": "Pending",
+      "title": "Breakthrough in Battery Technology for EVs",
+      "similarSourceName": "Electrek",
+      "similarSourceUrl": "https://twitter.com/electrek/status/22123",
+      "user": "George",
+      "clientStatus": "Trusted",
+      "publishedAt": "2024-06-05T10:30:00Z",
+      "aiStatus": "Completed",
       "categories": [
-        "Telecom",
-        "Technology"
-      ],
-      "summary": "Major carriers expand 5G coverage to previously underserved rural communities."
+        "Automotive",
+        "Innovation"
+      ]
     },
     {
       "id": "15",
-      "title": "Cybersecurity Skills Gap Widens",
-      "sourceName": "InfoSec News",
-      "socialMediaUrl": "https://twitter.com/infosecnews/status/12359",
-      "publishedAt": "2023-05-01T13:25:00Z",
-      "aiStatus": "approved",
-      "clientStatus": "Pending",
+      "title": "Archaeologists Uncover Ancient Lost City",
+      "similarSourceName": "National Geographic",
+      "similarSourceUrl": "https://twitter.com/natgeo/status/33234",
+      "user": "Hannah",
+      "clientStatus": "Trusted",
+      "publishedAt": "2024-06-04T14:45:00Z",
+      "aiStatus": "InProgress",
       "categories": [
-        "Security",
-        "Education"
-      ],
-      "summary": "Report highlights growing need for cybersecurity professionals as threats increase."
+        "Archaeology",
+        "History"
+      ]
     },
     {
       "id": "16",
-      "title": "Augmented Reality in Retail Takes Off",
-      "sourceName": "Retail Tech",
-      "socialMediaUrl": "https://twitter.com/retailtech/status/12360",
-      "publishedAt": "2023-04-30T15:40:00Z",
-      "aiStatus": "approved",
-      "clientStatus": "Accepted",
+      "title": "Mental Health Support in Workplaces Becomes Priority",
+      "similarSourceName": "Forbes",
+      "similarSourceUrl": "https://twitter.com/forbes/status/44345",
+      "user": "Isaac",
+      "clientStatus": "Trusted",
+      "publishedAt": "2024-06-03T11:00:00Z",
+      "aiStatus": "Completed",
       "categories": [
-        "Retail",
-        "AR/VR"
-      ],
-      "summary": "Major retailers report increased sales after implementing AR shopping experiences."
+        "Workplace",
+        "Health"
+      ]
     },
     {
       "id": "17",
-      "title": "Sustainable Packaging Gains Traction",
-      "sourceName": "Eco Business",
-      "socialMediaUrl": "https://twitter.com/ecobusiness/status/12361",
-      "publishedAt": "2023-04-29T09:55:00Z",
-      "aiStatus": "pending",
-      "clientStatus": "Pending",
+      "title": "Renewed Focus on Space Exploration Missions",
+      "similarSourceName": "NASA",
+      "similarSourceUrl": "https://twitter.com/nasa/status/55456",
+      "user": "Julia",
+      "clientStatus": "Trusted",
+      "publishedAt": "2024-06-02T13:00:00Z",
+      "aiStatus": "InProgress",
       "categories": [
-        "Sustainability",
-        "Retail"
-      ],
-      "summary": "Consumer demand drives shift toward biodegradable and reusable packaging solutions."
+        "Space",
+        "Exploration"
+      ]
     },
     {
       "id": "18",
-      "title": "Edge Computing Market to Double by 2025",
-      "sourceName": "Cloud Weekly",
-      "socialMediaUrl": "https://twitter.com/cloudweekly/status/12362",
-      "publishedAt": "2023-04-28T14:20:00Z",
-      "aiStatus": "approved",
+      "title": "New Agricultural Techniques Boost Food Security",
+      "similarSourceName": "AgriNews",
+      "similarSourceUrl": "https://twitter.com/agrinews/status/66567",
+      "user": "Kevin",
       "clientStatus": "Pending",
+      "publishedAt": "2024-06-01T09:45:00Z",
+      "aiStatus": "Completed",
       "categories": [
-        "Cloud",
-        "Technology"
-      ],
-      "summary": "New report predicts rapid growth in edge computing infrastructure investments."
+        "Agriculture",
+        "Food Security"
+      ]
     },
     {
       "id": "19",
-      "title": "Biotech Startup Secures Major Funding",
-      "sourceName": "Venture News",
-      "socialMediaUrl": "https://twitter.com/venturenews/status/12363",
-      "publishedAt": "2023-04-27T11:30:00Z",
-      "aiStatus": "approved",
-      "clientStatus": "Accepted",
+      "title": "Ethical AI Development Gains Traction",
+      "similarSourceName": "MIT Tech Review",
+      "similarSourceUrl": "https://twitter.com/techreview/status/77678",
+      "user": "Lena",
+      "clientStatus": "Trusted",
+      "publishedAt": "2024-05-31T16:00:00Z",
+      "aiStatus": "InProgress",
       "categories": [
-        "Biotech",
-        "Startups"
-      ],
-      "summary": "Series B funding round raises $120M for innovative gene therapy platform."
+        "AI",
+        "Ethics"
+      ]
     },
     {
       "id": "20",
-      "title": "Remote Work Tools See Record Adoption",
-      "sourceName": "Workplace Tech",
-      "socialMediaUrl": "https://twitter.com/workplacetech/status/12364",
-      "publishedAt": "2023-04-26T16:15:00Z",
-      "aiStatus": "pending",
-      "clientStatus": "Pending",
+      "title": "Urban Planning Focus Shifts to Green Infrastructure",
+      "similarSourceName": "CityLab",
+      "similarSourceUrl": "https://twitter.com/citylab/status/88789",
+      "user": "Mike",
+      "clientStatus": "Trusted",
+      "publishedAt": "2024-05-30T10:15:00Z",
+      "aiStatus": "Completed",
       "categories": [
-        "Technology",
-        "Business"
-      ],
-      "summary": "Collaboration software usage grows by 78% as hybrid work becomes standard."
+        "Urban Planning",
+        "Sustainability"
+      ]
     }
   ],
   "news-item": [
     {
       "id": "1",
       "title": "AI Revolutionizes Drug Discovery",
-      "originalText": "This report explores the implications of recent changes in ai revolutionizes drug discovery...",
-      "summary": "This report explores the implications of recent changes in ai revolutionizes drug discovery... AI-generated summary placeholder.",
+      "originalText": "Title: AI Revolutionizes Drug Discovery. This report explores the implications of recent changes in AI revolutionising drug discovery, mind you, it's quite a big deal here.",
+      "summary": "Title: AI Revolutionizes Drug Discovery. This report explores the implications of recent changes in AI revolutionizes drug discovery... AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/76979871",
       "userUploadedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
@@ -327,8 +313,8 @@
     {
       "id": "2",
       "title": "Quantum Computing Advances Towards Real-World Applications",
-      "originalText": "A new paper details significant progress in error correction for quantum computers, bringing them closer to practical use...",
-      "summary": "This report summarizes the latest breakthroughs in quantum computing, focusing on their potential impact on various industries. AI-generated summary placeholder.",
+      "originalText": "Title: Quantum Computing Advances Towards Real-World Applications. A new paper details significant progress in error correction for quantum computers, bringing them closer to practical use, which is quite a development, you see.",
+      "summary": "Title: Quantum Computing Advances Towards Real-World Applications. This report summarizes the latest breakthroughs in quantum computing, focusing on their potential impact on various industries. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/32001208",
       "userUploadedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
@@ -355,8 +341,8 @@
     {
       "id": "3",
       "title": "Global Push for Renewable Energy Intensifies",
-      "originalText": "Nations worldwide are committing to aggressive targets for solar and wind power deployment to combat climate change...",
-      "summary": "This article highlights the increasing global investment and policy shifts towards renewable energy sources. AI-generated summary placeholder.",
+      "originalText": "Title: Global Push for Renewable Energy Intensifies. Nations worldwide are committing to aggressive targets for solar and wind power deployment to combat climate change, which is a vital step, definitely.",
+      "summary": "Title: Global Push for Renewable Energy Intensifies. This article highlights the increasing global investment and policy shifts towards renewable energy sources. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/13693845",
       "userUploadedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
@@ -383,8 +369,8 @@
     {
       "id": "4",
       "title": "Breakthrough in Personalized Cancer Therapies",
-      "originalText": "Scientists have developed a new method to tailor cancer treatments based on individual genetic profiles, showing promising early results...",
-      "summary": "This report details advancements in oncology, specifically personalized medicine for cancer, offering new hope for patients. AI-generated summary placeholder.",
+      "originalText": "Title: Breakthrough in Personalized Cancer Therapies. Scientists have developed a new method to tailor cancer treatments based on individual genetic profiles, showing promising early results, it's quite a ray of hope.",
+      "summary": "Title: Breakthrough in Personalized Cancer Therapies. This report details advancements in oncology, specifically personalized medicine for cancer, offering new hope for patients. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/76979871",
       "userUploadedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
@@ -411,8 +397,8 @@
     {
       "id": "5",
       "title": "Rise of AI in Creative Industries Sparks Debate",
-      "originalText": "From music composition to graphic design, AI tools are increasingly being adopted, leading to discussions about copyright and human artistry...",
-      "summary": "This article explores the growing influence of artificial intelligence in creative fields and the ensuing ethical and legal debates. AI-generated summary placeholder.",
+      "originalText": "Title: Rise of AI in Creative Industries Sparks Debate. From music composition to graphic design, AI tools are increasingly being adopted, leading to discussions about copyright and human artistry, quite a hot topic nowadays, no?",
+      "summary": "Title: Rise of AI in Creative Industries Sparks Debate. This article explores the growing influence of artificial intelligence in creative fields and the ensuing ethical and legal debates. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/32001208",
       "userUploadedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
@@ -439,8 +425,8 @@
     {
       "id": "6",
       "title": "New Diplomatic Efforts to Resolve Global Conflicts",
-      "originalText": "International leaders convene in Geneva to discuss pressing conflicts, aiming for new peace agreements...",
-      "summary": "This report covers recent diplomatic initiatives aimed at de-escalating international tensions and fostering peace. AI-generated summary placeholder.",
+      "originalText": "Title: New Diplomatic Efforts to Resolve Global Conflicts. International leaders convene in Geneva to discuss pressing conflicts, aiming for new peace agreements, it's a big conference, you know.",
+      "summary": "Title: New Diplomatic Efforts to Resolve Global Conflicts. This report covers recent diplomatic initiatives aimed at de-escalating international tensions and fostering peace. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/13693845",
       "userUploadedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
@@ -467,8 +453,8 @@
     {
       "id": "7",
       "title": "Economic Slowdown Expected in Q3 Amidst Inflation Concerns",
-      "originalText": "Analysts predict a moderate economic contraction, fueled by persistent inflation and interest rate hikes...",
-      "summary": "This financial report analyzes forecasts for the upcoming quarter, highlighting concerns over economic growth and inflation. AI-generated summary placeholder.",
+      "originalText": "Title: Economic Slowdown Expected in Q3 Amidst Inflation Concerns. Analysts predict a moderate economic contraction, fueled by persistent inflation and interest rate hikes, which is a bit of a worry, frankly speaking.",
+      "summary": "Title: Economic Slowdown Expected in Q3 Amidst Inflation Concerns. This financial report analyzes forecasts for the upcoming quarter, highlighting concerns over economic growth and inflation. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/76979871",
       "userUploadedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
@@ -495,8 +481,8 @@
     {
       "id": "8",
       "title": "Space Tourism Takes Off: New Orbital Hotels Announced",
-      "originalText": "Several companies unveil plans for commercial space stations catering to tourists, promising luxury experiences beyond Earth...",
-      "summary": "This news piece covers the burgeoning space tourism industry, with new ventures proposing orbital accommodations. AI-generated summary placeholder.",
+      "originalText": "Title: Space Tourism Takes Off: New Orbital Hotels Announced. Several companies unveil plans for commercial space stations catering to tourists, promising luxury experiences beyond Earth, quite a novel idea, no?",
+      "summary": "Title: Space Tourism Takes Off: New Orbital Hotels Announced. This news piece covers the burgeoning space tourism industry, with new ventures proposing orbital accommodations. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/32001208",
       "userUploadedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
@@ -523,8 +509,8 @@
     {
       "id": "9",
       "title": "New Dietary Guidelines Emphasize Plant-Based Nutrition",
-      "originalText": "Health organizations release updated recommendations urging greater consumption of plant-based foods for public health...",
-      "summary": "This report details revised nutritional advice promoting a shift towards plant-centric diets for improved health outcomes. AI-generated summary placeholder.",
+      "originalText": "Title: New Dietary Guidelines Emphasize Plant-Based Nutrition. Health organizations release updated recommendations urging greater consumption of plant-based foods for public health, which is a good move, don't you think?",
+      "summary": "Title: New Dietary Guidelines Emphasize Plant-Based Nutrition. This report details revised nutritional advice promoting a shift towards plant-centric diets for improved health outcomes. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/13693845",
       "userUploadedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
@@ -551,8 +537,8 @@
     {
       "id": "10",
       "title": "Cybersecurity Threats Escalate Globally",
-      "originalText": "A new wave of sophisticated cyberattacks targets critical infrastructure, prompting urgent calls for enhanced security measures...",
-      "summary": "This report details a surge in global cyber threats, emphasizing the vulnerability of essential services and the need for stronger defenses. AI-generated summary placeholder.",
+      "originalText": "Title: Cybersecurity Threats Escalate Globally. A new wave of sophisticated cyberattacks targets critical infrastructure, prompting urgent calls for enhanced security measures, it's quite serious, you see.",
+      "summary": "Title: Cybersecurity Threats Escalate Globally. This report details a surge in global cyber threats, emphasizing the vulnerability of essential services and the need for stronger defenses. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/76979871",
       "userUploadedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
@@ -579,8 +565,8 @@
     {
       "id": "11",
       "title": "Advances in AI-Powered Education Platforms",
-      "originalText": "New educational technologies leverage AI to offer personalized learning experiences and adaptive assessments...",
-      "summary": "This piece explores how AI is transforming the education sector, providing customized learning paths and improved student engagement. AI-generated summary placeholder.",
+      "originalText": "Title: Advances in AI-Powered Education Platforms. New educational technologies leverage AI to offer personalized learning experiences and adaptive assessments, it's a game-changer for sure.",
+      "summary": "Title: Advances in AI-Powered Education Platforms. This piece explores how AI is transforming the education sector, providing customized learning paths and improved student engagement. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/32001208",
       "userUploadedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
@@ -607,8 +593,8 @@
     {
       "id": "12",
       "title": "Global Water Scarcity Worsens, Urgent Action Needed",
-      "originalText": "A new UN report highlights the increasing severity of water shortages across continents, driven by climate change and population growth...",
-      "summary": "This article discusses the accelerating global water crisis and calls for immediate international cooperation and sustainable water management solutions. AI-generated summary placeholder.",
+      "originalText": "Title: Global Water Scarcity Worsens, Urgent Action Needed. A new UN report highlights the increasing severity of water shortages across continents, driven by climate change and population growth, it's a worrying trend, isn't it?",
+      "summary": "Title: Global Water Scarcity Worsens, Urgent Action Needed. This article discusses the accelerating global water crisis and calls for immediate international cooperation and sustainable water management solutions. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/13693845",
       "userUploadedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
@@ -635,8 +621,8 @@
     {
       "id": "13",
       "title": "New Regulations Aim to Curb Social Media Misinformation",
-      "originalText": "Governments worldwide are proposing stricter laws to combat the spread of false information on major social media platforms...",
-      "summary": "This report covers legislative efforts globally to regulate social media content and mitigate the impact of disinformation. AI-generated summary placeholder.",
+      "originalText": "Title: New Regulations Aim to Curb Social Media Misinformation. Governments worldwide are proposing stricter laws to combat the spread of false information on major social media platforms, quite necessary, I must say.",
+      "summary": "Title: New Regulations Aim to Curb Social Media Misinformation. This report covers legislative efforts globally to regulate social media content and mitigate the impact of disinformation. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/76979871",
       "userUploadedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
@@ -663,8 +649,8 @@
     {
       "id": "14",
       "title": "Breakthrough in Battery Technology for EVs",
-      "originalText": "Scientists announce a new solid-state battery design that promises faster charging and longer ranges for electric vehicles...",
-      "summary": "This article highlights a significant innovation in battery technology, set to accelerate the transition to electric vehicles. AI-generated summary placeholder.",
+      "originalText": "Title: Breakthrough in Battery Technology for EVs. Scientists announce a new solid-state battery design that promises faster charging and longer ranges for electric vehicles, which is really good news for the industry, boss.",
+      "summary": "Title: Breakthrough in Battery Technology for EVs. This article highlights a significant innovation in battery technology, set to accelerate the transition to electric vehicles. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/32001208",
       "userUploadedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
@@ -691,8 +677,8 @@
     {
       "id": "15",
       "title": "Archaeologists Uncover Ancient Lost City",
-      "originalText": "A team of international archaeologists has discovered the ruins of a previously unknown ancient civilization deep in the Amazon rainforest...",
-      "summary": "This report details the groundbreaking discovery of a hidden ancient city, offering new insights into pre-Columbian cultures. AI-generated summary placeholder.",
+      "originalText": "Title: Archaeologists Uncover Ancient Lost City. A team of international archaeologists has discovered the ruins of a previously unknown ancient civilization deep in the Amazon rainforest, quite a find, isn't it?",
+      "summary": "Title: Archaeologists Uncover Ancient Lost City. This report details the groundbreaking discovery of a hidden ancient city, offering new insights into pre-Columbian cultures. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/13693845",
       "userUploadedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
@@ -719,8 +705,8 @@
     {
       "id": "16",
       "title": "Mental Health Support in Workplaces Becomes Priority",
-      "originalText": "Companies are increasingly investing in comprehensive mental health programs for employees, recognizing the link to productivity and well-being...",
-      "summary": "This article explores the growing trend of employers prioritizing mental health support, including therapy and mindfulness resources. AI-generated summary placeholder.",
+      "originalText": "Title: Mental Health Support in Workplaces Becomes Priority. Companies are increasingly investing in comprehensive mental health programs for employees, recognizing the link to productivity and well-being, it's a good step, no?",
+      "summary": "Title: Mental Health Support in Workplaces Becomes Priority. This article explores the growing trend of employers prioritizing mental health support, including therapy and mindfulness resources. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/76979871",
       "userUploadedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
@@ -747,8 +733,8 @@
     {
       "id": "17",
       "title": "Renewed Focus on Space Exploration Missions",
-      "originalText": "NASA and private companies announce ambitious plans for new lunar missions and probes to outer planets...",
-      "summary": "This news highlights a resurgence in space exploration, with new initiatives aimed at extending humanity's reach beyond Earth. AI-generated summary placeholder.",
+      "originalText": "Title: Renewed Focus on Space Exploration Missions. NASA and private companies announce ambitious plans for new lunar missions and probes to outer planets, it's a big deal for space enthusiasts, I tell you.",
+      "summary": "Title: Renewed Focus on Space Exploration Missions. This news highlights a resurgence in space exploration, with new initiatives aimed at extending humanity's reach beyond Earth. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/32001208",
       "userUploadedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
@@ -775,8 +761,8 @@
     {
       "id": "18",
       "title": "New Agricultural Techniques Boost Food Security",
-      "originalText": "Innovative farming methods, including vertical farms and precision agriculture, are showing promise in increasing crop yields...",
-      "summary": "This report details modern agricultural advancements designed to enhance global food production and address food security challenges. AI-generated summary placeholder.",
+      "originalText": "Title: New Agricultural Techniques Boost Food Security. Innovative farming methods, including vertical farms and precision agriculture, are showing promise in increasing crop yields, quite a breakthrough, don't you think?",
+      "summary": "Title: New Agricultural Techniques Boost Food Security. This report details modern agricultural advancements designed to enhance global food production and address food security challenges. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/13693845",
       "userUploadedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
@@ -803,8 +789,8 @@
     {
       "id": "19",
       "title": "Ethical AI Development Gains Traction",
-      "originalText": "Leading tech companies and research institutions are prioritizing ethical guidelines and transparent AI models...",
-      "summary": "This article covers the growing movement towards responsible AI development, focusing on fairness, accountability, and transparency. AI-generated summary placeholder.",
+      "originalText": "Title: Ethical AI Development Gains Traction. Leading tech companies and research institutions are prioritizing ethical guidelines and transparent AI models, which is truly important, you know.",
+      "summary": "Title: Ethical AI Development Gains Traction. This article covers the growing movement towards responsible AI development, focusing on fairness, accountability, and transparency. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/76979871",
       "userUploadedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
@@ -831,8 +817,8 @@
     {
       "id": "20",
       "title": "Urban Planning Focus Shifts to Green Infrastructure",
-      "originalText": "Cities worldwide are integrating more parks, green roofs, and permeable surfaces to improve climate resilience...",
-      "summary": "This report details the growing trend in urban development towards sustainable and environmentally friendly infrastructure. AI-generated summary placeholder.",
+      "originalText": "Title: Urban Planning Focus Shifts to Green Infrastructure. Cities worldwide are integrating more parks, green roofs, and permeable surfaces to improve climate resilience, a much-needed change, definitely.",
+      "summary": "Title: Urban Planning Focus Shifts to Green Infrastructure. This report details the growing trend in urban development towards sustainable and environmentally friendly infrastructure. AI-generated summary placeholder.",
       "aiGeneratedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
       "aiGeneratedVideo": "https://player.vimeo.com/video/32001208",
       "userUploadedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
