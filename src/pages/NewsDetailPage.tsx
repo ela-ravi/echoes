@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import HeaderNav from "../components/organisms/HeaderNav";
 import { API_ENDPOINTS } from "../config/api";
 import { INewsItem } from "../types/NewsItem";
-import { FaImage, FaVideo, FaPlay } from "react-icons/fa";
+import { FaImage, FaVideo, FaPlay, FaUserCircle } from "react-icons/fa";
 import { SiOpenai } from "react-icons/si";
 
 type FormDataState = {
@@ -101,7 +101,7 @@ const NewsDetailPage: React.FC = () => {
             throw new Error("News article not found");
           }
           throw new Error(
-            `Failed to fetch news detail: ${response.statusText}`,
+            `Failed to fetch news detail: ${response.statusText}`
           );
         }
         const data = await response.json();
@@ -203,6 +203,112 @@ const NewsDetailPage: React.FC = () => {
           <h1 className="mb-4 text-[32px] font-bold leading-tight tracking-tight text-white">
             News Item ID: {newsItem.id}
           </h1>
+          <Section title="User Details">
+            <div className="bg-[#1d2030] p-6 my-3 rounded-xl">
+              <div className="flex flex-col space-y-4">
+                {/* Top Row: User Info */}
+                <div className="flex items-center space-x-4">
+                  <div className="flex-shrink-0">
+                    <FaUserCircle size={48} color="#4f8ef7" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-medium text-white">
+                      {newsItem.user || "Unknown User"}
+                    </h3>
+                    <p className="text-gray-400">
+                      {newsItem.userMailId || "No email provided"}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bottom Row: Additional Info */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-3 border-t border-[#2d3349]">
+                  {/* Similar Source */}
+                  {(newsItem.similarSourceName ||
+                    newsItem.similarSourceUrl) && (
+                    <div>
+                      <p className="text-xs text-gray-500 font-medium mb-1">
+                        SIMILAR SOURCE
+                      </p>
+                      <p className="text-sm">
+                        {newsItem.similarSourceUrl ? (
+                          <a
+                            href={newsItem.similarSourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-400 hover:underline"
+                          >
+                            {newsItem.similarSourceName || "View Source"}
+                          </a>
+                        ) : (
+                          <span className="text-gray-400">
+                            {newsItem.similarSourceName || "N/A"}
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Reviewed By */}
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium mb-1">
+                      REVIEWED BY
+                    </p>
+                    <div className="space-y-1">
+                      <p className="text-sm text-gray-400">
+                        {newsItem.reviewedBy || "Not reviewed"}
+                      </p>
+                      {newsItem.reviewedAt && (
+                        <p className="text-xs text-gray-500">
+                          {new Date(newsItem.reviewedAt).toLocaleString()}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Client Status */}
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium mb-1">
+                      STATUS
+                    </p>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        newsItem.clientStatus === "Trusted"
+                          ? "bg-green-900/30 text-green-400"
+                          : newsItem.clientStatus === "Fake"
+                            ? "bg-red-900/30 text-red-400"
+                            : "bg-yellow-900/30 text-yellow-400"
+                      }`}
+                    >
+                      {newsItem.clientStatus || "Pending"}
+                    </span>
+                  </div>
+
+                  {/* Published At */}
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium mb-1">
+                      PUBLISHED
+                    </p>
+                    <p className="text-sm text-gray-400">
+                      {newsItem.publishedAt
+                        ? new Date(newsItem.publishedAt).toLocaleDateString()
+                        : "N/A"}
+                    </p>
+                  </div>
+
+                  {/* AI Status */}
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium mb-1">
+                      AI STATUS
+                    </p>
+                    <p className="text-sm text-gray-400">
+                      {newsItem.aiStatus || "N/A"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Section>
 
           <Section title="Original Raw Submission">
             <TextArea
@@ -256,17 +362,6 @@ const NewsDetailPage: React.FC = () => {
               onChange={handleChange}
               placeholder="Describe the potential impact of this news..."
               sectionTitle="Potential Impact"
-              setOverlayContent={setOverlayContent}
-            />
-          </Section>
-
-          <Section title="Suggested Data Points">
-            <TextArea
-              name="suggestedDataPoints"
-              value={formData.suggestedDataPoints}
-              onChange={handleChange}
-              placeholder="List any suggested data points for further analysis..."
-              sectionTitle="Suggested Data Points"
               setOverlayContent={setOverlayContent}
             />
           </Section>
@@ -538,7 +633,7 @@ const TextArea: React.FC<{
   sectionTitle: string;
   readOnly?: boolean;
   setOverlayContent: (
-    content: { title: string; content: string } | null,
+    content: { title: string; content: string } | null
   ) => void;
 }> = ({
   name,
