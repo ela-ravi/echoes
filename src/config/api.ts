@@ -1,5 +1,5 @@
 // Using json-server as our mock API
-const API_BASE_URL = "http://localhost:3001";
+const API_BASE_URL = process.env.SERVER_APP_BASE_URL || "http://localhost:3001";
 
 interface NewsListQueryParams {
   category?: string;
