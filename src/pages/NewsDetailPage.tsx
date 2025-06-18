@@ -277,56 +277,90 @@ const NewsDetailPage: React.FC = () => {
             newsItem.userUploadedImage ||
             newsItem.userUploadedVideo) && (
             <Section title="Media">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
-                {/* User Uploaded Media Section */}
+              <div className="space-y-8 mt-4">
+                {/* User Uploaded Media Row */}
                 {(newsItem.userUploadedImage || newsItem.userUploadedVideo) && (
-                  <div className="space-y-4">
+                  <div className="space-y-2">
                     <h3 className="text-lg font-semibold text-white border-b border-[#394060] pb-2">
                       User Uploaded Content
                     </h3>
-                    <div className="space-y-4">
-                      {newsItem.userUploadedImage && (
-                        <MediaSection
-                          title="Uploaded Image"
-                          url={newsItem.userUploadedImage}
-                          type="image"
-                          isAI={false}
-                        />
-                      )}
-                      {newsItem.userUploadedVideo && (
-                        <MediaSection
-                          title="Uploaded Video"
-                          url={newsItem.userUploadedVideo}
-                          type="video"
-                          isAI={false}
-                        />
+                    <div className="flex flex-col md:flex-row gap-4">
+                      <div
+                        className={`${
+                          !newsItem.userUploadedImage || !newsItem.userUploadedVideo
+                            ? "w-full"
+                            : "w-full md:w-1/2"
+                        }`}
+                      >
+                        {newsItem.userUploadedImage ? (
+                          <MediaSection
+                            title="Uploaded Image"
+                            url={newsItem.userUploadedImage}
+                            type="image"
+                            isAI={false}
+                          />
+                        ) : newsItem.userUploadedVideo ? (
+                          <MediaSection
+                            title="Uploaded Video"
+                            url={newsItem.userUploadedVideo}
+                            type="video"
+                            isAI={false}
+                          />
+                        ) : null}
+                      </div>
+                      {newsItem.userUploadedImage && newsItem.userUploadedVideo && (
+                        <div className="w-full md:w-1/2">
+                          <MediaSection
+                            title="Uploaded Video"
+                            url={newsItem.userUploadedVideo}
+                            type="video"
+                            isAI={false}
+                          />
+                        </div>
                       )}
                     </div>
                   </div>
                 )}
 
-                {/* AI Generated Media Section */}
-                {(newsItem.aiGeneratedVideo || newsItem.aiGeneratedImage) && (
-                  <div className="space-y-4">
+                {/* AI Generated Media Row */}
+                {(newsItem.aiGeneratedImage || newsItem.aiGeneratedVideo) && (
+                  <div className="space-y-2">
                     <h3 className="text-lg font-semibold text-white border-b border-[#394060] pb-2">
                       AI Generated Content
                     </h3>
-                    <div className="space-y-4">
-                      {newsItem.aiGeneratedImage && (
-                        <MediaSection
-                          title="AI Generated Image"
-                          url={newsItem.aiGeneratedImage}
-                          type="image"
-                          isAI={true}
-                        />
-                      )}
-                      {newsItem.aiGeneratedVideo && (
-                        <MediaSection
-                          title="AI Analysis Video"
-                          url={newsItem.aiGeneratedVideo}
-                          type="video"
-                          isAI={true}
-                        />
+                    <div className="flex flex-col md:flex-row gap-4">
+                      <div
+                        className={`${
+                          !newsItem.aiGeneratedImage || !newsItem.aiGeneratedVideo
+                            ? "w-full"
+                            : "w-full md:w-1/2"
+                        }`}
+                      >
+                        {newsItem.aiGeneratedImage ? (
+                          <MediaSection
+                            title="AI Generated Image"
+                            url={newsItem.aiGeneratedImage}
+                            type="image"
+                            isAI={true}
+                          />
+                        ) : newsItem.aiGeneratedVideo ? (
+                          <MediaSection
+                            title="AI Generated Video"
+                            url={newsItem.aiGeneratedVideo}
+                            type="video"
+                            isAI={true}
+                          />
+                        ) : null}
+                      </div>
+                      {newsItem.aiGeneratedImage && newsItem.aiGeneratedVideo && (
+                        <div className="w-full md:w-1/2">
+                          <MediaSection
+                            title="AI Generated Video"
+                            url={newsItem.aiGeneratedVideo}
+                            type="video"
+                            isAI={true}
+                          />
+                        </div>
                       )}
                     </div>
                   </div>
@@ -427,14 +461,26 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({
 const MediaSection: React.FC<{
   title: string;
   type: "image" | "video";
-  url: string;
+  url?: string;
   isAI?: boolean;
 }> = ({ title, type, url, isAI = false }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
+
+  if (!url) {
+    return null;
+  }
+
+  // For video type, we'll use the URL directly in a video element
+  // No special handling for specific domains
+
+  const handleVideoReady = () => {
+    setIsVideoReady(true);
+  };
 
   return (
     <div
-      className="relative rounded-lg overflow-hidden border border-[#394060] bg-[#1d2030] hover:border-[#4f8ef7] transition-colors duration-200"
+      className="border border-[#394060] rounded-lg overflow-hidden mb-6 transition-all duration-300 hover:border-[#4f8ef7]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -457,8 +503,10 @@ const MediaSection: React.FC<{
               src={url}
               className="w-full h-full object-cover"
               controls={isHovered}
+              onCanPlay={handleVideoReady}
+              onError={(e) => console.error("Video error:", e)}
             />
-            {!isHovered && (
+            {!isVideoReady && !isHovered && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/30">
                 <div className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center">
                   <FaPlay className="text-white ml-1" />
