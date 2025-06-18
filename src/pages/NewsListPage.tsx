@@ -55,7 +55,8 @@ const NewsListPage: React.FC = () => {
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const isMounted = useRef<boolean>(true);
+  const isMounted = useRef(true);
+  const hasInitialLoad = useRef(false);
 
   const fetchNews = useCallback(
     async (pageNum: number, append = false) => {
@@ -89,7 +90,7 @@ const NewsListPage: React.FC = () => {
           ...(filters.keyword && { q: filters.keyword }),
           ...(filters.reviewed !== undefined && { reviewed: filters.reviewed }),
         };
-
+        console.log("offset and qp:", offset, queryParams);
         console.log("[fetchNews] Request params:", queryParams);
         const apiUrl = API_ENDPOINTS.NEWS.LIST(queryParams);
 
@@ -153,12 +154,14 @@ const NewsListPage: React.FC = () => {
   // Initial data load and filter changes with debounce
   useEffect(() => {
     isMounted.current = true;
-    
+    hasInitialLoad.current = false;
+
     // Only fetch if component is mounted
     const fetchData = async () => {
       setPage(0);
       setLoading(true);
       await fetchNews(0, false);
+      hasInitialLoad.current = true;
     };
 
     // Add a small delay to prevent rapid successive calls
@@ -166,18 +169,25 @@ const NewsListPage: React.FC = () => {
       if (isMounted.current) {
         fetchData();
       }
-    }, 300); // 300ms debounce
+    }, 100); // Reduced debounce time
 
     return () => {
       isMounted.current = false;
       clearTimeout(timer);
     };
-  }, [filters]); // Removed fetchNews from dependencies
+  }, [filters]); // Only depend on filters
 
   // Set up intersection observer for infinite scroll
   useEffect(() => {
     const currentRef = loadMoreRef.current;
-    if (!currentRef || loading || loadingMore || !hasMore) return;
+    if (
+      !currentRef ||
+      loading ||
+      loadingMore ||
+      !hasMore ||
+      !hasInitialLoad.current
+    )
+      return;
 
     console.log("Setting up intersection observer");
     const handleIntersect = (entries: IntersectionObserverEntry[]) => {
