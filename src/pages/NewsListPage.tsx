@@ -89,7 +89,11 @@ const NewsListPage: React.FC = () => {
         const apiUrl = API_ENDPOINTS.NEWS.LIST(queryParams);
 
         const response = await fetch(apiUrl, {
-          headers: { "Content-Type": "application/json" },
+          //@ts-ignore
+          headers: {
+            "ngrok-skip-browser-warning": true,
+            "Content-Type": "application/json",
+          },
           signal: abortController.signal,
         });
 

@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   mode: process.env.NODE_ENV || "development",
@@ -61,6 +62,20 @@ module.exports = {
     new Dotenv({
       systemvars: true, // load all system variables as well (useful for CI/CD)
       silent: true, // hide any errors if .env file is missing
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "public/assets"),
+          to: "public/assets",
+          noErrorOnMissing: true, // Don't throw error if assets directory doesn't exist
+        },
+        {
+          from: path.resolve(__dirname, "public/pages"),
+          to: ".",
+          noErrorOnMissing: true,
+        },
+      ],
     }),
   ],
   devServer: {
