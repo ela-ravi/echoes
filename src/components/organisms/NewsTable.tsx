@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import StatusBadge from "../molecules/StatusBadge";
 import Badge from "../atoms/Badge";
-import { INewsItem } from "../../types/NewsItem";
+import { INewsList } from "../../types/NewsItem";
 
 interface CategoriesCellProps {
   categories: string[];
@@ -62,7 +62,7 @@ const CategoriesCell: React.FC<CategoriesCellProps> = ({ categories }) => {
 };
 
 interface NewsTableProps {
-  items: INewsItem[];
+  items: INewsList[];
 }
 
 const NewsTable: React.FC<NewsTableProps> = ({ items }) => (

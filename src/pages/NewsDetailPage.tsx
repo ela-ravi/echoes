@@ -8,11 +8,9 @@ import { SiOpenai } from "react-icons/si";
 
 type FormDataState = {
   originalText: string;
-  summary: string;
+  aiGeneratedText: string;
   keyIndividuals: string;
-  conflictingDetails: string;
   potentialImpact: string;
-  suggestedDataPoints: string;
 };
 
 const NewsDetailPage: React.FC = () => {
@@ -27,21 +25,17 @@ const NewsDetailPage: React.FC = () => {
   const [showImageOverlay, setShowImageOverlay] = useState(false);
   const [formData, setFormData] = useState<FormDataState>({
     originalText: "",
-    summary: "",
+    aiGeneratedText: "",
     keyIndividuals: "",
-    conflictingDetails: "",
     potentialImpact: "",
-    suggestedDataPoints: "",
   });
 
   // Store initial form data for reset functionality
   const [initialFormData, setInitialFormData] = useState<FormDataState>({
     originalText: "",
-    summary: "",
+    aiGeneratedText: "",
     keyIndividuals: "",
-    conflictingDetails: "",
     potentialImpact: "",
-    suggestedDataPoints: "",
   });
 
   // Save form data
@@ -101,10 +95,10 @@ const NewsDetailPage: React.FC = () => {
             throw new Error("News article not found");
           }
           throw new Error(
-            `Failed to fetch news detail: ${response.statusText}`
+            `Failed to fetch news detail: ${response.statusText}`,
           );
         }
-        const data = await response.json();
+        const data: INewsItem = await response.json();
         setNewsItem(data);
 
         // Initialize form data with the fetched news item
@@ -112,9 +106,7 @@ const NewsDetailPage: React.FC = () => {
           originalText: data.originalText || "",
           summary: data.summary || "",
           keyIndividuals: data.keyIndividuals || "",
-          conflictingDetails: data.conflictingDetails || "",
           potentialImpact: data.potentialImpact || "",
-          suggestedDataPoints: data.suggestedDataPoints || "",
         };
 
         setFormData(newFormData);
@@ -273,14 +265,14 @@ const NewsDetailPage: React.FC = () => {
                     </p>
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        newsItem.clientStatus === "Trusted"
+                        newsItem.clientStatus === "Published"
                           ? "bg-green-900/30 text-green-400"
-                          : newsItem.clientStatus === "Fake"
+                          : newsItem.clientStatus === "Rejected"
                             ? "bg-red-900/30 text-red-400"
                             : "bg-yellow-900/30 text-yellow-400"
                       }`}
                     >
-                      {newsItem.clientStatus || "Pending"}
+                      {newsItem.clientStatus || "Submitted"}
                     </span>
                   </div>
 
@@ -325,7 +317,7 @@ const NewsDetailPage: React.FC = () => {
           <Section title="AI-Curated Summary">
             <TextArea
               name="summary"
-              value={formData.summary}
+              value={formData.aiGeneratedText}
               onChange={handleChange}
               placeholder="AI-generated summary will appear here..."
               sectionTitle="AI-Curated Summary"
@@ -340,17 +332,6 @@ const NewsDetailPage: React.FC = () => {
               onChange={handleChange}
               placeholder="List key individuals mentioned in the article..."
               sectionTitle="Key Individuals Mentioned"
-              setOverlayContent={setOverlayContent}
-            />
-          </Section>
-
-          <Section title="Conflicting Details">
-            <TextArea
-              name="conflictingDetails"
-              value={formData.conflictingDetails}
-              onChange={handleChange}
-              placeholder="Note any conflicting information found..."
-              sectionTitle="Conflicting Details"
               setOverlayContent={setOverlayContent}
             />
           </Section>
@@ -633,7 +614,7 @@ const TextArea: React.FC<{
   sectionTitle: string;
   readOnly?: boolean;
   setOverlayContent: (
-    content: { title: string; content: string } | null
+    content: { title: string; content: string } | null,
   ) => void;
 }> = ({
   name,

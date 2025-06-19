@@ -6,14 +6,14 @@ import { Select } from "../components/atoms/Select";
 import { Button } from "../components/atoms/Button";
 import styles from "./NewsListPage.module.scss";
 
-import { INewsItem } from "../types/NewsItem";
+import { INewsList } from "../types/NewsItem";
 import { API_ENDPOINTS } from "../config/api";
 import useDebounce from "../hooks/useDebounce";
 
 const PAGE_SIZE = 10;
 
 const NewsListPage: React.FC = () => {
-  const [newsItems, setNewsItems] = useState<INewsItem[]>([]);
+  const [newsItems, setNewsItems] = useState<INewsList[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -104,10 +104,10 @@ const NewsListPage: React.FC = () => {
         if (!result) throw new Error("No data received from the server");
 
         // Ensure we have an array of items
-        const paginatedItems: INewsItem[] = Array.isArray(result)
+        const paginatedItems: INewsList[] = Array.isArray(result)
           ? result
           : result && typeof result === "object"
-            ? [result as INewsItem]
+            ? [result as INewsList]
             : [];
 
         console.log("[fetchNews] Received items:", paginatedItems);
