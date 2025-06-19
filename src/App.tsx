@@ -2,6 +2,8 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import NewsListPage from "./pages/NewsListPage";
 import NewsDetailPage from "./pages/NewsDetailPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App: React.FC = () => {
   return (
@@ -11,6 +13,7 @@ const App: React.FC = () => {
         <Route path="/news-detail" element={<NewsDetailPage />} />
         <Route path="/" element={<NewsListPage />} />
       </Routes>
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </>
   );
 };

@@ -87,7 +87,7 @@ const NewsDetailPage: React.FC = () => {
 
         setLoading(true);
         setError(null);
-
+        console.log("API endpoint:", API_ENDPOINTS.NEWS.DETAIL(newsId));
         const response = await fetch(API_ENDPOINTS.NEWS.DETAIL(newsId));
 
         if (!response.ok) {
@@ -222,8 +222,8 @@ const NewsDetailPage: React.FC = () => {
                         BADGE
                       </p>
                       <div className="flex items-center space-x-2">
-                        <img 
-                          src={`/assets/${newsItem.badge.toLowerCase()}.png`} 
+                        <img
+                          src={`/assets/${newsItem.badge.toLowerCase()}.png`}
                           alt={`${newsItem.badge} badge`}
                           className="w-6 h-6 object-contain"
                         />
@@ -235,7 +235,7 @@ const NewsDetailPage: React.FC = () => {
                   )}
 
                   {/* Reward Points */}
-                  {typeof newsItem.rewardPoints === 'number' && (
+                  {typeof newsItem.rewardPoints === "number" && (
                     <div>
                       <p className="text-xs text-gray-500 font-medium mb-1">
                         REWARD POINTS

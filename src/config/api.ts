@@ -1,5 +1,11 @@
 // Using json-server as our mock API
 const API_BASE_URL = process.env.SERVER_APP_BASE_URL || "http://localhost:3001";
+const API_ENDPOINT_NEWS_LIST =
+  process.env.API_ENDPOINT_NEWS_LIST || "admin-news-list";
+const API_ENDPOINT_NEWS_DETAIL =
+  process.env.API_ENDPOINT_NEWS_DETAIL || "admin-news-details";
+const API_ENDPOINT_NEWS_UPDATE =
+  process.env.API_ENDPOINT_NEWS_UPDATE || "admin-update-news";
 
 interface NewsListQueryParams {
   category?: string;
@@ -43,9 +49,10 @@ export const API_ENDPOINTS = {
         ...params,
       };
       // Remove the /api prefix to match json-server's endpoint
-      return `${API_BASE_URL}/admin-news-list${buildQueryString(defaultParams)}`;
+      return `${API_BASE_URL}/${API_ENDPOINT_NEWS_LIST}${buildQueryString(defaultParams)}`;
     },
-    DETAIL: (id: string) => `${API_BASE_URL}/admin-news-details/${id}`,
+    DETAIL: (id: string) => `${API_BASE_URL}/${API_ENDPOINT_NEWS_DETAIL}/${id}`,
+    UPDATE: (id: string) => `${API_BASE_URL}/${API_ENDPOINT_NEWS_UPDATE}/${id}`,
   },
 } as const;
 

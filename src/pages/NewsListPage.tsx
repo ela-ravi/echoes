@@ -8,7 +8,7 @@ import styles from "./NewsListPage.module.scss";
 
 import { INewsList } from "../types/NewsItem";
 import { API_ENDPOINTS } from "../config/api";
-import useDebounce from "../hooks/useDebounce";
+// import useDebounce from "../hooks/useDebounce";
 
 const PAGE_SIZE = 10;
 
@@ -24,8 +24,8 @@ const NewsListPage: React.FC = () => {
     keyword: "",
     reviewed: undefined as boolean | undefined,
   });
-  const [searchTerm, setSearchTerm] = useState("");
-  const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms delay
+  // const [searchTerm, setSearchTerm] = useState("");
+  // const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms delay
 
   // Handle filter changes
   const handleFilterChange = (
@@ -89,7 +89,8 @@ const NewsListPage: React.FC = () => {
         const apiUrl = API_ENDPOINTS.NEWS.LIST(queryParams);
 
         const response = await fetch(apiUrl, {
-          //@ts-ignore
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-expect-error
           headers: {
             "ngrok-skip-browser-warning": true,
             "Content-Type": "application/json",
@@ -175,9 +176,9 @@ const NewsListPage: React.FC = () => {
     };
   }, [filters]); // Only depend on filters
 
-  useEffect(() => {
-    handleFilterChange("keyword", debouncedSearchTerm || undefined);
-  }, [debouncedSearchTerm]);
+  // useEffect(() => {
+  //   handleFilterChange("keyword", debouncedSearchTerm || undefined);
+  // }, [debouncedSearchTerm]);
 
   // Set up intersection observer for infinite scroll
   useEffect(() => {

@@ -1,5 +1,5 @@
 {
-  "news": [
+  "admin-news-list": [
     {
       "id": "1",
       "title": "AI Revolutionizes Drug Discovery",
@@ -281,7 +281,7 @@
       "clientStatus": "Published"
     }
   ],
-  "news-item": [
+  "admin-news-details": [
     {
       "id": "1",
       "title": "AI Revolutionizes Drug Discovery",
@@ -303,10 +303,13 @@
       ],
       "publishedAt": "2024-04-11T12:59:27.712615Z",
       "reviewedAt": null,
+      "submittedAt": "2024-04-11T12:59:27.712615Z",
       "aiStatus": "Failed",
       "summary": "Title: AI Revolutionizes Drug Discovery. This report explores the implications of recent changes in AI revolutionizes drug discovery... AI-generated summary placeholder.",
       "keyIndividuals": "Dr. Diana Smith - Lead Researcher\nCTO - Nature",
-      "potentialImpact": "May influence global policies, reshape landscapes, and affect millions worldwide."
+      "potentialImpact": "May influence global policies, reshape landscapes, and affect millions worldwide.",
+      "badge": "GOLD",
+      "rewardPoints": 100
     },
     {
       "id": "2",
@@ -329,10 +332,13 @@
       ],
       "publishedAt": "2024-06-17T10:00:00Z",
       "reviewedAt": null,
+      "submittedAt": "2024-06-17T10:00:00Z",
       "aiStatus": "InProgress",
       "summary": "Title: Quantum Computing Advances Towards Real-World Applications. This report summarizes the latest breakthroughs in quantum computing, focusing on their potential impact on various industries. AI-generated summary placeholder.",
       "keyIndividuals": "Dr. Emily Chen - Lead Scientist\nCEO - QuantumTech Inc.",
-      "potentialImpact": "Could revolutionize cryptography, drug discovery, and material science on a global scale."
+      "potentialImpact": "Could revolutionize cryptography, drug discovery, and material science on a global scale.",
+      "badge": "SILVER",
+      "rewardPoints": 100
     },
     {
       "id": "3",
@@ -355,10 +361,13 @@
       ],
       "publishedAt": "2024-06-16T09:30:00Z",
       "reviewedAt": "2024-06-16T10:00:00Z",
+      "submittedAt": "2024-06-16T09:30:00Z",
       "aiStatus": "Completed",
       "summary": "Title: Global Push for Renewable Energy Intensifies. This article highlights the increasing global investment and policy shifts towards renewable energy sources. AI-generated summary placeholder.",
       "keyIndividuals": "UN Climate Envoy - John Doe\nGreenpeace CEO - Jane Smith",
-      "potentialImpact": "Significant reduction in carbon emissions, leading to improved climate stability globally."
+      "potentialImpact": "Significant reduction in carbon emissions, leading to improved climate stability globally.",
+      "badge": "GOLD",
+      "rewardPoints": 500
     },
     {
       "id": "4",
@@ -381,10 +390,13 @@
       ],
       "publishedAt": "2024-06-15T11:45:00Z",
       "reviewedAt": null,
+      "submittedAt": "2024-06-15T11:45:00Z",
       "aiStatus": "InProgress",
       "summary": "Title: Breakthrough in Personalized Cancer Therapies. This report details advancements in oncology, specifically personalized medicine for cancer, offering new hope for patients. AI-generated summary placeholder.",
       "keyIndividuals": "Prof. Li Wei - Lead Oncologist\nDirector - BioMed Institute",
-      "potentialImpact": "Could transform cancer treatment paradigms worldwide, significantly improving patient outcomes."
+      "potentialImpact": "Could transform cancer treatment paradigms worldwide, significantly improving patient outcomes.",
+      "badge": "BRONZE",
+      "rewardPoints": 10
     },
     {
       "id": "5",
@@ -407,10 +419,13 @@
       ],
       "publishedAt": "2024-06-14T14:00:00Z",
       "reviewedAt": "2024-06-14T14:30:00Z",
+      "submittedAt": "2024-06-14T14:00:00Z",
       "aiStatus": "Completed",
       "summary": "Title: Rise of AI in Creative Industries Sparks Debate. This article explores the growing influence of artificial intelligence in creative fields and the ensuing ethical and legal debates. AI-generated summary placeholder.",
       "keyIndividuals": "Artist's Guild President - Helen Vance\nAI Ethicist - Dr. Alex Ray",
-      "potentialImpact": "Could reshape job markets in creative sectors and influence global intellectual property laws."
+      "potentialImpact": "Could reshape job markets in creative sectors and influence global intellectual property laws.",
+      "badge": "GOLD",
+      "rewardPoints": 500
     },
     {
       "id": "6",
@@ -433,10 +448,13 @@
       ],
       "publishedAt": "2024-06-13T16:15:00Z",
       "reviewedAt": null,
+      "submittedAt": "2024-06-13T16:15:00Z",
       "aiStatus": "InProgress",
       "summary": "Title: New Diplomatic Efforts to Resolve Global Conflicts. This report covers recent diplomatic initiatives aimed at de-escalating international tensions and fostering peace. AI-generated summary placeholder.",
       "keyIndividuals": "UN Secretary-General - António G.\nForeign Minister - Dr. K. Singh",
-      "potentialImpact": "Successful negotiations could prevent widespread humanitarian crises and stabilize global regions."
+      "potentialImpact": "Successful negotiations could prevent widespread humanitarian crises and stabilize global regions.",
+      "badge": "SILVER",
+      "rewardPoints": 100
     },
     {
       "id": "7",
@@ -459,10 +477,13 @@
       ],
       "publishedAt": "2024-06-12T08:00:00Z",
       "reviewedAt": "2024-06-12T08:30:00Z",
+      "submittedAt": "2024-06-12T08:00:00Z",
       "aiStatus": "Completed",
       "summary": "Title: Economic Slowdown Expected in Q3 Amidst Inflation Concerns. This financial report analyzes forecasts for the upcoming quarter, highlighting concerns over economic growth and inflation. AI-generated summary placeholder.",
       "keyIndividuals": "Chief Economist - Dr. Mark C.\nFederal Reserve Chair - Janet Y.",
-      "potentialImpact": "Could lead to job losses and reduced consumer spending globally, impacting various industries."
+      "potentialImpact": "Could lead to job losses and reduced consumer spending globally, impacting various industries.",
+      "badge": "GOLD",
+      "rewardPoints": 500
     },
     {
       "id": "8",
@@ -485,10 +506,13 @@
       ],
       "publishedAt": "2024-06-11T13:30:00Z",
       "reviewedAt": null,
+      "submittedAt": "2024-06-11T13:30:00Z",
       "aiStatus": "InProgress",
-      "summary": "Title: Space Tourism Takes Off: New Orbital Hotels Announced. This news piece covers the burgeoning space tourism industry, with new ventures proposing orbital accommodations. AI-generated summary placeholder.",
+      "summary": "Title: Space Tourism Takes Off: New Orbital Hotels Announced. This news piece covers the burgeoning space tourism industry, and new ventures proposing orbital accommodations. AI-generated summary placeholder.",
       "keyIndividuals": "SpaceX CEO - Elon Musk\nVirgin Galactic CEO - Michael Colglazier",
-      "potentialImpact": "Could create a new luxury travel market and push technological boundaries for space habitation."
+      "potentialImpact": "Could create a new luxury travel market and push technological boundaries for space habitation.",
+      "badge": "BRONZE",
+      "rewardPoints": 10
     },
     {
       "id": "9",
@@ -511,10 +535,13 @@
       ],
       "publishedAt": "2024-06-10T10:00:00Z",
       "reviewedAt": "2024-06-10T10:30:00Z",
+      "submittedAt": "2024-06-10T10:00:00Z",
       "aiStatus": "Completed",
       "summary": "Title: New Dietary Guidelines Emphasize Plant-Based Nutrition. This report details revised nutritional advice promoting a shift towards plant-centric diets for improved health outcomes. AI-generated summary placeholder.",
       "keyIndividuals": "Chief Medical Officer - Dr. Helen Q.\nNutritionist - Dr. Sam Lee",
-      "potentialImpact": "Could lead to widespread improvements in public health and a shift in global food production."
+      "potentialImpact": "Could lead to widespread improvements in public health and a shift in global food production.",
+      "badge": "SILVER",
+      "rewardPoints": 100
     },
     {
       "id": "10",
@@ -537,10 +564,13 @@
       ],
       "publishedAt": "2024-06-09T15:00:00Z",
       "reviewedAt": null,
+      "submittedAt": "2024-06-09T15:00:00Z",
       "aiStatus": "InProgress",
       "summary": "Title: Cybersecurity Threats Escalate Globally. This report details a surge in global cyber threats, emphasizing the vulnerability of essential services and the need for stronger defenses. AI-generated summary placeholder.",
       "keyIndividuals": "NSA Director - General R. Smith\nCybersecurity Expert - Dr. Ava Li",
-      "potentialImpact": "Could lead to significant economic disruption and compromise national security across borders."
+      "potentialImpact": "Could lead to significant economic disruption and compromise national security across borders.",
+      "badge": "GOLD",
+      "rewardPoints": 500
     },
     {
       "id": "11",
@@ -563,10 +593,13 @@
       ],
       "publishedAt": "2024-06-08T11:00:00Z",
       "reviewedAt": "2024-06-08T11:30:00Z",
+      "submittedAt": "2024-06-08T11:00:00Z",
       "aiStatus": "Completed",
       "summary": "Title: Advances in AI-Powered Education Platforms. This piece explores how AI is transforming the education sector, providing customized learning paths and improved student engagement. AI-generated summary placeholder.",
       "keyIndividuals": "Education Minister - Sarah K.\nLearning AI Specialist - Prof. Ben Z.",
-      "potentialImpact": "Could bridge educational inequalities and personalize learning for millions worldwide."
+      "potentialImpact": "Could bridge educational inequalities and personalize learning for millions worldwide.",
+      "badge": "BRONZE",
+      "rewardPoints": 10
     },
     {
       "id": "12",
@@ -589,10 +622,13 @@
       ],
       "publishedAt": "2024-06-07T09:00:00Z",
       "reviewedAt": null,
+      "submittedAt": "2024-06-07T09:00:00Z",
       "aiStatus": "Failed",
       "summary": "Title: Global Water Scarcity Worsens, Urgent Action Needed. This article discusses the accelerating global water crisis and calls for immediate international cooperation and sustainable water management solutions. AI-generated summary placeholder.",
       "keyIndividuals": "UN Water Envoy - Carla M.\nEnvironmental Scientist - Dr. P. Patel",
-      "potentialImpact": "Could lead to mass migrations, food insecurity, and increased geopolitical tensions globally."
+      "potentialImpact": "Could lead to mass migrations, food insecurity, and increased geopolitical tensions globally.",
+      "badge": "SILVER",
+      "rewardPoints": 100
     },
     {
       "id": "13",
@@ -615,10 +651,13 @@
       ],
       "publishedAt": "2024-06-06T12:00:00Z",
       "reviewedAt": "2024-06-06T12:45:00Z",
+      "submittedAt": "2024-06-06T12:00:00Z",
       "aiStatus": "InProgress",
       "summary": "Title: New Regulations Aim to Curb Social Media Misinformation. This report covers legislative efforts globally to regulate social media content and mitigate the impact of disinformation. AI-generated summary placeholder.",
       "keyIndividuals": "EU Commissioner - Ursula VdL\nDigital Rights Advocate - Emma R.",
-      "potentialImpact": "Could redefine online discourse and impact democratic processes worldwide."
+      "potentialImpact": "Could redefine online discourse and impact democratic processes worldwide.",
+      "badge": "GOLD",
+      "rewardPoints": 500
     },
     {
       "id": "14",
@@ -641,10 +680,13 @@
       ],
       "publishedAt": "2024-06-05T10:30:00Z",
       "reviewedAt": null,
+      "submittedAt": "2024-06-05T10:30:00Z",
       "aiStatus": "Completed",
       "summary": "Title: Breakthrough in Battery Technology for EVs. This article highlights a significant innovation in battery technology, set to accelerate the transition to electric vehicles. AI-generated summary placeholder.",
       "keyIndividuals": "Lead Engineer - Dr. Kim P.\nCEO - EV Power Solutions",
-      "potentialImpact": "Could accelerate global decarbonization efforts and reshape the automotive industry."
+      "potentialImpact": "Could accelerate global decarbonization efforts and reshape the automotive industry.",
+      "badge": "BRONZE",
+      "rewardPoints": 10
     },
     {
       "id": "15",
@@ -667,10 +709,13 @@
       ],
       "publishedAt": "2024-06-04T14:45:00Z",
       "reviewedAt": "2024-06-04T15:00:00Z",
+      "submittedAt": "2024-06-04T14:45:00Z",
       "aiStatus": "InProgress",
       "summary": "Title: Archaeologists Uncover Ancient Lost City. This report details the groundbreaking discovery of a hidden ancient city, offering new insights into pre-Columbian cultures. AI-generated summary placeholder.",
       "keyIndividuals": "Prof. Eduardo S. - Lead Archaeologist\nHistorian - Dr. Lena Z.",
-      "potentialImpact": "Could rewrite parts of human history, particularly regarding early South American civilizations."
+      "potentialImpact": "Could rewrite parts of human history, particularly regarding early South American civilizations.",
+      "badge": "SILVER",
+      "rewardPoints": 100
     },
     {
       "id": "16",
@@ -693,10 +738,13 @@
       ],
       "publishedAt": "2024-06-03T11:00:00Z",
       "reviewedAt": null,
+      "submittedAt": "2024-06-03T11:00:00Z",
       "aiStatus": "Completed",
       "summary": "Title: Mental Health Support in Workplaces Becomes Priority. This article explores the growing trend of employers prioritizing mental health support, including therapy and mindfulness resources. AI-generated summary placeholder.",
       "keyIndividuals": "HR Director - Susan P.\nWorkplace Psychologist - Dr. Tom K.",
-      "potentialImpact": "Could improve global workforce well-being and productivity, fostering more humane work environments."
+      "potentialImpact": "Could improve global workforce well-being and productivity, fostering more humane work environments.",
+      "badge": "GOLD",
+      "rewardPoints": 500
     },
     {
       "id": "17",
@@ -719,10 +767,13 @@
       ],
       "publishedAt": "2024-06-02T13:00:00Z",
       "reviewedAt": "2024-06-02T13:30:00Z",
+      "submittedAt": "2024-06-02T13:00:00Z",
       "aiStatus": "InProgress",
       "summary": "Title: Renewed Focus on Space Exploration Missions. This news highlights a resurgence in space exploration, with new initiatives aimed at extending humanity's reach beyond Earth. AI-generated summary placeholder.",
       "keyIndividuals": "NASA Administrator - Bill Nelson\nSpaceX Lead Engineer - Gwynne Shotwell",
-      "potentialImpact": "Could advance scientific knowledge, inspire new technologies, and foster international collaboration."
+      "potentialImpact": "Could advance scientific knowledge, inspire new technologies, and foster international collaboration.",
+      "badge": "BRONZE",
+      "rewardPoints": 10
     },
     {
       "id": "18",
@@ -745,10 +796,13 @@
       ],
       "publishedAt": "2024-06-01T09:45:00Z",
       "reviewedAt": null,
+      "submittedAt": "2024-06-01T09:45:00Z",
       "aiStatus": "Completed",
       "summary": "Title: New Agricultural Techniques Boost Food Security. This report details modern agricultural advancements designed to enhance global food production and address food security challenges. AI-generated summary placeholder.",
       "keyIndividuals": "Agronomist - Dr. Sana R.\nFarm Tech CEO - David S.",
-      "potentialImpact": "Could significantly reduce global hunger and improve food access in urban and remote areas."
+      "potentialImpact": "Could significantly reduce global hunger and improve food access in urban and remote areas.",
+      "badge": "SILVER",
+      "rewardPoints": 100
     },
     {
       "id": "19",
@@ -771,10 +825,13 @@
       ],
       "publishedAt": "2024-05-31T16:00:00Z",
       "reviewedAt": "2024-05-31T16:30:00Z",
+      "submittedAt": "2024-05-31T16:00:00Z",
       "aiStatus": "InProgress",
       "summary": "Title: Ethical AI Development Gains Traction. This article covers the growing movement towards responsible AI development, focusing on fairness, accountability, and transparency. AI-generated summary placeholder.",
       "keyIndividuals": "AI Ethicist - Dr. Joy B.\nGoogle AI VP - James L.",
-      "potentialImpact": "Could shape the future of technology, ensuring AI benefits humanity without exacerbating societal inequalities."
+      "potentialImpact": "Could shape the future of technology, ensuring AI benefits humanity without exacerbating societal inequalities.",
+      "badge": "GOLD",
+      "rewardPoints": 500
     },
     {
       "id": "20",
@@ -797,10 +854,13 @@
       ],
       "publishedAt": "2024-05-30T10:15:00Z",
       "reviewedAt": null,
+      "submittedAt": "2024-05-30T10:15:00Z",
       "aiStatus": "Completed",
       "summary": "Title: Urban Planning Focus Shifts to Green Infrastructure. This report details the growing trend in urban development towards sustainable and environmentally friendly infrastructure. AI-generated summary placeholder.",
       "keyIndividuals": "Urban Planner - Maria T.\nEnvironmental Architect - Alex V.",
-      "potentialImpact": "Could improve quality of life, mitigate climate change effects, and enhance biodiversity in cities globally."
+      "potentialImpact": "Could improve quality of life, mitigate climate change effects, and enhance biodiversity in cities globally.",
+      "badge": "BRONZE",
+      "rewardPoints": 10
     }
   ]
 }
