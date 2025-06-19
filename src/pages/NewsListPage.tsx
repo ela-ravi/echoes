@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import HeaderNav from "../components/organisms/HeaderNav";
 import NewsTable from "../components/organisms/NewsTable";
-import { Input } from "../components/atoms/Input";
+// import { Input } from "../components/atoms/Input";
 import { Select } from "../components/atoms/Select";
 import { Button } from "../components/atoms/Button";
 import styles from "./NewsListPage.module.scss";
@@ -257,7 +257,7 @@ const NewsListPage: React.FC = () => {
 
           <div className={styles.filters}>
             <div className={styles.filterGroup}>
-              <div className={styles.searchWrapper}>
+              {/* <div className={styles.searchWrapper}>
                 <Input
                   id="search-news"
                   type="text"
@@ -265,7 +265,7 @@ const NewsListPage: React.FC = () => {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
-              </div>
+              </div> */}
 
               <div className={styles.selectWrapper}>
                 <Select

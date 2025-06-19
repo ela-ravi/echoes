@@ -32,14 +32,19 @@ export interface INewsItem {
   /** Publication date in ISO format */
   publishedAt?: string;
   reviewedAt?: string;
+  submittedAt?: string;
   /** Status of AI processing */
-  aiStatus?: AIStatus;
+  aiStatus?: "InProgress" | "Completed" | "Failed";
   /** Summary of the news */
   summary?: string;
   /** Key individuals mentioned in the content */
   keyIndividuals?: string;
   /** Potential impact of the news */
   potentialImpact?: string;
+  /** Badge level for the news item */
+  badge?: "BRONZE" | "SILVER" | "GOLD";
+  /** Reward points associated with the news item */
+  rewardPoints?: number;
 }
 export type AIStatus = "InProgress" | "Completed" | "Failed";
 export type ClientStatus =

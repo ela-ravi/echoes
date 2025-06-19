@@ -104,7 +104,7 @@ const NewsDetailPage: React.FC = () => {
         // Initialize form data with the fetched news item
         const newFormData = {
           originalText: data.originalText || "",
-          summary: data.summary || "",
+          aiGeneratedText: data.aiGeneratedText || "",
           keyIndividuals: data.keyIndividuals || "",
           potentialImpact: data.potentialImpact || "",
         };
@@ -215,6 +215,39 @@ const NewsDetailPage: React.FC = () => {
 
                 {/* Bottom Row: Additional Info */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-3 border-t border-[#2d3349]">
+                  {/* Badge */}
+                  {newsItem.badge && (
+                    <div>
+                      <p className="text-xs text-gray-500 font-medium mb-1">
+                        BADGE
+                      </p>
+                      <div className="flex items-center space-x-2">
+                        <img 
+                          src={`/assets/${newsItem.badge.toLowerCase()}.png`} 
+                          alt={`${newsItem.badge} badge`}
+                          className="w-6 h-6 object-contain"
+                        />
+                        <span className="text-sm text-gray-400 capitalize">
+                          {newsItem.badge.toLowerCase()}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Reward Points */}
+                  {typeof newsItem.rewardPoints === 'number' && (
+                    <div>
+                      <p className="text-xs text-gray-500 font-medium mb-1">
+                        REWARD POINTS
+                      </p>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm font-medium text-yellow-400">
+                          {newsItem.rewardPoints}
+                        </span>
+                        <span className="text-xs text-gray-400">points</span>
+                      </div>
+                    </div>
+                  )}
                   {/* Similar Source */}
                   {(newsItem.similarSourceName ||
                     newsItem.similarSourceUrl) && (
@@ -279,11 +312,11 @@ const NewsDetailPage: React.FC = () => {
                   {/* Published At */}
                   <div>
                     <p className="text-xs text-gray-500 font-medium mb-1">
-                      PUBLISHED
+                      SUBMITTED
                     </p>
                     <p className="text-sm text-gray-400">
-                      {newsItem.publishedAt
-                        ? new Date(newsItem.publishedAt).toLocaleDateString()
+                      {newsItem.submittedAt
+                        ? new Date(newsItem.submittedAt).toLocaleDateString()
                         : "N/A"}
                     </p>
                   </div>
