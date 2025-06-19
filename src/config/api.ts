@@ -43,9 +43,9 @@ export const API_ENDPOINTS = {
         ...params,
       };
       // Remove the /api prefix to match json-server's endpoint
-      return `${API_BASE_URL}/news${buildQueryString(defaultParams)}`;
+      return `${API_BASE_URL}/echoes/admin-news-list${buildQueryString(defaultParams)}`;
     },
-    DETAIL: (id: string) => `${API_BASE_URL}/news-item/${id}`,
+    DETAIL: (id: string) => `${API_BASE_URL}/echoes/admin-news-details/${id}`,
   },
 } as const;
 
