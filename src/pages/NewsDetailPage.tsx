@@ -440,42 +440,27 @@ const NewsDetailPage: React.FC = () => {
                     <h3 className="text-lg font-semibold text-white border-b border-[#394060] pb-2">
                       User Uploaded Content
                     </h3>
-                    <div className="flex flex-col md:flex-row gap-4">
-                      <div
-                        className={`${
-                          !newsItem.userUploadedImage ||
-                          !newsItem.userUploadedVideo
-                            ? "w-full"
-                            : "w-full md:w-1/2"
-                        }`}
-                      >
-                        {newsItem.userUploadedImage ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                      <div className="w-full">
+                        {newsItem.userUploadedImage && (
                           <MediaSection
                             title="Uploaded Image"
                             url={newsItem.userUploadedImage}
                             type="image"
                             isAI={false}
                           />
-                        ) : newsItem.userUploadedVideo ? (
+                        )}
+                      </div>
+                      <div className="w-full">
+                        {newsItem.userUploadedVideo && (
                           <MediaSection
                             title="Uploaded Video"
                             url={newsItem.userUploadedVideo}
                             type="video"
                             isAI={false}
                           />
-                        ) : null}
-                      </div>
-                      {newsItem.userUploadedImage &&
-                        newsItem.userUploadedVideo && (
-                          <div className="w-full md:w-1/2">
-                            <MediaSection
-                              title="Uploaded Video"
-                              url={newsItem.userUploadedVideo}
-                              type="video"
-                              isAI={false}
-                            />
-                          </div>
                         )}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -486,42 +471,27 @@ const NewsDetailPage: React.FC = () => {
                     <h3 className="text-lg font-semibold text-white border-b border-[#394060] pb-2">
                       AI Generated Content
                     </h3>
-                    <div className="flex flex-col md:flex-row gap-4">
-                      <div
-                        className={`${
-                          !newsItem.aiGeneratedImage ||
-                          !newsItem.aiGeneratedVideo
-                            ? "w-full"
-                            : "w-full md:w-1/2"
-                        }`}
-                      >
-                        {newsItem.aiGeneratedImage ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                      <div className="w-full">
+                        {newsItem.aiGeneratedImage && (
                           <MediaSection
                             title="AI Generated Image"
                             url={newsItem.aiGeneratedImage}
                             type="image"
                             isAI={true}
                           />
-                        ) : newsItem.aiGeneratedVideo ? (
+                        )}
+                      </div>
+                      <div className="w-full">
+                        {newsItem.aiGeneratedVideo && (
                           <MediaSection
                             title="AI Generated Video"
                             url={newsItem.aiGeneratedVideo}
                             type="video"
                             isAI={true}
                           />
-                        ) : null}
-                      </div>
-                      {newsItem.aiGeneratedImage &&
-                        newsItem.aiGeneratedVideo && (
-                          <div className="w-full md:w-1/2">
-                            <MediaSection
-                              title="AI Generated Video"
-                              url={newsItem.aiGeneratedVideo}
-                              type="video"
-                              isAI={true}
-                            />
-                          </div>
                         )}
+                      </div>
                     </div>
                   </div>
                 )}
