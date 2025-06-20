@@ -43,26 +43,40 @@ const NewsDetailPage: React.FC = () => {
     if (!newsItem) return;
 
     try {
-      // In a real app, you would call your API endpoint here
-      // For now, we'll just log the data and show an alert
-      console.log("Saving news item:", { id: newsItem.id, ...formData });
+      const response = await fetch(
+        API_ENDPOINTS.NEWS.UPDATE(newsItem.id.toString()),
+        {
+          method: "POST",
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-expect-error
+          headers: {
+            "ngrok-skip-browser-warning": true,
+            accept: "*/*",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            aiGeneratedText: formData.aiGeneratedText,
+            keyIndividuals: formData.keyIndividuals,
+            potentialImpact: formData.potentialImpact,
+          }),
+        },
+      );
 
-      // Simulate API call
-      // const response = await fetch(`/api/news/${newsItem.id}`, {
-      //   method: "PUT",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(formData),
-      // });
-      // if (!response.ok) throw new Error("Failed to save changes");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || "Failed to save changes");
+      }
 
       // Update initial form data to current values
       setInitialFormData(formData);
       alert("Changes saved successfully!");
     } catch (err) {
       console.error("Error saving changes:", err);
-      alert("Failed to save changes. Please try again.");
+      alert(
+        `Failed to save changes: ${
+          err instanceof Error ? err.message : "Unknown error"
+        }`,
+      );
     }
   };
 
@@ -73,8 +87,11 @@ const NewsDetailPage: React.FC = () => {
     }
   };
 
-  // Data fetching effect
+  // Data fetching effect with cleanup and mounted ref
   useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
     const fetchNewsDetail = async () => {
       try {
         // Get the news ID from the URL
@@ -85,10 +102,13 @@ const NewsDetailPage: React.FC = () => {
           throw new Error("No news ID provided in the URL");
         }
 
-        setLoading(true);
-        setError(null);
-        console.log("API endpoint:", API_ENDPOINTS.NEWS.DETAIL(newsId));
+        if (isMounted) {
+          setLoading(true);
+          setError(null);
+        }
+
         const response = await fetch(API_ENDPOINTS.NEWS.DETAIL(newsId), {
+          signal: controller.signal,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           //@ts-expect-error
           headers: {
@@ -97,15 +117,21 @@ const NewsDetailPage: React.FC = () => {
           },
         });
 
+        if (!isMounted) return;
+
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error("News article not found");
           }
           throw new Error(
-            `Failed to fetch news detail: ${response.statusText}`
+            `Failed to fetch news detail: ${response.statusText}`,
           );
         }
+
         const data: INewsItem = await response.json();
+
+        if (!isMounted) return;
+
         setNewsItem(data);
 
         // Initialize form data with the fetched news item
@@ -119,13 +145,27 @@ const NewsDetailPage: React.FC = () => {
         setFormData(newFormData);
         setInitialFormData(newFormData);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
+        if (err instanceof Error && err.name === "AbortError") {
+          console.log("Fetch aborted");
+          return;
+        }
+        if (isMounted) {
+          setError(err instanceof Error ? err.message : "An error occurred");
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchNewsDetail();
+
+    // Cleanup function
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
   }, []);
 
   // Loading and error states
@@ -654,7 +694,7 @@ const TextArea: React.FC<{
   sectionTitle: string;
   readOnly?: boolean;
   setOverlayContent: (
-    content: { title: string; content: string } | null
+    content: { title: string; content: string } | null,
   ) => void;
 }> = ({
   name,

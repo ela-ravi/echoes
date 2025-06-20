@@ -6,7 +6,8 @@ const API_ENDPOINT_NEWS_DETAIL =
   process.env.API_ENDPOINT_NEWS_DETAIL || "admin-news-details";
 const API_ENDPOINT_NEWS_UPDATE =
   process.env.API_ENDPOINT_NEWS_UPDATE || "admin-update-news";
-
+const API_ENDPOINT_NEWS_REVIEW =
+  process.env.API_ENDPOINT_NEWS_REVIEW || "review-news";
 interface NewsListQueryParams {
   category?: string;
   keyword?: string;
@@ -53,6 +54,7 @@ export const API_ENDPOINTS = {
     },
     DETAIL: (id: string) => `${API_BASE_URL}/${API_ENDPOINT_NEWS_DETAIL}/${id}`,
     UPDATE: (id: string) => `${API_BASE_URL}/${API_ENDPOINT_NEWS_UPDATE}/${id}`,
+    REVIEW: (id: string) => `${API_BASE_URL}/${API_ENDPOINT_NEWS_REVIEW}/${id}`,
   },
 } as const;
 
