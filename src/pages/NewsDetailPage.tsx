@@ -88,14 +88,21 @@ const NewsDetailPage: React.FC = () => {
         setLoading(true);
         setError(null);
         console.log("API endpoint:", API_ENDPOINTS.NEWS.DETAIL(newsId));
-        const response = await fetch(API_ENDPOINTS.NEWS.DETAIL(newsId));
+        const response = await fetch(API_ENDPOINTS.NEWS.DETAIL(newsId), {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-expect-error
+          headers: {
+            "ngrok-skip-browser-warning": true,
+            "Content-Type": "application/json",
+          },
+        });
 
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error("News article not found");
           }
           throw new Error(
-            `Failed to fetch news detail: ${response.statusText}`,
+            `Failed to fetch news detail: ${response.statusText}`
           );
         }
         const data: INewsItem = await response.json();
@@ -647,7 +654,7 @@ const TextArea: React.FC<{
   sectionTitle: string;
   readOnly?: boolean;
   setOverlayContent: (
-    content: { title: string; content: string } | null,
+    content: { title: string; content: string } | null
   ) => void;
 }> = ({
   name,
