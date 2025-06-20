@@ -5,6 +5,8 @@ import { API_ENDPOINTS } from "../config/api";
 import { INewsItem } from "../types/NewsItem";
 import { FaImage, FaVideo, FaPlay, FaUserCircle } from "react-icons/fa";
 import { SiOpenai } from "react-icons/si";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type FormDataState = {
   originalText: string;
@@ -69,10 +71,10 @@ const NewsDetailPage: React.FC = () => {
 
       // Update initial form data to current values
       setInitialFormData(formData);
-      alert("Changes saved successfully!");
+      toast.success("Changes saved successfully!");
     } catch (err) {
       console.error("Error saving changes:", err);
-      alert(
+      toast.error(
         `Failed to save changes: ${
           err instanceof Error ? err.message : "Unknown error"
         }`,
@@ -81,9 +83,44 @@ const NewsDetailPage: React.FC = () => {
   };
 
   // Discard changes
-  const handleDiscard = () => {
-    if (window.confirm("Are you sure you want to discard all changes?")) {
+  const handleDiscard = async () => {
+    const confirmResult = await new Promise((resolve) => {
+      toast.info(
+        <div>
+          <p className="mb-2">Are you sure you want to discard all changes?</p>
+          <div className="flex gap-2">
+            <button
+              className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+              onClick={() => {
+                toast.dismiss();
+                resolve(true);
+              }}
+            >
+              Discard
+            </button>
+            <button
+              className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600"
+              onClick={() => {
+                toast.dismiss();
+                resolve(false);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>,
+        {
+          closeButton: false,
+          closeOnClick: false,
+          draggable: false,
+          autoClose: false,
+        },
+      );
+    });
+
+    if (confirmResult) {
       setFormData(initialFormData);
+      toast.success("Changes discarded successfully!");
     }
   };
 
