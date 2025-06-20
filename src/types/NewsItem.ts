@@ -42,7 +42,7 @@ export interface INewsItem {
   /** Potential impact of the news */
   potentialImpact?: string;
   /** Badge level for the news item */
-  badge?: "BRONZE" | "SILVER" | "GOLD";
+  badges?: { SILVER: number; GOLD: number; BRONZE: number };
   /** Reward points associated with the news item */
   rewardPoints?: number;
 }
