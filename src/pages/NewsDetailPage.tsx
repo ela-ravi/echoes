@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import HeaderNav from "../components/organisms/HeaderNav";
 import { API_ENDPOINTS } from "../config/api";
@@ -7,6 +7,7 @@ import { FaImage, FaVideo, FaPlay, FaUserCircle } from "react-icons/fa";
 import { SiOpenai } from "react-icons/si";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Badge from "../components/atoms/Badge";
 
 type FormDataState = {
   originalText: string;
@@ -271,14 +272,78 @@ const NewsDetailPage: React.FC = () => {
     }));
   };
 
+  // Categories Cell Component
+  const CategoriesCell: React.FC<{ categories: string[] }> = ({
+    categories,
+  }) => {
+    const hasManyCategories = useMemo(() => {
+      return (categories?.length || 0) > 2;
+    }, [categories]);
+    const visibleCategories = useMemo(
+      () => (hasManyCategories ? categories.slice(0, 2) : categories || []),
+      [categories, hasManyCategories],
+    );
+
+    const handleShowAllCategories = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setOverlayContent({
+        title: "Categories",
+        content: categories
+          .map((cat) => (
+            <div key={cat} className="flex items-center space-x-2">
+              <Badge>{cat}</Badge>
+            </div>
+          ))
+          .join("\n"),
+      });
+    };
+
+    return (
+      <div className="relative flex flex-wrap gap-1 items-center max-w-[200px]">
+        {visibleCategories.map((cat) => (
+          <Badge key={cat}>{cat}</Badge>
+        ))}
+        {hasManyCategories && (
+          <button
+            type="button"
+            aria-label="Show all categories"
+            onClick={handleShowAllCategories}
+            className="text-white hover:bg-[#2d3349] p-1 rounded"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-[#131520] text-white">
       <HeaderNav hideSearch />
       <main className="flex flex-1 justify-center px-3 md:px-10 pt-24 pb-5">
         <div className="w-full max-w-[95%] md:max-w-[90%]">
-          <h1 className="mb-4 text-[32px] font-bold leading-tight tracking-tight text-white">
-            News Item ID: {newsItem.id}
-          </h1>
+          <div className="flex justify-between items-center mb-4">
+            <h1 className="text-[32px] font-bold leading-tight tracking-tight text-white">
+              News Item ID: {newsItem.id}
+            </h1>
+            {newsItem.categories && newsItem.categories.length > 0 && (
+              <div className="flex items-center">
+                <span className="text-sm text-gray-400 mr-2">Categories:</span>
+                <CategoriesCell categories={newsItem.categories} />
+              </div>
+            )}
+          </div>
           <Section title="User Details">
             <div className="bg-[#1d2030] p-6 my-3 rounded-xl">
               <div className="flex flex-col space-y-4">
@@ -299,21 +364,31 @@ const NewsDetailPage: React.FC = () => {
 
                 {/* Bottom Row: Additional Info */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-3 border-t border-[#2d3349]">
-                  {/* Badge */}
-                  {newsItem.badge && (
+                  {/* Badges */}
+                  {newsItem.badges && (
                     <div>
                       <p className="text-xs text-gray-500 font-medium mb-1">
-                        BADGE
+                        BADGES
                       </p>
-                      <div className="flex items-center space-x-2">
-                        <img
-                          src={`/assets/${newsItem.badge.toLowerCase()}.png`}
-                          alt={`${newsItem.badge} badge`}
-                          className="w-6 h-6 object-contain"
-                        />
-                        <span className="text-sm text-gray-400 capitalize">
-                          {newsItem.badge.toLowerCase()}
-                        </span>
+                      <div className="flex flex-wrap gap-2">
+                        {Object.entries(newsItem.badges).map(
+                          ([badgeType, count]) =>
+                            count > 0 && (
+                              <div
+                                key={badgeType}
+                                className="flex items-center space-x-1 bg-[#2d3349] px-2 py-1 rounded-md"
+                              >
+                                <img
+                                  src={`/assets/${badgeType.toLowerCase()}.png`}
+                                  alt={`${badgeType} badge`}
+                                  className="w-5 h-5 object-contain"
+                                />
+                                <span className="text-xs text-gray-200 capitalize">
+                                  {badgeType.toLowerCase()} ({count})
+                                </span>
+                              </div>
+                            ),
+                        )}
                       </div>
                     </div>
                   )}

@@ -21,6 +21,11 @@ const CategoriesCell: React.FC<CategoriesCellProps> = ({ categories }) => {
   const visible = open ? categories || [] : (categories || []).slice(0, 2);
   const hiddenCount = (categories?.length || 0) - visible.length;
 
+  const handleShowAllCategories = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setOpen(true);
+  };
+
   return (
     <div className="relative flex flex-wrap gap-1 items-center max-w-[200px]">
       {visible.map((cat) => (
@@ -29,12 +34,12 @@ const CategoriesCell: React.FC<CategoriesCellProps> = ({ categories }) => {
       {!open && hiddenCount > 0 && (
         <button
           type="button"
-          aria-label="Show categories"
-          onClick={() => setOpen(true)}
-          className="text-white"
+          aria-label="Show all categories"
+          onClick={handleShowAllCategories}
+          className="text-white hover:bg-[#2d3349] p-1 rounded"
         >
           <svg
-            className="size-4"
+            className="w-4 h-4"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -49,31 +54,52 @@ const CategoriesCell: React.FC<CategoriesCellProps> = ({ categories }) => {
       )}
 
       {open && (
-        <div className="absolute left-0 top-full mt-2 z-10 rounded-lg bg-[#1d2030] p-3 shadow-lg max-w-xs">
-          <div className="flex flex-wrap gap-1">
-            {categories.map((cat) => (
-              <Badge key={cat}>{cat}</Badge>
-            ))}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-[#1d2030] rounded-lg p-4 max-w-sm w-full mx-4">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-lg font-medium">Categories</h3>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="text-gray-400 hover:text-white"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {categories.map((cat) => (
+                <Badge key={cat}>{cat}</Badge>
+              ))}
+            </div>
           </div>
-          <button
-            type="button"
-            aria-label="Hide categories"
-            onClick={() => setOpen(false)}
-            className="mt-2 text-[#4f8ef7] hover:underline text-sm"
-          >
-            Close
-          </button>
         </div>
       )}
     </div>
   );
 };
 
-export type NewsAction = "review" | "publish" | "reject";
+// export type NewsAction = "REVIEWED" | "PUBLISHED" | "REJECTED";
+enum NEWSACTION {
+  REVIEWED = "REVIEWED",
+  PUBLISHED = "PUBLISHED",
+  REJECTED = "REJECTED",
+}
 
 export interface NewsActionPayload {
   id: string;
-  action: NewsAction;
+  action: NEWSACTION;
   comment?: string;
 }
 
@@ -88,7 +114,7 @@ const NewsTable: React.FC<NewsTableProps> = ({
   showActions = true,
   onUpdate,
 }) => {
-  const handleAction = async (id: string, action: NewsAction) => {
+  const handleAction = async (id: string, action: NEWSACTION) => {
     try {
       const url = new URL(API_ENDPOINTS.NEWS.REVIEW(id));
       url.searchParams.append("reviewerId", "1"); // Replace with actual reviewer ID
@@ -108,7 +134,7 @@ const NewsTable: React.FC<NewsTableProps> = ({
         throw new Error(`Failed to ${action} news item`);
       }
 
-      toast.success(`Successfully ${action}ed news item`);
+      toast.success(`Successfully ${action} news item`);
       onUpdate?.(); // Refresh the news list
     } catch (error) {
       console.error(`Error ${action}ing news item:`, error);
@@ -178,7 +204,7 @@ const NewsTable: React.FC<NewsTableProps> = ({
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleAction(item.id, "review");
+                        handleAction(item.id, NEWSACTION.REVIEWED);
                       }}
                       // disabled={isProcessing(item.id)}
                       className={`p-1.5 rounded transition-colors ${
@@ -193,7 +219,7 @@ const NewsTable: React.FC<NewsTableProps> = ({
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleAction(item.id, "publish");
+                        handleAction(item.id, NEWSACTION.PUBLISHED);
                       }}
                       // disabled={isProcessing(item.id)}
                       className={`p-1.5 rounded transition-colors ${
@@ -208,7 +234,7 @@ const NewsTable: React.FC<NewsTableProps> = ({
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleAction(item.id, "reject");
+                        handleAction(item.id, NEWSACTION.REJECTED);
                       }}
                       // disabled={isProcessing(item.id)}
                       className={`p-1.5 rounded transition-colors ${
