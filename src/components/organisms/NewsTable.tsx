@@ -90,12 +90,15 @@ const NewsTable: React.FC<NewsTableProps> = ({
 }) => {
   const handleAction = async (id: string, action: NewsAction) => {
     try {
-      const url = new URL(API_ENDPOINTS.NEWS.UPDATE(id));
-      url.searchParams.append("reviewerId", "TOI"); // Replace with actual reviewer ID
+      const url = new URL(API_ENDPOINTS.NEWS.REVIEW(id));
+      url.searchParams.append("reviewerId", "1"); // Replace with actual reviewer ID
       url.searchParams.append("status", action);
       const response = await fetch(url.toString(), {
         method: "POST",
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-expect-error
         headers: {
+          "ngrok-skip-browser-warning": true,
           "Content-Type": "application/json",
           "client-key": "admin",
         },
