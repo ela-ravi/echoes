@@ -47,12 +47,20 @@ export interface INewsItem {
   rewardPoints?: number;
 }
 export type AIStatus = "InProgress" | "Completed" | "Failed";
-export type ClientStatus =
-  | "Submitted"
-  | "Pending"
-  | "Reviewed"
-  | "Published"
-  | "Rejected";
+// export type ClientStatus =
+//   | "Submitted"
+//   | "Pending"
+//   | "Reviewed"
+//   | "Published"
+//   | "Rejected";
+
+export enum ClientStatus {
+  SUBMITTED = "SUBMITTED",
+  PENDING = "PENDING",
+  REVIEWED = "REVIEWED",
+  PUBLISHED = "PUBLISHED",
+  REJECTED = "REJECTED",
+}
 export interface INewsList {
   id: string;
   title: string; // AI generated
