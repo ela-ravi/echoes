@@ -143,7 +143,7 @@ const NewsTable: React.FC<NewsTableProps> = ({
   };
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-[#394060] bg-[#131520]">
+    <div className="overflow-x-auto rounded-xl border border-[#394060] bg-[#131520] my-4">
       <table className="w-full text-sm text-white">
         <thead>
           <tr className="bg-[#1d2030] text-left">

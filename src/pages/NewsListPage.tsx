@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import HeaderNav from "../components/organisms/HeaderNav";
 import NewsTable from "../components/organisms/NewsTable";
-// import { Input } from "../components/atoms/Input";
+import { Input } from "../components/atoms/Input";
 import { Select } from "../components/atoms/Select";
 import { Button } from "../components/atoms/Button";
 import styles from "./NewsListPage.module.scss";
 
-import { INewsList } from "../types/NewsItem";
+import { ClientStatus, INewsList } from "../types/NewsItem";
 import { API_ENDPOINTS } from "../config/api";
-// import useDebounce from "../hooks/useDebounce";
+import useDebounce from "../hooks/useDebounce";
 
 const PAGE_SIZE = 10;
 
@@ -20,12 +20,12 @@ const NewsListPage: React.FC = () => {
   const [page, setPage] = useState<number>(0); // Using 0-based offset for API
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [filters, setFilters] = useState({
-    category: "",
-    keyword: "",
-    reviewed: undefined as boolean | undefined,
+    category: "all",
+    search: "",
+    status: "all",
   });
-  // const [searchTerm, setSearchTerm] = useState("");
-  // const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms delay
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms delay
 
   // Handle filter changes
   const handleFilterChange = (
@@ -41,9 +41,9 @@ const NewsListPage: React.FC = () => {
   // Reset all filters
   const resetFilters = () => {
     setFilters({
-      category: "",
-      keyword: "",
-      reviewed: undefined,
+      category: "all",
+      search: "",
+      status: "all",
     });
   };
 
@@ -78,11 +78,13 @@ const NewsListPage: React.FC = () => {
       try {
         const offset = pageNum * PAGE_SIZE;
         const queryParams = {
-          _start: offset,
-          _limit: PAGE_SIZE,
-          ...(filters.category && { category: filters.category }),
-          ...(filters.keyword && { q: filters.keyword }),
-          ...(filters.reviewed !== undefined && { reviewed: filters.reviewed }),
+          // _start: offset,
+          // _limit: PAGE_SIZE,
+          ...(filters.category &&
+            filters.category !== "all" && { category: filters.category }),
+          ...(filters.search && { search: filters.search }),
+          ...(filters.status &&
+            filters.status !== "all" && { status: filters.status }),
         };
         console.log("offset and qp:", offset, queryParams);
         console.log("[fetchNews] Request params:", queryParams);
@@ -176,9 +178,9 @@ const NewsListPage: React.FC = () => {
     };
   }, [filters]); // Only depend on filters
 
-  // useEffect(() => {
-  //   handleFilterChange("keyword", debouncedSearchTerm || undefined);
-  // }, [debouncedSearchTerm]);
+  useEffect(() => {
+    handleFilterChange("search", debouncedSearchTerm || undefined);
+  }, [debouncedSearchTerm]);
 
   // Set up intersection observer for infinite scroll
   useEffect(() => {
@@ -256,62 +258,80 @@ const NewsListPage: React.FC = () => {
             All News Items
           </h1>
 
-          <div className={styles.filters}>
-            <div className={styles.filterGroup}>
-              {/* <div className={styles.searchWrapper}>
-                <Input
-                  id="search-news"
-                  type="text"
-                  placeholder="Search news..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div> */}
-
-              <div className={styles.selectWrapper}>
-                <Select
-                  value={filters.category || "all"}
-                  onChange={(e) =>
-                    handleFilterChange("category", e.target.value)
-                  }
-                  options={[
-                    { value: "all", label: "All Categories" },
-                    { value: "business", label: "Business" },
-                    { value: "technology", label: "Technology" },
-                    { value: "sports", label: "Sports" },
-                  ]}
-                />
+          <div className="flex flex-col gap-4 w-full sm:grid sm:grid-cols-2 sm:gap-4 lg:flex lg:flex-row">
+            <div className="w-full">
+              <div className={styles.searchWrapper}>
+                <div className="relative">
+                  <Input
+                    id="search-news"
+                    type="text"
+                    placeholder="Search news..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full"
+                  />
+                  {searchTerm && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchTerm("")}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
               </div>
+            </div>
 
-              <div className={styles.selectWrapper}>
-                <Select
-                  value={
-                    filters.reviewed === undefined
-                      ? "all"
-                      : String(filters.reviewed)
-                  }
-                  onChange={(e) =>
-                    handleFilterChange(
-                      "reviewed",
-                      e.target.value === "all"
-                        ? undefined
-                        : e.target.value === "true",
-                    )
-                  }
-                  options={[
-                    { value: "all", label: "All Status" },
-                    { value: "true", label: "Reviewed" },
-                    { value: "false", label: "Not Reviewed" },
-                  ]}
-                  // className={styles.select}
-                />
-              </div>
+            <div className={`${styles.selectWrapper} w-full`}>
+              <Select
+                value={filters.category || "all"}
+                onChange={(e) => handleFilterChange("category", e.target.value)}
+                options={[
+                  { value: "all", label: "All Categories" },
+                  { value: "business", label: "Business" },
+                  { value: "technology", label: "Technology" },
+                  { value: "sports", label: "Sports" },
+                  { value: "politics", label: "Politics" },
+                ]}
+              />
+            </div>
 
+            <div className={`${styles.selectWrapper} w-full`}>
+              <Select
+                value={filters.status || "all"}
+                onChange={(e) => handleFilterChange("status", e.target.value)}
+                options={[
+                  { value: "all", label: "All Status" },
+                  {
+                    value: ClientStatus.SUBMITTED,
+                    label: ClientStatus.SUBMITTED,
+                  },
+                  {
+                    value: ClientStatus.PENDING,
+                    label: ClientStatus.PENDING,
+                  },
+                  {
+                    value: ClientStatus.REVIEWED,
+                    label: ClientStatus.REVIEWED,
+                  },
+                  {
+                    value: ClientStatus.PUBLISHED,
+                    label: ClientStatus.PUBLISHED,
+                  },
+                  {
+                    value: ClientStatus.REJECTED,
+                    label: ClientStatus.REJECTED,
+                  },
+                ]}
+              />
+            </div>
+
+            <div className="w-full lg:w-auto">
               <Button
                 variant="outline"
                 onClick={resetFilters}
-                // className={styles.resetButton}
-                className="hover:bg-muted border border-muted-foreground"
+                className="w-full hover:bg-muted border border-muted-foreground"
               >
                 Reset Filters
               </Button>

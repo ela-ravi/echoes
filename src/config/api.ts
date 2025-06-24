@@ -45,8 +45,8 @@ export const API_ENDPOINTS = {
   NEWS: {
     LIST: (params: NewsListQueryParams = {}) => {
       const defaultParams = {
-        _limit: 10, // json-server uses _limit instead of limit
-        _start: 0, // json-server uses _start instead of offset
+        // _limit: 10, // json-server uses _limit instead of limit
+        // _start: 0, // json-server uses _start instead of offset
         ...params,
       };
       // Remove the /api prefix to match json-server's endpoint
