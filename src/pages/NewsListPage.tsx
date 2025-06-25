@@ -1,51 +1,64 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import HeaderNav from "../components/organisms/HeaderNav";
 import NewsTable from "../components/organisms/NewsTable";
-import { Input } from "../components/atoms/Input";
-import { Select } from "../components/atoms/Select";
-import { Button } from "../components/atoms/Button";
 import styles from "./NewsListPage.module.scss";
 
-import { ClientStatus, INewsList } from "../types/NewsItem";
+import { INewsList } from "../types/NewsItem";
 import { API_ENDPOINTS } from "../config/api";
 import useDebounce from "../hooks/useDebounce";
+import NewsFilters from "../components/organisms/NewsFilters";
+
+export type NewsFilterKey = "category" | "status" | "search";
+
+export interface NewsFiltersType {
+  category: string;
+  status: string;
+  search: string;
+}
 
 const PAGE_SIZE = 10;
 
 const NewsListPage: React.FC = () => {
-  const [newsItems, setNewsItems] = useState<INewsList[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState<number>(0); // Using 0-based offset for API
   const [hasMore, setHasMore] = useState<boolean>(true);
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<NewsFiltersType>({
     category: "all",
     search: "",
     status: "all",
   });
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms delay
+  const [newsItems, setNewsItems] = useState<INewsList[]>([]);
 
   // Handle filter changes
-  const handleFilterChange = (
-    key: keyof typeof filters,
-    value: string | boolean | undefined,
-  ) => {
+  const handleFilterChange = (key: NewsFilterKey, value: string) => {
     setFilters((prev) => ({
       ...prev,
-      [key]: value === "all" ? undefined : value,
+      [key]: value === "all" ? "" : value,
     }));
   };
 
   // Reset all filters
   const resetFilters = () => {
+    setSearchTerm(""); // Clear the search input
     setFilters({
       category: "all",
       search: "",
       status: "all",
     });
   };
+
+  // Check if filters are in their default state
+  const areFiltersDefault = useCallback(() => {
+    return (
+      filters.category === "all" &&
+      filters.status === "all" &&
+      filters.search === ""
+    );
+  }, [filters]);
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -179,7 +192,9 @@ const NewsListPage: React.FC = () => {
   }, [filters]); // Only depend on filters
 
   useEffect(() => {
-    handleFilterChange("search", debouncedSearchTerm || undefined);
+    if (debouncedSearchTerm !== undefined) {
+      handleFilterChange("search", debouncedSearchTerm);
+    }
   }, [debouncedSearchTerm]);
 
   // Set up intersection observer for infinite scroll
@@ -225,27 +240,7 @@ const NewsListPage: React.FC = () => {
     };
   }, [loading, loadingMore, hasMore, page, fetchNews]);
 
-  if (loading && newsItems.length === 0) {
-    return (
-      <div className="relative flex min-h-screen flex-col bg-[#131520] text-white">
-        <HeaderNav />
-        <main className="flex flex-1 items-center justify-center">
-          <div className="text-xl">Loading news items...</div>
-        </main>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="relative flex min-h-screen flex-col bg-[#131520] text-white">
-        <HeaderNav />
-        <main className="flex flex-1 items-center justify-center">
-          <div className="text-red-500">Error: {error}</div>
-        </main>
-      </div>
-    );
-  }
+  // Don't return early, we'll handle loading and error states in the main return
   return (
     <div
       className={`relative flex min-h-screen flex-col overflow-x-hidden ${styles.pageRoot}`}
@@ -258,99 +253,40 @@ const NewsListPage: React.FC = () => {
             All News Items
           </h1>
 
-          <div className="flex flex-col gap-4 w-full sm:grid sm:grid-cols-2 sm:gap-4 lg:flex lg:flex-row">
-            <div className="w-full">
-              <div className={styles.searchWrapper}>
-                <div className="relative">
-                  <Input
-                    id="search-news"
-                    type="text"
-                    placeholder="Search news..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full"
-                  />
-                  {searchTerm && (
-                    <button
-                      type="button"
-                      onClick={() => setSearchTerm("")}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    >
-                      ✕
-                    </button>
-                  )}
+          <NewsFilters
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            onResetFilters={resetFilters}
+            isResetDisabled={areFiltersDefault()}
+          />
+
+          {loading && newsItems.length === 0 ? (
+            <div className="flex flex-1 items-center justify-center py-10">
+              <div className="text-xl">Loading news items...</div>
+            </div>
+          ) : error ? (
+            <div className="flex flex-1 items-center justify-center py-10">
+              <div className="text-red-500">Error: {error}</div>
+            </div>
+          ) : (
+            <>
+              <NewsTable items={newsItems} />
+              {loadingMore && (
+                <div className="mt-4 text-center text-white">
+                  Loading more items...
                 </div>
-              </div>
-            </div>
-
-            <div className={`${styles.selectWrapper} w-full`}>
-              <Select
-                value={filters.category || "all"}
-                onChange={(e) => handleFilterChange("category", e.target.value)}
-                options={[
-                  { value: "all", label: "All Categories" },
-                  { value: "business", label: "Business" },
-                  { value: "technology", label: "Technology" },
-                  { value: "sports", label: "Sports" },
-                  { value: "politics", label: "Politics" },
-                ]}
-              />
-            </div>
-
-            <div className={`${styles.selectWrapper} w-full`}>
-              <Select
-                value={filters.status || "all"}
-                onChange={(e) => handleFilterChange("status", e.target.value)}
-                options={[
-                  { value: "all", label: "All Status" },
-                  {
-                    value: ClientStatus.SUBMITTED,
-                    label: ClientStatus.SUBMITTED,
-                  },
-                  {
-                    value: ClientStatus.PENDING,
-                    label: ClientStatus.PENDING,
-                  },
-                  {
-                    value: ClientStatus.REVIEWED,
-                    label: ClientStatus.REVIEWED,
-                  },
-                  {
-                    value: ClientStatus.PUBLISHED,
-                    label: ClientStatus.PUBLISHED,
-                  },
-                  {
-                    value: ClientStatus.REJECTED,
-                    label: ClientStatus.REJECTED,
-                  },
-                ]}
-              />
-            </div>
-
-            <div className="w-full lg:w-auto">
-              <Button
-                variant="outline"
-                onClick={resetFilters}
-                className="w-full hover:bg-muted border border-muted-foreground"
-              >
-                Reset Filters
-              </Button>
-            </div>
-          </div>
-
-          <NewsTable items={newsItems} />
-          {loadingMore && (
-            <div className="mt-4 text-center text-white">
-              Loading more items...
-            </div>
-          )}
-          {hasMore && !loading && !loadingMore && (
-            <div ref={loadMoreRef} className="h-1" />
-          )}
-          {!hasMore && newsItems.length > 0 && (
-            <div className="mt-4 text-center text-gray-400">
-              No more items to load
-            </div>
+              )}
+              {hasMore && !loading && !loadingMore && (
+                <div ref={loadMoreRef} className="h-1" />
+              )}
+              {!hasMore && newsItems.length > 0 && (
+                <div className="mt-4 text-center text-gray-400">
+                  No more items to load
+                </div>
+              )}
+            </>
           )}
         </div>
       </main>
