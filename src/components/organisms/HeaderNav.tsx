@@ -99,7 +99,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
           </button>
         )}
 
-        <button
+        {/* <button
           type="button"
           className="text-white lg:hidden mr-2"
           onClick={() => setMobileOpen((prev) => !prev)}
@@ -119,7 +119,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
               d="M4 6h16M4 12h16M4 18h16"
             />
           </svg>
-        </button>
+        </button> */}
       </div>
 
       {/* Mobile / Tablet search overlay */}
