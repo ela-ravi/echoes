@@ -245,7 +245,7 @@ const NewsListPage: React.FC = () => {
     <div
       className={`relative flex min-h-screen flex-col overflow-x-hidden ${styles.pageRoot}`}
     >
-      <HeaderNav />
+      <HeaderNav hideSearch={true} />
 
       <main className="flex flex-1 justify-center px-3 md:px-10 pt-24 pb-5">
         <div className="w-full max-w-[95%] md:max-w-[90%]">
@@ -281,11 +281,11 @@ const NewsListPage: React.FC = () => {
               {hasMore && !loading && !loadingMore && (
                 <div ref={loadMoreRef} className="h-1" />
               )}
-              {!hasMore && newsItems.length > 0 && (
+              {/* {!hasMore && newsItems.length > 0 && (
                 <div className="mt-4 text-center text-gray-400">
                   No more items to load
                 </div>
-              )}
+              )} */}
             </>
           )}
         </div>

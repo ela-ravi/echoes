@@ -55,10 +55,20 @@ const NewsFilters: React.FC<NewsFiltersProps> = ({
           onChange={(e) => onFilterChange("category", e.target.value)}
           options={[
             { value: "all", label: "All Categories" },
+            { value: "finance", label: "Finance" },
             { value: "business", label: "Business" },
-            { value: "technology", label: "Technology" },
-            { value: "sports", label: "Sports" },
+            { value: "crime", label: "Crime" },
+            { value: "entertainment", label: "Entertainment" },
+            { value: "events", label: "Events" },
+            { value: "health", label: "Health" },
+            { value: "law", label: "Law" },
+            { value: "local", label: "Local" },
             { value: "politics", label: "Politics" },
+            { value: "real-estate", label: "Real Estate" },
+            { value: "sports", label: "Sports" },
+            { value: "technology", label: "Technology" },
+            { value: "weather", label: "Weather" },
+            { value: "world", label: "World" },
           ]}
         />
       </div>

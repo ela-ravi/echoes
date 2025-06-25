@@ -16,51 +16,74 @@ interface CategoriesCellProps {
   categories: string[];
 }
 
-const CategoriesCell: React.FC<CategoriesCellProps> = ({ categories }) => {
-  const [open, setOpen] = useState(false);
-  const visible = open ? categories || [] : (categories || []).slice(0, 2);
-  const hiddenCount = (categories?.length || 0) - visible.length;
+const CategoriesCell: React.FC<CategoriesCellProps> = ({ categories = [] }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const maxVisible = 2;
+  const visible = categories.slice(0, maxVisible);
+  const hiddenCount = Math.max(0, categories.length - maxVisible);
 
   const handleShowAllCategories = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setOpen(true);
+    if (hiddenCount > 0) {
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleCloseModal = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsModalOpen(false);
+  };
+
+  const handleBadgeClick = (e: React.MouseEvent, isTruncated: boolean) => {
+    if (isTruncated) {
+      e.stopPropagation();
+      setIsModalOpen(true);
+    }
   };
 
   return (
-    <div className="relative flex flex-wrap gap-1 items-center max-w-[200px]">
-      {visible.map((cat) => (
-        <Badge key={cat}>{cat}</Badge>
-      ))}
-      {!open && hiddenCount > 0 && (
-        <button
-          type="button"
-          aria-label="Show all categories"
-          onClick={handleShowAllCategories}
-          className="text-white hover:bg-[#2d3349] p-1 rounded"
-        >
-          <svg
-            className="w-4 h-4"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
+    <div className="relative flex flex-wrap items-center max-w-[200px]">
+      <div className="flex flex-wrap gap-1 items-center">
+        {visible.map((cat) => {
+          const isTruncated = cat.length > 23;
+          return (
+            <div 
+              key={cat} 
+              className={`mb-1 ${isTruncated ? 'cursor-pointer' : ''}`}
+              onClick={(e) => handleBadgeClick(e, isTruncated)}
+            >
+              <Badge className={isTruncated ? 'hover:bg-[#3a3f5a]' : ''}>
+                {cat}
+              </Badge>
+            </div>
+          );
+        })}
+        {hiddenCount > 0 && (
+          <button
+            type="button"
+            aria-label={`Show all ${hiddenCount} more categories`}
+            onClick={handleShowAllCategories}
+            className="flex items-center justify-center h-5 w-6 text-xs text-white hover:bg-[#2d3349] rounded mb-1"
           >
-            <path
-              fillRule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
-      )}
+            +{hiddenCount}
+          </button>
+        )}
+      </div>
 
-      {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-[#1d2030] rounded-lg p-4 max-w-sm w-full mx-4">
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          onClick={handleCloseModal}
+        >
+          <div
+            className="bg-[#1d2030] rounded-lg p-4 max-w-sm w-full mx-4 max-h-[80vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-center mb-3">
               <h3 className="text-lg font-medium">Categories</h3>
               <button
                 type="button"
-                onClick={() => setOpen(false)}
+                onClick={handleCloseModal}
                 className="text-gray-400 hover:text-white"
               >
                 <svg
@@ -80,7 +103,9 @@ const CategoriesCell: React.FC<CategoriesCellProps> = ({ categories }) => {
             </div>
             <div className="flex flex-wrap gap-2">
               {categories.map((cat) => (
-                <Badge key={cat}>{cat}</Badge>
+                <Badge key={cat} fullText={true}>
+                  {cat}
+                </Badge>
               ))}
             </div>
           </div>
@@ -151,7 +176,7 @@ const NewsTable: React.FC<NewsTableProps> = ({
             <th className="px-4 py-3">Title</th>
             <th className="px-4 py-3">Categories</th>
             <th className="px-4 py-3">Similar Source</th>
-            <th className="px-4 py-3">Published At</th>
+            <th className="px-4 py-3 whitespace-nowrap">Published At</th>
             <th className="px-4 py-3">AI Status</th>
             <th className="px-4 py-3">Client Status</th>
             {showActions && <th className="px-4 py-3 text-right">Actions</th>}
