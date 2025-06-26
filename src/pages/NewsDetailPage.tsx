@@ -260,6 +260,8 @@ const NewsDetailPage: React.FC = () => {
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
+    let retryCount = 0;
+    const MAX_RETRIES = 2;
 
     const fetchNewsDetail = async () => {
       try {
@@ -276,13 +278,17 @@ const NewsDetailPage: React.FC = () => {
           setError(null);
         }
 
+        // Skip if this is a retry and we've hit the limit
+        if (retryCount >= MAX_RETRIES) {
+          return;
+        }
+
         const response = await fetch(API_ENDPOINTS.NEWS.DETAIL(newsId), {
           signal: controller.signal,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-expect-error
           headers: {
-            "ngrok-skip-browser-warning": true,
+            "ngrok-skip-browser-warning": "true",
             "Content-Type": "application/json",
+            "client-key": "admin",
           },
         });
 
@@ -291,6 +297,15 @@ const NewsDetailPage: React.FC = () => {
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error("News article not found");
+          }
+          // If we get a 500 error, retry a few times
+          if (response.status === 500 && retryCount < MAX_RETRIES) {
+            retryCount++;
+            console.log(
+              `Retrying API call (attempt ${retryCount}/${MAX_RETRIES})`,
+            );
+            setTimeout(fetchNewsDetail, 1000 * retryCount); // Exponential backoff
+            return;
           }
           throw new Error(
             `Failed to fetch news detail: ${response.statusText}`,
