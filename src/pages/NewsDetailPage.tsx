@@ -110,7 +110,7 @@ const TextArea: React.FC<{
   sectionTitle: string;
   readOnly?: boolean;
   setOverlayContent: (
-    content: { title: string; content: string } | null
+    content: { title: string; content: string } | null,
   ) => void;
 }> = ({
   name,
@@ -175,7 +175,7 @@ const NewsDetailPage: React.FC = () => {
               "Content-Type": "application/json",
               "client-key": "admin",
             },
-          }
+          },
         );
 
         if (!response.ok) {
@@ -233,7 +233,7 @@ const NewsDetailPage: React.FC = () => {
             keyIndividuals: formData.keyIndividuals,
             potentialImpact: formData.potentialImpact,
           }),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -249,7 +249,7 @@ const NewsDetailPage: React.FC = () => {
       toast.error(
         `Failed to save changes: ${
           err instanceof Error ? err.message : "Unknown error"
-        }`
+        }`,
       );
     }
   };
@@ -286,7 +286,7 @@ const NewsDetailPage: React.FC = () => {
           closeOnClick: false,
           draggable: false,
           autoClose: false,
-        }
+        },
       );
     });
 
@@ -302,8 +302,13 @@ const NewsDetailPage: React.FC = () => {
     const controller = new AbortController();
     let retryCount = 0;
     const MAX_RETRIES = 2;
+    let isFetching = false;
 
     const fetchNewsDetail = async () => {
+      // Prevent multiple simultaneous fetches
+      if (isFetching) return;
+      isFetching = true;
+
       try {
         // Get the news ID from the URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -320,6 +325,7 @@ const NewsDetailPage: React.FC = () => {
 
         // Skip if this is a retry and we've hit the limit
         if (retryCount >= MAX_RETRIES) {
+          isFetching = false;
           return;
         }
 
@@ -332,7 +338,10 @@ const NewsDetailPage: React.FC = () => {
           },
         });
 
-        if (!isMounted) return;
+        if (!isMounted) {
+          isFetching = false;
+          return;
+        }
 
         if (!response.ok) {
           if (response.status === 404) {
@@ -342,19 +351,23 @@ const NewsDetailPage: React.FC = () => {
           if (response.status === 500 && retryCount < MAX_RETRIES) {
             retryCount++;
             console.log(
-              `Retrying API call (attempt ${retryCount}/${MAX_RETRIES})`
+              `Retrying API call (attempt ${retryCount}/${MAX_RETRIES})`,
             );
             setTimeout(fetchNewsDetail, 1000 * retryCount); // Exponential backoff
+            isFetching = false;
             return;
           }
           throw new Error(
-            `Failed to fetch news detail: ${response.statusText}`
+            `Failed to fetch news detail: ${response.statusText}`,
           );
         }
 
         const data: INewsItem = await response.json();
 
-        if (!isMounted) return;
+        if (!isMounted) {
+          isFetching = false;
+          return;
+        }
 
         setNewsItem(data);
 
@@ -379,15 +392,18 @@ const NewsDetailPage: React.FC = () => {
       } finally {
         if (isMounted) {
           setLoading(false);
+          isFetching = false;
         }
       }
     };
 
-    fetchNewsDetail();
+    // Small delay to allow potential previous fetch to be aborted
+    const timer = setTimeout(fetchNewsDetail, 0);
 
     // Cleanup function
     return () => {
       isMounted = false;
+      clearTimeout(timer);
       controller.abort();
     };
   }, []);
@@ -756,7 +772,7 @@ const NewsDetailPage: React.FC = () => {
                                     {badgeType.toLowerCase()} ({count})
                                   </span>
                                 </div>
-                              )
+                              ),
                           )}
                         </div>
                       </div>
