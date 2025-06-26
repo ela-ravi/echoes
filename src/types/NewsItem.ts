@@ -46,7 +46,7 @@ export interface INewsItem {
   /** Reward points associated with the news item */
   rewardPoints?: number;
 }
-export type AIStatus = "InProgress" | "Completed" | "Failed";
+export type AIStatus = "IN_PROGRESS" | "COMPLETED" | "FAILED";
 // export type ClientStatus =
 //   | "Submitted"
 //   | "Pending"

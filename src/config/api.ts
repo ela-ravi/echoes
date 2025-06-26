@@ -3,11 +3,13 @@ const API_BASE_URL = process.env.SERVER_APP_BASE_URL || "http://localhost:3001";
 const API_ENDPOINT_NEWS_LIST =
   process.env.API_ENDPOINT_NEWS_LIST || "admin-news-list";
 const API_ENDPOINT_NEWS_DETAIL =
-  process.env.API_ENDPOINT_NEWS_DETAIL || "admin-news-details";
+  process.env.API_ENDPOINT_NEWS_DETAIL || "admin-news-detail";
 const API_ENDPOINT_NEWS_UPDATE =
   process.env.API_ENDPOINT_NEWS_UPDATE || "admin-update-news";
 const API_ENDPOINT_NEWS_REVIEW =
   process.env.API_ENDPOINT_NEWS_REVIEW || "review-news";
+const API_ENDPOINT_NEWS_AI_RETRY =
+  process.env.API_ENDPOINT_NEWS_AI_RETRY || "admin-ai-retry";
 interface NewsListQueryParams {
   category?: string;
   keyword?: string;
@@ -55,6 +57,8 @@ export const API_ENDPOINTS = {
     DETAIL: (id: string) => `${API_BASE_URL}/${API_ENDPOINT_NEWS_DETAIL}/${id}`,
     UPDATE: (id: string) => `${API_BASE_URL}/${API_ENDPOINT_NEWS_UPDATE}/${id}`,
     REVIEW: (id: string) => `${API_BASE_URL}/${API_ENDPOINT_NEWS_REVIEW}/${id}`,
+    AI_RETRY: (id: string) =>
+      `${API_BASE_URL}/${API_ENDPOINT_NEWS_AI_RETRY}/${id}`,
   },
 } as const;
 
