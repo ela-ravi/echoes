@@ -3,10 +3,18 @@ import { Link } from "react-router-dom";
 import HeaderNav from "../components/organisms/HeaderNav";
 import { API_ENDPOINTS } from "../config/api";
 import { INewsItem } from "../types/NewsItem";
-import { FaImage, FaVideo, FaPlay, FaUserCircle } from "react-icons/fa";
+import {
+  FaImage,
+  FaVideo,
+  FaPlay,
+  FaUserCircle,
+  FaSync,
+  FaComment,
+} from "react-icons/fa";
 import { SiOpenai } from "react-icons/si";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAIRefresh } from "../hooks/useAIRefresh";
 
 type FormDataState = {
   originalText: string;
@@ -102,7 +110,7 @@ const TextArea: React.FC<{
   sectionTitle: string;
   readOnly?: boolean;
   setOverlayContent: (
-    content: { title: string; content: string } | null,
+    content: { title: string; content: string } | null
   ) => void;
 }> = ({
   name,
@@ -152,10 +160,42 @@ const NewsDetailPage: React.FC = () => {
   const [newsItem, setNewsItem] = useState<INewsItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { isRefreshing, handleAIRefresh } = useAIRefresh();
+
+  const handleRefreshClick = async () => {
+    if (!newsItem?.id) return;
+
+    try {
+      await handleAIRefresh(newsItem.id.toString(), async () => {
+        // Refetch the news item to get updated status after successful refresh
+        const response = await fetch(
+          API_ENDPOINTS.NEWS.DETAIL(newsItem.id.toString()),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "client-key": "admin",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch updated news item");
+        }
+
+        const updatedData = await response.json();
+        setNewsItem(updatedData);
+      });
+    } catch (err) {
+      console.error("Error refreshing AI status:", err);
+      // Error is already handled by useAIRefresh hook
+    }
+  };
+
   const [overlayContent, setOverlayContent] = useState<{
     title: string;
     content: string;
   } | null>(null);
+  const [showCommentOverlay, setShowCommentOverlay] = useState(false);
   const [showImageOverlay, setShowImageOverlay] = useState(false);
   const [formData, setFormData] = useState<FormDataState>({
     originalText: "",
@@ -193,7 +233,7 @@ const NewsDetailPage: React.FC = () => {
             keyIndividuals: formData.keyIndividuals,
             potentialImpact: formData.potentialImpact,
           }),
-        },
+        }
       );
 
       if (!response.ok) {
@@ -209,7 +249,7 @@ const NewsDetailPage: React.FC = () => {
       toast.error(
         `Failed to save changes: ${
           err instanceof Error ? err.message : "Unknown error"
-        }`,
+        }`
       );
     }
   };
@@ -246,7 +286,7 @@ const NewsDetailPage: React.FC = () => {
           closeOnClick: false,
           draggable: false,
           autoClose: false,
-        },
+        }
       );
     });
 
@@ -302,13 +342,13 @@ const NewsDetailPage: React.FC = () => {
           if (response.status === 500 && retryCount < MAX_RETRIES) {
             retryCount++;
             console.log(
-              `Retrying API call (attempt ${retryCount}/${MAX_RETRIES})`,
+              `Retrying API call (attempt ${retryCount}/${MAX_RETRIES})`
             );
             setTimeout(fetchNewsDetail, 1000 * retryCount); // Exponential backoff
             return;
           }
           throw new Error(
-            `Failed to fetch news detail: ${response.statusText}`,
+            `Failed to fetch news detail: ${response.statusText}`
           );
         }
 
@@ -484,44 +524,16 @@ const NewsDetailPage: React.FC = () => {
             </button>
           )}
         </div>
-
-        {/* Categories Overlay */}
         {showOverlay && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="bg-[#1d2030] rounded-lg p-4 max-w-sm w-full mx-4">
-              <div className="flex justify-between items-center mb-3">
-                <h3 className="text-lg font-medium">Categories</h3>
-                <button
-                  type="button"
-                  onClick={() => setShowOverlay(false)}
-                  className="text-gray-400 hover:text-white"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {categories.map((cat) => (
-                  <span
-                    key={cat}
-                    className="inline-flex items-center rounded-full bg-[#282d43] px-4 py-1 text-xs font-medium text-white"
-                  >
-                    {cat}
-                  </span>
-                ))}
-              </div>
-            </div>
+          <div className="absolute top-full left-1/2 -translate-x-1/2 bg-[#1d2030] p-4 rounded-lg shadow-lg w-64">
+            {categories.slice(2).map((cat) => (
+              <span
+                key={cat}
+                className="block rounded-full bg-[#282d43] px-4 py-1 text-xs font-medium text-white mb-2"
+              >
+                {cat}
+              </span>
+            ))}
           </div>
         )}
       </div>
@@ -561,7 +573,8 @@ const NewsDetailPage: React.FC = () => {
                   {/* First Row */}
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     {/* Similar Source */}
-                    {(newsItem.similarSourceName || newsItem.similarSourceUrl) && (
+                    {(newsItem.similarSourceName ||
+                      newsItem.similarSourceUrl) && (
                       <div>
                         <p className="text-xs text-gray-500 font-medium mb-1">
                           SIMILAR SOURCE
@@ -590,28 +603,72 @@ const NewsDetailPage: React.FC = () => {
                       <p className="text-xs text-gray-500 font-medium mb-1">
                         STATUS
                       </p>
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
-                          newsItem.clientStatus?.toLowerCase() === "published"
-                            ? "bg-green-900/30 text-green-400"
-                            : newsItem.clientStatus?.toLowerCase() === "rejected"
-                              ? "bg-red-900/30 text-red-400"
-                              : newsItem.clientStatus?.toLowerCase() === "reviewed"
-                                ? "bg-[#1d2030] text-[#4f8ef7]"
-                                : newsItem.clientStatus?.toLowerCase() === "submitted"
-                                  ? "bg-[#282d43] text-white"
-                                  : "bg-yellow-900/30 text-yellow-400"
-                        }`}
-                      >
-                        {newsItem.clientStatus || "Pending"}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
+                            newsItem.clientStatus?.toLowerCase() === "published"
+                              ? "bg-green-900/30 text-green-400"
+                              : newsItem.clientStatus?.toLowerCase() ===
+                                  "rejected"
+                                ? "bg-red-900/30 text-red-400"
+                                : newsItem.clientStatus?.toLowerCase() ===
+                                    "reviewed"
+                                  ? "bg-[#1d2030] text-[#4f8ef7]"
+                                  : newsItem.clientStatus?.toLowerCase() ===
+                                      "submitted"
+                                    ? "bg-[#282d43] text-white"
+                                    : "bg-yellow-900/30 text-yellow-400"
+                          }`}
+                        >
+                          {newsItem.clientStatus || "Pending"}
+                        </span>
+                        {newsItem.clientStatus?.toLowerCase() === "rejected" &&
+                          newsItem.comments && (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setShowCommentOverlay(true);
+                              }}
+                              className="text-gray-400 hover:text-blue-400 transition-colors"
+                              title="View rejection comment"
+                            >
+                              <FaComment className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                      </div>
                     </div>
 
                     {/* AI Status */}
                     <div>
-                      <p className="text-xs text-gray-500 font-medium mb-1">
-                        AI STATUS
-                      </p>
+                      <div className="flex items-center">
+                        <p className="text-xs text-gray-500 font-medium">
+                          AI STATUS
+                        </p>
+                        {(newsItem.aiStatus === "FAILED" ||
+                          newsItem.aiStatus === "IN_PROGRESS") && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleRefreshClick();
+                            }}
+                            disabled={isRefreshing}
+                            className={`text-gray-400 hover:text-blue-400 transition-colors ml-4 ${
+                              isRefreshing
+                                ? "opacity-50 cursor-not-allowed"
+                                : ""
+                            }`}
+                            title="Refresh AI status"
+                          >
+                            <FaSync
+                              className={`w-3 h-3 ${
+                                isRefreshing ? "animate-spin" : ""
+                              }`}
+                            />
+                          </button>
+                        )}
+                      </div>
                       <p className="text-sm text-gray-400">
                         {newsItem.aiStatus || "N/A"}
                       </p>
@@ -640,8 +697,7 @@ const NewsDetailPage: React.FC = () => {
                       <p className="text-sm text-gray-400">
                         {newsItem.submittedAt
                           ? new Date(newsItem.submittedAt).toLocaleString()
-                          : "N/A"
-                        }
+                          : "N/A"}
                       </p>
                     </div>
 
@@ -700,7 +756,7 @@ const NewsDetailPage: React.FC = () => {
                                     {badgeType.toLowerCase()} ({count})
                                   </span>
                                 </div>
-                              ),
+                              )
                           )}
                         </div>
                       </div>
@@ -898,6 +954,47 @@ const NewsDetailPage: React.FC = () => {
           content={overlayContent.content}
           onClose={() => setOverlayContent(null)}
         />
+      )}
+
+      {/* Rejection Comment Overlay */}
+      {showCommentOverlay && newsItem?.comments && (
+        <div
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+          onClick={() => setShowCommentOverlay(false)}
+        >
+          <div
+            className="bg-[#1a1e30] rounded-xl max-w-md w-full max-h-[80vh] overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-4 border-b border-[#2d3349] flex justify-between items-center">
+              <h3 className="text-lg font-medium">Rejection Comment</h3>
+              <button
+                onClick={() => setShowCommentOverlay(false)}
+                className="text-gray-400 hover:text-white"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6 overflow-y-auto flex-grow">
+              <div className="whitespace-pre-wrap bg-[#1d2030] p-4 rounded-lg">
+                {newsItem.comments}
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
