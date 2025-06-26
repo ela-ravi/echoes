@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import StatusBadge from "../molecules/StatusBadge";
 import CategoriesCell from "../molecules/CategoriesCell";
 import RejectModal from "../molecules/RejectModal";
-import { INewsList } from "../../types/NewsItem";
+import type { INewsList } from "../../types/NewsItem";
 import {
   EyeIcon,
   CheckCircleIcon,
   XCircleIcon,
+  ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 import { API_ENDPOINTS } from "../../config/api";
 import { toast } from "react-toastify";
@@ -41,6 +42,49 @@ const NewsTable: React.FC<NewsTableProps> = ({
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [rejectComment, setRejectComment] = useState("");
 
+  const isActionAllowed = (status: string, actionType: string) => {
+    switch (status) {
+      case "PENDING":
+        return actionType === "review";
+      case "REVIEWED":
+        return actionType === "publish" || actionType === "reject";
+      case "PUBLISHED":
+      case "REJECTED":
+      case "SUBMITTED":
+        return false;
+      default:
+        return true; // Default to allowing actions if status is not recognized
+    }
+  };
+
+  const getActionTooltip = (status: string, actionType: string) => {
+    if (!isActionAllowed(status, actionType)) {
+      switch (status) {
+        case "PENDING":
+          return "Only Start Review action is allowed for PENDING items";
+        case "REVIEWED":
+          return "Only Publish and Reject actions are allowed for REVIEWED items";
+        case "PUBLISHED":
+          return "No actions allowed for PUBLISHED items";
+        case "REJECTED":
+          return "No actions allowed for REJECTED items";
+        case "SUBMITTED":
+          return "No actions allowed for SUBMITTED items";
+        default:
+          return "Action not allowed";
+      }
+    }
+    return actionType === "review"
+      ? "Mark as Reviewed"
+      : actionType === "publish"
+        ? "Publish"
+        : "Reject";
+  };
+
+  const [refreshingItems, setRefreshingItems] = useState<
+    Record<string, boolean>
+  >({});
+
   const handleRejectClick = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
     setSelectedItemId(id);
@@ -50,9 +94,9 @@ const NewsTable: React.FC<NewsTableProps> = ({
 
   const handleRejectSubmit = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!rejectComment.trim() || !selectedItemId) return;
+    if (!selectedItemId) return;
 
-    await handleAction(selectedItemId, NEWSACTION.REJECTED);
+    await handleAction(selectedItemId, NEWSACTION.REJECTED, rejectComment);
     setRejectModalOpen(false);
     setRejectComment("");
     setSelectedItemId(null);
@@ -62,11 +106,50 @@ const NewsTable: React.FC<NewsTableProps> = ({
     e.stopPropagation();
     setRejectModalOpen(false);
   };
-  const handleAction = async (id: string, action: NEWSACTION) => {
+  const handleAIRefresh = async (id: string) => {
+    try {
+      setRefreshingItems((prev) => ({ ...prev, [id]: true }));
+      const response = await fetch(API_ENDPOINTS.NEWS.AI_RETRY(id), {
+        method: "GET",
+        headers: {
+          accept: "*/*",
+          "ngrok-skip-browser-warning": "true",
+          "client-key": "admin",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to refresh AI status");
+      }
+
+      toast.success("AI refresh initiated");
+      // Trigger parent to refresh data
+      if (onUpdate) {
+        onUpdate();
+      }
+    } catch (error) {
+      console.error("Error refreshing AI status:", error);
+      toast.error("Failed to refresh AI status");
+    } finally {
+      setRefreshingItems((prev) => ({ ...prev, [id]: false }));
+    }
+  };
+
+  const handleAction = async (
+    id: string,
+    action: NEWSACTION,
+    comment?: string,
+  ) => {
     try {
       const url = new URL(API_ENDPOINTS.NEWS.REVIEW(id));
-      url.searchParams.append("reviewerId", "1"); // Replace with actual reviewer ID
+      url.searchParams.append("reviewerId", "2"); // Replace with actual reviewer ID
       url.searchParams.append("status", action);
+
+      // Add comment to query params if it's a rejection and comment exists
+      if (action === NEWSACTION.REJECTED && comment?.trim()) {
+        url.searchParams.append("comment", comment.trim());
+      }
+
       const response = await fetch(url.toString(), {
         method: "POST",
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -141,7 +224,40 @@ const NewsTable: React.FC<NewsTableProps> = ({
                 {item.publishedAt}
               </td>
               <td className="px-4 py-2">
-                <StatusBadge status={item.aiStatus} type="ai" />
+                <div className="flex items-center gap-2">
+                  <StatusBadge status={item.aiStatus} type="ai" />
+                  {(item.aiStatus === "IN_PROGRESS" ||
+                    item.aiStatus === "FAILED") && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAIRefresh(item.id);
+                      }}
+                      disabled={
+                        refreshingItems[item.id] ||
+                        !isActionAllowed(item.clientStatus, "review")
+                      }
+                      className={`text-gray-400 hover:text-white ${
+                        refreshingItems[item.id] ||
+                        !isActionAllowed(item.clientStatus, "review")
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      }`}
+                      title={
+                        refreshingItems[item.id]
+                          ? "Refreshing..."
+                          : getActionTooltip(item.clientStatus, "review")
+                      }
+                    >
+                      <ArrowPathIcon
+                        className={`w-4 h-4 ${
+                          refreshingItems[item.id] ? "animate-spin" : ""
+                        }`}
+                      />
+                    </button>
+                  )}
+                </div>
               </td>
               <td className="px-4 py-2">
                 <StatusBadge status={item.clientStatus} />
@@ -150,39 +266,47 @@ const NewsTable: React.FC<NewsTableProps> = ({
                 <td className="px-4 py-2">
                   <div className="flex justify-end space-x-1">
                     <button
+                      type="button"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleAction(item.id, NEWSACTION.REVIEWED);
                       }}
-                      // disabled={isProcessing(item.id)}
+                      disabled={!isActionAllowed(item.clientStatus, "review")}
                       className={`p-1.5 rounded transition-colors ${
-                        // isProcessing(item.id)
-                        // ? "text-gray-500 cursor-not-allowed"
-                        "text-blue-400 hover:bg-blue-900/50 hover:text-blue-300"
+                        !isActionAllowed(item.clientStatus, "review")
+                          ? "opacity-50 cursor-not-allowed"
+                          : "text-blue-400 hover:bg-blue-900/50 hover:text-blue-300"
                       }`}
-                      title="Start Review"
+                      title={getActionTooltip(item.clientStatus, "review")}
                     >
                       <EyeIcon className="h-4 w-4" />
                     </button>
                     <button
+                      type="button"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleAction(item.id, NEWSACTION.PUBLISHED);
                       }}
-                      // disabled={isProcessing(item.id)}
+                      disabled={!isActionAllowed(item.clientStatus, "publish")}
                       className={`p-1.5 rounded transition-colors ${
-                        // isProcessing(item.id)
-                        // ? "text-gray-500 cursor-not-allowed"
-                        "text-green-400 hover:bg-green-900/50 hover:text-green-300"
+                        !isActionAllowed(item.clientStatus, "publish")
+                          ? "text-gray-500 cursor-not-allowed"
+                          : "text-green-400 hover:bg-green-900/50 hover:text-green-300"
                       }`}
-                      title="Publish"
+                      title={getActionTooltip(item.clientStatus, "publish")}
                     >
                       <CheckCircleIcon className="h-4 w-4" />
                     </button>
                     <button
+                      type="button"
                       onClick={(e) => handleRejectClick(e, item.id)}
-                      className="p-1.5 rounded transition-colors text-red-400 hover:bg-red-900/50 hover:text-red-300"
-                      title="Reject"
+                      disabled={!isActionAllowed(item.clientStatus, "reject")}
+                      className={`p-1.5 rounded transition-colors ${
+                        !isActionAllowed(item.clientStatus, "reject")
+                          ? "text-gray-500 cursor-not-allowed"
+                          : "text-red-400 hover:bg-red-900/50 hover:text-red-300"
+                      }`}
+                      title={getActionTooltip(item.clientStatus, "reject")}
                     >
                       <XCircleIcon className="h-4 w-4" />
                     </button>
