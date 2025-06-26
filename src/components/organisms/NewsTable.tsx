@@ -197,6 +197,14 @@ const NewsTable: React.FC<NewsTableProps> = ({
               <td className="px-4 py-2 font-medium tracking-wide w-[160px]">
                 <Link
                   to={`/news-detail?id=${item.id}`}
+                  onClick={(e) => {
+                    // Prevent default to handle navigation programmatically
+                    e.preventDefault();
+                    // Add a small delay to ensure the click is processed
+                    setTimeout(() => {
+                      window.location.href = `/news-detail?id=${item.id}`;
+                    }, 100);
+                  }}
                   className="text-[#4f8ef7] hover:underline"
                 >
                   {item.id}
@@ -234,20 +242,22 @@ const NewsTable: React.FC<NewsTableProps> = ({
                         e.stopPropagation();
                         handleAIRefresh(item.id);
                       }}
-                      disabled={
-                        refreshingItems[item.id] ||
-                        !isActionAllowed(item.clientStatus, "review")
-                      }
+                      disabled={refreshingItems[item.id]}
                       className={`text-gray-400 hover:text-white ${
                         refreshingItems[item.id] ||
-                        !isActionAllowed(item.clientStatus, "review")
+                        (item.aiStatus !== "FAILED" &&
+                          item.aiStatus !== "IN_PROGRESS" &&
+                          !isActionAllowed(item.clientStatus, "review"))
                           ? "opacity-50 cursor-not-allowed"
-                          : ""
+                          : "hover:text-blue-400"
                       }`}
                       title={
                         refreshingItems[item.id]
                           ? "Refreshing..."
-                          : getActionTooltip(item.clientStatus, "review")
+                          : item.aiStatus === "FAILED" ||
+                              item.aiStatus === "IN_PROGRESS"
+                            ? "Refresh AI status"
+                            : getActionTooltip(item.clientStatus, "review")
                       }
                     >
                       <ArrowPathIcon
