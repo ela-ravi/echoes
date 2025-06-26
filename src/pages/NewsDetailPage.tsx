@@ -10,11 +10,13 @@ import {
   FaUserCircle,
   FaSync,
   FaComment,
+  FaTimesCircle,
 } from "react-icons/fa";
 import { SiOpenai } from "react-icons/si";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAIRefresh } from "../hooks/useAIRefresh";
+import RejectModal from "../components/molecules/RejectModal";
 
 type FormDataState = {
   originalText: string;
@@ -24,14 +26,26 @@ type FormDataState = {
 };
 
 // Helper Components
-const Section: React.FC<{ title: string; children: React.ReactNode }> = ({
-  title,
-  children,
-}) => (
+const Section: React.FC<{
+  title: string;
+  children: React.ReactNode;
+  onRejectClick?: (e: React.MouseEvent) => void;
+}> = ({ title, children, onRejectClick }) => (
   <div className="mb-6">
-    <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
-      {title}
-    </h2>
+    <div className="flex items-center mb-2">
+      <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+        {title}
+      </h2>
+      {title === "Potential Impact" && (
+        <button
+          className="text-red-500 hover:text-red-400 transition-colors ml-4"
+          onClick={onRejectClick}
+          title="Reject news item"
+        >
+          <FaTimesCircle className="h-5 w-5" />
+        </button>
+      )}
+    </div>
     {children}
   </div>
 );
@@ -195,6 +209,8 @@ const NewsDetailPage: React.FC = () => {
     title: string;
     content: string;
   } | null>(null);
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectComment, setRejectComment] = useState("");
   const [showCommentOverlay, setShowCommentOverlay] = useState(false);
   const [showImageOverlay, setShowImageOverlay] = useState(false);
   const [formData, setFormData] = useState<FormDataState>({
@@ -293,6 +309,46 @@ const NewsDetailPage: React.FC = () => {
     if (confirmResult) {
       setFormData(initialFormData);
       toast.success("Changes discarded successfully!");
+    }
+  };
+
+  const handleReject = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!newsItem?.id) return;
+
+    try {
+      const url = new URL(API_ENDPOINTS.NEWS.REVIEW(newsItem.id));
+      url.searchParams.append("reviewerId", "2"); // Replace with actual reviewer ID
+      url.searchParams.append("status", "REJECTED");
+
+      // Add comment if it exists
+      if (rejectComment?.trim()) {
+        url.searchParams.append("comment", rejectComment.trim());
+      }
+
+      const response = await fetch(url.toString(), {
+        method: "POST",
+        // @ts-expect-error - Skip TypeScript check for custom headers
+        headers: {
+          "ngrok-skip-browser-warning": true,
+          "Content-Type": "application/json",
+          "client-key": "admin",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to reject news item");
+      }
+
+      toast.success("Successfully rejected news item");
+      setShowRejectModal(false);
+      setRejectComment("");
+
+      // Refresh the page or navigate away
+      window.location.reload();
+    } catch (error) {
+      console.error("Error rejecting news item:", error);
+      toast.error("Failed to reject news item");
     }
   };
 
@@ -817,7 +873,13 @@ const NewsDetailPage: React.FC = () => {
             />
           </Section>
 
-          <Section title="Potential Impact">
+          <Section
+            title="Potential Impact"
+            onRejectClick={(e) => {
+              e.stopPropagation();
+              setShowRejectModal(true);
+            }}
+          >
             <TextArea
               name="potentialImpact"
               value={formData.potentialImpact}
@@ -972,7 +1034,15 @@ const NewsDetailPage: React.FC = () => {
         />
       )}
 
-      {/* Rejection Comment Overlay */}
+      {showRejectModal && (
+        <RejectModal
+          isOpen={showRejectModal}
+          onClose={() => setShowRejectModal(false)}
+          onReject={handleReject}
+          comment={rejectComment}
+          onCommentChange={(e) => setRejectComment(e.target.value)}
+        />
+      )}
       {showCommentOverlay && newsItem?.comments && (
         <div
           className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
