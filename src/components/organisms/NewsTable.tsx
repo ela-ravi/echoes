@@ -13,6 +13,7 @@ import {
 import { API_ENDPOINTS } from "../../config/api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAIRefresh } from "../../hooks/useAIRefresh";
 
 // export type NewsAction = "REVIEWED" | "PUBLISHED" | "REJECTED";
 enum NEWSACTION {
@@ -81,6 +82,7 @@ const NewsTable: React.FC<NewsTableProps> = ({
         : "Reject";
   };
 
+  const { isRefreshing: isGlobalRefreshing, handleAIRefresh } = useAIRefresh();
   const [refreshingItems, setRefreshingItems] = useState<
     Record<string, boolean>
   >({});
@@ -106,27 +108,11 @@ const NewsTable: React.FC<NewsTableProps> = ({
     e.stopPropagation();
     setRejectModalOpen(false);
   };
-  const handleAIRefresh = async (id: string) => {
+
+  const handleRefreshClick = async (id: string) => {
     try {
       setRefreshingItems((prev) => ({ ...prev, [id]: true }));
-      const response = await fetch(API_ENDPOINTS.NEWS.AI_RETRY(id), {
-        method: "GET",
-        headers: {
-          accept: "*/*",
-          "ngrok-skip-browser-warning": "true",
-          "client-key": "admin",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to refresh AI status");
-      }
-
-      toast.success("AI refresh initiated");
-      // Trigger parent to refresh data
-      if (onUpdate) {
-        onUpdate();
-      }
+      await handleAIRefresh(id, onUpdate);
     } catch (error) {
       console.error("Error refreshing AI status:", error);
       toast.error("Failed to refresh AI status");
@@ -238,26 +224,17 @@ const NewsTable: React.FC<NewsTableProps> = ({
                     item.aiStatus === "FAILED") && (
                     <button
                       type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAIRefresh(item.id);
-                      }}
-                      disabled={refreshingItems[item.id]}
-                      className={`text-gray-400 hover:text-white ${
-                        refreshingItems[item.id] ||
-                        (item.aiStatus !== "FAILED" &&
-                          item.aiStatus !== "IN_PROGRESS" &&
-                          !isActionAllowed(item.clientStatus, "review"))
+                      onClick={() => handleRefreshClick(item.id.toString())}
+                      disabled={refreshingItems[item.id] || isGlobalRefreshing}
+                      className={`text-gray-400 hover:text-blue-400 transition-colors ${
+                        refreshingItems[item.id] || isGlobalRefreshing
                           ? "opacity-50 cursor-not-allowed"
-                          : "hover:text-blue-400"
+                          : ""
                       }`}
                       title={
-                        refreshingItems[item.id]
+                        refreshingItems[item.id] || isGlobalRefreshing
                           ? "Refreshing..."
-                          : item.aiStatus === "FAILED" ||
-                              item.aiStatus === "IN_PROGRESS"
-                            ? "Refresh AI status"
-                            : getActionTooltip(item.clientStatus, "review")
+                          : "Refresh AI status"
                       }
                     >
                       <ArrowPathIcon

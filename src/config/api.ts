@@ -3,7 +3,7 @@ const API_BASE_URL = process.env.SERVER_APP_BASE_URL || "http://localhost:3001";
 const API_ENDPOINT_NEWS_LIST =
   process.env.API_ENDPOINT_NEWS_LIST || "admin-news-list";
 const API_ENDPOINT_NEWS_DETAIL =
-  process.env.API_ENDPOINT_NEWS_DETAIL || "admin-news-detail";
+  process.env.API_ENDPOINT_NEWS_DETAILS || "admin-news-details";
 const API_ENDPOINT_NEWS_UPDATE =
   process.env.API_ENDPOINT_NEWS_UPDATE || "admin-update-news";
 const API_ENDPOINT_NEWS_REVIEW =

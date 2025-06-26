@@ -34,7 +34,7 @@ export interface INewsItem {
   reviewedAt?: string;
   submittedAt?: string;
   /** Status of AI processing */
-  aiStatus?: "InProgress" | "Completed" | "Failed";
+  aiStatus?: "IN_PROGRESS" | "COMPLETED" | "FAILED";
   /** Summary of the news */
   summary?: string;
   /** Key individuals mentioned in the content */
@@ -45,6 +45,7 @@ export interface INewsItem {
   badges?: { SILVER: number; GOLD: number; BRONZE: number };
   /** Reward points associated with the news item */
   rewardPoints?: number;
+  comments?: string;
 }
 export type AIStatus = "IN_PROGRESS" | "COMPLETED" | "FAILED";
 // export type ClientStatus =
