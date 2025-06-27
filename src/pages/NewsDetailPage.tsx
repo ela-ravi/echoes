@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import HeaderNav from "../components/organisms/HeaderNav";
 import { API_ENDPOINTS } from "../config/api";
@@ -12,79 +12,8 @@ import Section from "../components/atoms/Section";
 import TextArea from "../components/atoms/TextArea";
 import RejectModal from "../components/molecules/RejectModal";
 import MediaSection from "../components/molecules/MediaSection";
-import { ChevronDown } from "../components/atoms/icons";
+import CategoriesCell from "../components/molecules/CategoriesCell";
 import CTASection from "../components/molecules/CTASection";
-
-// Categories Cell Component
-const CategoriesCell: React.FC<{ categories: string[] }> = ({
-  categories = [],
-}) => {
-  const [showOverlay, setShowOverlay] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const hasManyCategories = useMemo(() => {
-    return categories.length > 2;
-  }, [categories]);
-
-  const toggleOverlay = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setShowOverlay(!showOverlay);
-  };
-
-  // Close overlay when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setShowOverlay(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  return (
-    <div className="relative" ref={containerRef}>
-      <div className="flex flex-wrap gap-2 items-center">
-        {categories.slice(0, 2).map((cat) => (
-          <span
-            key={cat}
-            className="inline-flex items-center rounded-full bg-[#282d43] px-4 py-1 text-xs font-medium text-white"
-          >
-            {cat}
-          </span>
-        ))}
-        {hasManyCategories && (
-          <button
-            type="button"
-            aria-label="Show all categories"
-            onClick={toggleOverlay}
-            className="inline-flex items-center justify-center rounded-full bg-[#282d43] px-2 py-1 text-xs text-gray-400 hover:bg-[#2d3349] hover:text-white transition-colors"
-          >
-            <ChevronDown />
-          </button>
-        )}
-      </div>
-      {showOverlay && (
-        <div className="absolute top-full left-1/2 -translate-x-1/2 bg-[#1d2030] p-4 rounded-lg shadow-lg w-64">
-          {categories.slice(2).map((cat) => (
-            <span
-              key={cat}
-              className="block rounded-full bg-[#282d43] px-4 py-1 text-xs font-medium text-white mb-2"
-            >
-              {cat}
-            </span>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
 
 type FormDataState = {
   originalText: string;
@@ -92,6 +21,11 @@ type FormDataState = {
   keyIndividuals: string;
   potentialImpact: string;
 };
+
+type SelectedImage = {
+  title: string;
+  src: string;
+} | null;
 
 const NewsDetailPage: React.FC = () => {
   // All state hooks must be called unconditionally at the top level
@@ -106,7 +40,7 @@ const NewsDetailPage: React.FC = () => {
   const [rejectComment, setRejectComment] = useState("");
   const [showCommentOverlay, setShowCommentOverlay] = useState(false);
   const [showImageOverlay, setShowImageOverlay] = useState(false);
-  const [selectedImageUrl, setSelectedImageUrl] = useState<string>("");
+  const [selectedImage, setSelectedImage] = useState<SelectedImage>(null);
   const [formData, setFormData] = useState<FormDataState>({
     originalText: "",
     aiGeneratedText: "",
@@ -719,7 +653,10 @@ const NewsDetailPage: React.FC = () => {
                             isAI={false}
                             onClick={() => {
                               if (newsItem.userUploadedImage) {
-                                setSelectedImageUrl(newsItem.userUploadedImage);
+                                setSelectedImage({
+                                  title: "Uploaded Image",
+                                  src: newsItem.userUploadedImage,
+                                });
                                 setShowImageOverlay(true);
                               }
                             }}
@@ -756,7 +693,10 @@ const NewsDetailPage: React.FC = () => {
                             isAI={true}
                             onClick={() => {
                               if (newsItem.aiGeneratedImage) {
-                                setSelectedImageUrl(newsItem.aiGeneratedImage);
+                                setSelectedImage({
+                                  title: "AI Generated Image",
+                                  src: newsItem.aiGeneratedImage,
+                                });
                                 setShowImageOverlay(true);
                               }
                             }}
@@ -780,33 +720,25 @@ const NewsDetailPage: React.FC = () => {
             </Section>
           )}
 
-          {showImageOverlay && selectedImageUrl && (
-            <div
-              className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
-              onClick={() => {
+          {showImageOverlay && selectedImage && (
+            <ContentModal
+              title={selectedImage.title}
+              onClose={() => {
                 setShowImageOverlay(false);
-                setSelectedImageUrl("");
+                setSelectedImage(null);
               }}
-            >
-              <button
-                className="absolute top-4 right-4 text-white text-2xl bg-[#394060] rounded-full w-10 h-10 flex items-center justify-center hover:bg-[#4a527f] transition-colors"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowImageOverlay(false);
-                  setSelectedImageUrl("");
-                }}
-              >
-                &times;
-              </button>
-              <div className="relative max-w-4xl w-full max-h-[90vh]">
-                <img
-                  src={selectedImageUrl}
-                  alt="Full Size Preview"
-                  className="w-full h-full object-contain"
-                  onClick={(e) => e.stopPropagation()}
-                />
-              </div>
-            </div>
+              showCloseButton={true}
+              content={
+                <div className="w-full h-full flex flex-col items-center justify-center p-4 gap-4">
+                  <img
+                    src={selectedImage.src}
+                    alt="Full Size Preview"
+                    className="max-w-full max-h-[70vh] object-contain"
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                </div>
+              }
+            />
           )}
 
           <CTASection
