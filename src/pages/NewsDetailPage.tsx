@@ -4,16 +4,49 @@ import HeaderNav from "../components/organisms/HeaderNav";
 import { API_ENDPOINTS } from "../config/api";
 import { INewsItem } from "../types/NewsItem";
 import ContentModal from "../components/molecules/ContentModal";
-import { FaUserCircle, FaSync, FaComment } from "react-icons/fa";
+import { FaUserCircle, FaComment } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAIRefresh } from "../hooks/useAIRefresh";
 import Section from "../components/atoms/Section";
 import TextArea from "../components/atoms/TextArea";
 import RejectModal from "../components/molecules/RejectModal";
-import MediaSection from "../components/molecules/MediaSection";
-import CategoriesCell from "../components/molecules/CategoriesCell";
 import CTASection from "../components/molecules/CTASection";
+import BadgesSection from "../components/molecules/BadgesSection";
+import UserInfoItem from "../components/molecules/UserInfoItem";
+import MediaRow from "../components/molecules/MediaRow";
+
+interface StatusBadgeProps {
+  status?: string;
+}
+
+const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
+  const statusLower = status?.toLowerCase() || "pending";
+  const statusText = status || "Pending";
+
+  const getStatusClasses = () => {
+    switch (statusLower) {
+      case "published":
+        return "bg-green-900/30 text-green-400";
+      case "rejected":
+        return "bg-red-900/30 text-red-400";
+      case "reviewed":
+        return "bg-[#1d2030] text-[#4f8ef7]";
+      case "submitted":
+        return "bg-[#282d43] text-white";
+      default:
+        return "bg-yellow-900/30 text-yellow-400";
+    }
+  };
+
+  return (
+    <span
+      className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getStatusClasses()}`}
+    >
+      {statusText}
+    </span>
+  );
+};
 
 type FormDataState = {
   originalText: string;
@@ -47,6 +80,41 @@ const NewsDetailPage: React.FC = () => {
     keyIndividuals: "",
     potentialImpact: "",
   });
+
+  const similarSourceContent = newsItem?.similarSourceUrl ? (
+    <a
+      href={newsItem.similarSourceUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-400 hover:underline text-sm"
+    >
+      {newsItem.similarSourceName || "View Source"}
+    </a>
+  ) : (
+    <span className="text-gray-400 text-sm">
+      {newsItem?.similarSourceName || "N/A"}
+    </span>
+  );
+
+  const statusContent = (
+    <div className="flex items-center gap-2">
+      <StatusBadge status={newsItem?.clientStatus} />
+      {newsItem?.clientStatus?.toLowerCase() === "rejected" &&
+        newsItem?.comments && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowCommentOverlay(true);
+            }}
+            className="text-gray-400 hover:text-blue-400 transition-colors"
+            title="View rejection comment"
+          >
+            <FaComment className="w-3.5 h-3.5" />
+          </button>
+        )}
+    </div>
+  );
   const [initialFormData, setInitialFormData] = useState<FormDataState>({
     originalText: "",
     aiGeneratedText: "",
@@ -371,192 +439,59 @@ const NewsDetailPage: React.FC = () => {
                     {/* Similar Source */}
                     {(newsItem.similarSourceName ||
                       newsItem.similarSourceUrl) && (
-                      <div>
-                        <p className="text-xs text-gray-500 font-medium mb-1">
-                          SIMILAR SOURCE
-                        </p>
-                        <p className="text-sm">
-                          {newsItem.similarSourceUrl ? (
-                            <a
-                              href={newsItem.similarSourceUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-400 hover:underline"
-                            >
-                              {newsItem.similarSourceName || "View Source"}
-                            </a>
-                          ) : (
-                            <span className="text-gray-400">
-                              {newsItem.similarSourceName || "N/A"}
-                            </span>
-                          )}
-                        </p>
-                      </div>
+                      <UserInfoItem
+                        label="SIMILAR SOURCE"
+                        content={similarSourceContent}
+                      />
                     )}
 
-                    {/* Status - Using clientStatus with StatusBadge styling */}
-                    <div>
-                      <p className="text-xs text-gray-500 font-medium mb-1">
-                        STATUS
-                      </p>
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
-                            newsItem.clientStatus?.toLowerCase() === "published"
-                              ? "bg-green-900/30 text-green-400"
-                              : newsItem.clientStatus?.toLowerCase() ===
-                                  "rejected"
-                                ? "bg-red-900/30 text-red-400"
-                                : newsItem.clientStatus?.toLowerCase() ===
-                                    "reviewed"
-                                  ? "bg-[#1d2030] text-[#4f8ef7]"
-                                  : newsItem.clientStatus?.toLowerCase() ===
-                                      "submitted"
-                                    ? "bg-[#282d43] text-white"
-                                    : "bg-yellow-900/30 text-yellow-400"
-                          }`}
-                        >
-                          {newsItem.clientStatus || "Pending"}
-                        </span>
-                        {newsItem.clientStatus?.toLowerCase() === "rejected" &&
-                          newsItem.comments && (
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setShowCommentOverlay(true);
-                              }}
-                              className="text-gray-400 hover:text-blue-400 transition-colors"
-                              title="View rejection comment"
-                            >
-                              <FaComment className="w-3.5 h-3.5" />
-                            </button>
-                          )}
-                      </div>
-                    </div>
+                    {/* Status */}
+                    <UserInfoItem label="STATUS" content={statusContent} />
 
                     {/* AI Status */}
-                    <div>
-                      <div className="flex items-center">
-                        <p className="text-xs text-gray-500 font-medium">
-                          AI STATUS
-                        </p>
-                        {(newsItem.aiStatus === "FAILED" ||
-                          newsItem.aiStatus === "IN_PROGRESS") && (
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleRefreshClick();
-                            }}
-                            disabled={isRefreshing}
-                            className={`text-gray-400 hover:text-blue-400 transition-colors ml-4 ${
-                              isRefreshing
-                                ? "opacity-50 cursor-not-allowed"
-                                : ""
-                            }`}
-                            title="Refresh AI status"
-                          >
-                            <FaSync
-                              className={`w-3 h-3 ${
-                                isRefreshing ? "animate-spin" : ""
-                              }`}
-                            />
-                          </button>
-                        )}
-                      </div>
-                      <p className="text-sm text-gray-400">
-                        {newsItem.aiStatus || "N/A"}
-                      </p>
-                    </div>
+                    <UserInfoItem
+                      label="AI STATUS"
+                      status={newsItem.aiStatus || "IN_PROGRESS"}
+                      onRefresh={handleRefreshClick}
+                      isRefreshing={isRefreshing}
+                    />
 
                     {/* Categories */}
                     {newsItem.categories && newsItem.categories.length > 0 && (
-                      <div>
-                        <p className="text-xs text-gray-500 font-medium mb-1">
-                          CATEGORIES
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          <CategoriesCell categories={newsItem.categories} />
-                        </div>
-                      </div>
+                      <UserInfoItem
+                        label="CATEGORIES"
+                        categories={newsItem.categories}
+                      />
                     )}
                   </div>
 
                   {/* Second Row */}
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-[#2d3349]">
                     {/* Submitted At */}
-                    <div>
-                      <p className="text-xs text-gray-500 font-medium mb-1">
-                        SUBMITTED AT
-                      </p>
-                      <p className="text-sm text-gray-400">
-                        {newsItem.submittedAt
-                          ? new Date(newsItem.submittedAt).toLocaleString()
-                          : "N/A"}
-                      </p>
-                    </div>
+                    <UserInfoItem
+                      label="SUBMITTED AT"
+                      timestamp={newsItem.submittedAt}
+                      fallbackText="N/A"
+                    />
 
                     {/* Reviewed By */}
-                    <div>
-                      <p className="text-xs text-gray-500 font-medium mb-1">
-                        REVIEWED BY
-                      </p>
-                      <div className="space-y-1">
-                        <p className="text-sm text-gray-400">
-                          {newsItem.reviewedBy || "Not reviewed"}
-                        </p>
-                        {newsItem.reviewedAt && (
-                          <p className="text-xs text-gray-500">
-                            {new Date(newsItem.reviewedAt).toLocaleString()}
-                          </p>
-                        )}
-                      </div>
-                    </div>
+                    <UserInfoItem
+                      label="REVIEWED BY"
+                      userName={newsItem.reviewedBy}
+                      timestamp={newsItem.reviewedAt}
+                      fallbackText="Not reviewed"
+                    />
 
                     {/* Reward Points */}
                     {typeof newsItem.rewardPoints === "number" && (
-                      <div>
-                        <p className="text-xs text-gray-500 font-medium mb-1">
-                          REWARD POINTS
-                        </p>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-sm font-medium text-yellow-400">
-                            {newsItem.rewardPoints}
-                          </span>
-                          <span className="text-xs text-gray-400">points</span>
-                        </div>
-                      </div>
+                      <UserInfoItem
+                        label="REWARD POINTS"
+                        rewardPoints={newsItem.rewardPoints}
+                      />
                     )}
 
                     {/* Badges */}
-                    {newsItem.badges && (
-                      <div>
-                        <p className="text-xs text-gray-500 font-medium mb-1">
-                          BADGES
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          {Object.entries(newsItem.badges).map(
-                            ([badgeType, count]) =>
-                              count > 0 && (
-                                <div
-                                  key={badgeType}
-                                  className="flex items-center space-x-1 bg-[#2d3349] px-2 py-1 rounded-md"
-                                >
-                                  <img
-                                    src={`/assets/${badgeType.toLowerCase()}.png`}
-                                    alt={`${badgeType} badge`}
-                                    className="w-5 h-5 object-contain"
-                                  />
-                                  <span className="text-xs text-gray-200 capitalize">
-                                    {badgeType.toLowerCase()} ({count})
-                                  </span>
-                                </div>
-                              ),
-                          )}
-                        </div>
-                      </div>
-                    )}
+                    <BadgesSection badges={newsItem.badges} />
                   </div>
                 </div>
               </div>
@@ -639,82 +574,30 @@ const NewsDetailPage: React.FC = () => {
               <div className="space-y-8 mt-4">
                 {/* User Uploaded Media Row */}
                 {(newsItem.userUploadedImage || newsItem.userUploadedVideo) && (
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-semibold text-white border-b border-[#394060] pb-2">
-                      User Uploaded Content
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-                      <div className="w-full">
-                        {newsItem.userUploadedImage && (
-                          <MediaSection
-                            title="Uploaded Image"
-                            url={newsItem.userUploadedImage}
-                            type="image"
-                            isAI={false}
-                            onClick={() => {
-                              if (newsItem.userUploadedImage) {
-                                setSelectedImage({
-                                  title: "Uploaded Image",
-                                  src: newsItem.userUploadedImage,
-                                });
-                                setShowImageOverlay(true);
-                              }
-                            }}
-                          />
-                        )}
-                      </div>
-                      <div className="w-full">
-                        {newsItem.userUploadedVideo && (
-                          <MediaSection
-                            title="Uploaded Video"
-                            url={newsItem.userUploadedVideo}
-                            type="video"
-                            isAI={false}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <MediaRow
+                    title="User Uploaded Content"
+                    imageUrl={newsItem.userUploadedImage}
+                    videoUrl={newsItem.userUploadedVideo}
+                    isAI={false}
+                    onImageClick={(title, src) => {
+                      setSelectedImage({ title, src });
+                      setShowImageOverlay(true);
+                    }}
+                  />
                 )}
 
                 {/* AI Generated Media Row */}
                 {(newsItem.aiGeneratedImage || newsItem.aiGeneratedVideo) && (
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-semibold text-white border-b border-[#394060] pb-2">
-                      AI Generated Content
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-                      <div className="w-full">
-                        {newsItem.aiGeneratedImage && (
-                          <MediaSection
-                            title="AI Generated Image"
-                            url={newsItem.aiGeneratedImage}
-                            type="image"
-                            isAI={true}
-                            onClick={() => {
-                              if (newsItem.aiGeneratedImage) {
-                                setSelectedImage({
-                                  title: "AI Generated Image",
-                                  src: newsItem.aiGeneratedImage,
-                                });
-                                setShowImageOverlay(true);
-                              }
-                            }}
-                          />
-                        )}
-                      </div>
-                      <div className="w-full">
-                        {newsItem.aiGeneratedVideo && (
-                          <MediaSection
-                            title="AI Generated Video"
-                            url={newsItem.aiGeneratedVideo}
-                            type="video"
-                            isAI={true}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <MediaRow
+                    title="AI Generated Content"
+                    imageUrl={newsItem.aiGeneratedImage}
+                    videoUrl={newsItem.aiGeneratedVideo}
+                    isAI={true}
+                    onImageClick={(title, src) => {
+                      setSelectedImage({ title, src });
+                      setShowImageOverlay(true);
+                    }}
+                  />
                 )}
               </div>
             </Section>
