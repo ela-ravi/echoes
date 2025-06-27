@@ -3,20 +3,88 @@ import { Link } from "react-router-dom";
 import HeaderNav from "../components/organisms/HeaderNav";
 import { API_ENDPOINTS } from "../config/api";
 import { INewsItem } from "../types/NewsItem";
-import {
-  FaImage,
-  FaVideo,
-  FaPlay,
-  FaUserCircle,
-  FaSync,
-  FaComment,
-  FaTimesCircle,
-} from "react-icons/fa";
-import { SiOpenai } from "react-icons/si";
+import ContentModal from "../components/molecules/ContentModal";
+import { FaUserCircle, FaSync, FaComment } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAIRefresh } from "../hooks/useAIRefresh";
+import Section from "../components/atoms/Section";
+import TextArea from "../components/atoms/TextArea";
 import RejectModal from "../components/molecules/RejectModal";
+import MediaSection from "../components/molecules/MediaSection";
+import { ChevronDown } from "../components/atoms/icons";
+import CTASection from "../components/molecules/CTASection";
+
+// Categories Cell Component
+const CategoriesCell: React.FC<{ categories: string[] }> = ({
+  categories = [],
+}) => {
+  const [showOverlay, setShowOverlay] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const hasManyCategories = useMemo(() => {
+    return categories.length > 2;
+  }, [categories]);
+
+  const toggleOverlay = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowOverlay(!showOverlay);
+  };
+
+  // Close overlay when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setShowOverlay(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <div className="relative" ref={containerRef}>
+      <div className="flex flex-wrap gap-2 items-center">
+        {categories.slice(0, 2).map((cat) => (
+          <span
+            key={cat}
+            className="inline-flex items-center rounded-full bg-[#282d43] px-4 py-1 text-xs font-medium text-white"
+          >
+            {cat}
+          </span>
+        ))}
+        {hasManyCategories && (
+          <button
+            type="button"
+            aria-label="Show all categories"
+            onClick={toggleOverlay}
+            className="inline-flex items-center justify-center rounded-full bg-[#282d43] px-2 py-1 text-xs text-gray-400 hover:bg-[#2d3349] hover:text-white transition-colors"
+          >
+            <ChevronDown />
+          </button>
+        )}
+      </div>
+      {showOverlay && (
+        <div className="absolute top-full left-1/2 -translate-x-1/2 bg-[#1d2030] p-4 rounded-lg shadow-lg w-64">
+          {categories.slice(2).map((cat) => (
+            <span
+              key={cat}
+              className="block rounded-full bg-[#282d43] px-4 py-1 text-xs font-medium text-white mb-2"
+            >
+              {cat}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 type FormDataState = {
   originalText: string;
@@ -25,155 +93,35 @@ type FormDataState = {
   potentialImpact: string;
 };
 
-// Helper Components
-const Section: React.FC<{
-  title: string;
-  children: React.ReactNode;
-  onRejectClick?: (e: React.MouseEvent) => void;
-}> = ({ title, children, onRejectClick }) => (
-  <div className="mb-6">
-    <div className="flex items-center mb-2">
-      <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
-        {title}
-      </h2>
-      {title === "Potential Impact" && (
-        <button
-          className="text-red-500 hover:text-red-400 transition-colors ml-4"
-          onClick={onRejectClick}
-          title="Reject news item"
-        >
-          <FaTimesCircle className="h-5 w-5" />
-        </button>
-      )}
-    </div>
-    {children}
-  </div>
-);
-
-// Media Section Component
-const MediaSection: React.FC<{
-  title: string;
-  type: "image" | "video";
-  url?: string;
-  isAI?: boolean;
-}> = ({ title, type, url, isAI = false }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isVideoReady, setIsVideoReady] = useState(false);
-
-  if (!url) {
-    return null;
-  }
-
-  const handleVideoReady = () => {
-    setIsVideoReady(true);
-  };
-
-  return (
-    <div
-      className="border border-[#394060] rounded-lg overflow-hidden mb-6 transition-all duration-300 hover:border-[#4f8ef7]"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="flex items-center gap-2 p-3 bg-[#1d2030] border-b border-[#394060]">
-        {isAI ? (
-          <SiOpenai className="text-[#4f8ef7]" />
-        ) : type === "image" ? (
-          <FaImage className="text-[#99a2c2]" />
-        ) : (
-          <FaVideo className="text-[#99a2c2]" />
-        )}
-        <span className="text-sm font-medium text-white">{title}</span>
-      </div>
-      <div className="relative aspect-video bg-[#131520] overflow-hidden">
-        {type === "image" ? (
-          <img src={url} alt={title} className="w-full h-full object-cover" />
-        ) : (
-          <>
-            <video
-              src={url}
-              className="w-full h-full object-cover"
-              controls={isHovered}
-              onCanPlay={handleVideoReady}
-              onError={(e) => console.error("Video error:", e)}
-            />
-            {!isVideoReady && !isHovered && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                <div className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center">
-                  <FaPlay className="text-white ml-1" />
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-      <div className="p-2 text-right">
-        <span className="text-xs text-[#99a2c2]">
-          {isAI ? "AI-Generated" : "User Uploaded"}
-        </span>
-      </div>
-    </div>
-  );
-};
-
-const TextArea: React.FC<{
-  name: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  placeholder: string;
-  className?: string;
-  sectionTitle: string;
-  readOnly?: boolean;
-  setOverlayContent: (
-    content: { title: string; content: string } | null,
-  ) => void;
-}> = ({
-  name,
-  value,
-  onChange,
-  placeholder,
-  className = "",
-  sectionTitle,
-  readOnly = false,
-  setOverlayContent,
-}) => (
-  <div className="flex flex-col gap-2 py-3">
-    <div className="flex flex-1">
-      <textarea
-        name={name}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className={`form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#4f8ef7] min-h-36 placeholder:text-[#99a2c2] p-4 text-base font-normal leading-normal ${className}`}
-        readOnly={readOnly}
-      />
-    </div>
-    {value && (
-      <div className="flex justify-between items-center">
-        <span className="text-sm text-[#99a2c2]">
-          {value.length} characters
-        </span>
-        <button
-          type="button"
-          className="text-sm text-[#4f8ef7] hover:underline flex items-center gap-1"
-          onClick={() =>
-            setOverlayContent({
-              title: sectionTitle,
-              content: value,
-            })
-          }
-        >
-          View full content
-        </button>
-      </div>
-    )}
-  </div>
-);
-
 const NewsDetailPage: React.FC = () => {
-  // State hooks at the top level
+  // All state hooks must be called unconditionally at the top level
   const [newsItem, setNewsItem] = useState<INewsItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [overlayContent, setOverlayContent] = useState<{
+    title: string;
+    content: string;
+  } | null>(null);
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectComment, setRejectComment] = useState("");
+  const [showCommentOverlay, setShowCommentOverlay] = useState(false);
+  const [showImageOverlay, setShowImageOverlay] = useState(false);
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string>("");
+  const [formData, setFormData] = useState<FormDataState>({
+    originalText: "",
+    aiGeneratedText: "",
+    keyIndividuals: "",
+    potentialImpact: "",
+  });
+  const [initialFormData, setInitialFormData] = useState<FormDataState>({
+    originalText: "",
+    aiGeneratedText: "",
+    keyIndividuals: "",
+    potentialImpact: "",
+  });
+  const [hasChanges, setHasChanges] = useState(false);
+
+  // Custom hooks must be called unconditionally
   const { isRefreshing, handleAIRefresh } = useAIRefresh();
 
   const handleRefreshClick = async () => {
@@ -204,29 +152,6 @@ const NewsDetailPage: React.FC = () => {
       // Error is already handled by useAIRefresh hook
     }
   };
-
-  const [overlayContent, setOverlayContent] = useState<{
-    title: string;
-    content: string;
-  } | null>(null);
-  const [showRejectModal, setShowRejectModal] = useState(false);
-  const [rejectComment, setRejectComment] = useState("");
-  const [showCommentOverlay, setShowCommentOverlay] = useState(false);
-  const [showImageOverlay, setShowImageOverlay] = useState(false);
-  const [formData, setFormData] = useState<FormDataState>({
-    originalText: "",
-    aiGeneratedText: "",
-    keyIndividuals: "",
-    potentialImpact: "",
-  });
-
-  // Store initial form data for reset functionality
-  const [initialFormData, setInitialFormData] = useState<FormDataState>({
-    originalText: "",
-    aiGeneratedText: "",
-    keyIndividuals: "",
-    potentialImpact: "",
-  });
 
   // Save form data
   const handleSave = async () => {
@@ -270,44 +195,11 @@ const NewsDetailPage: React.FC = () => {
     }
   };
 
-  // Discard changes
+  // Reset hasChanges when form data is reset
   const handleDiscard = async () => {
-    const confirmResult = await new Promise((resolve) => {
-      toast.info(
-        <div>
-          <p className="mb-2">Are you sure you want to discard all changes?</p>
-          <div className="flex gap-2">
-            <button
-              className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-              onClick={() => {
-                toast.dismiss();
-                resolve(true);
-              }}
-            >
-              Discard
-            </button>
-            <button
-              className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600"
-              onClick={() => {
-                toast.dismiss();
-                resolve(false);
-              }}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>,
-        {
-          closeButton: false,
-          closeOnClick: false,
-          draggable: false,
-          autoClose: false,
-        },
-      );
-    });
-
-    if (confirmResult) {
+    if (window.confirm("Are you sure you want to discard all changes?")) {
       setFormData(initialFormData);
+      setHasChanges(false);
       toast.success("Changes discarded successfully!");
     }
   };
@@ -464,49 +356,37 @@ const NewsDetailPage: React.FC = () => {
     };
   }, []);
 
+  // Handle form input changes and track modifications
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      const newData = {
+        ...prev,
+        [name]: value,
+      };
+      // Check if any field has changed from its initial value
+      const hasChanges = Object.entries(newData).some(
+        ([key, val]) => initialFormData[key as keyof FormDataState] !== val,
+      );
+      setHasChanges(hasChanges);
+      return newData;
+    });
+  };
+
+  // Update hasChanges when initial data is loaded
+  useEffect(() => {
+    const changes = Object.entries(formData).some(
+      ([key, val]) => initialFormData[key as keyof FormDataState] !== val,
+    );
+    setHasChanges(changes);
+  }, [formData, initialFormData]);
+
   // Loading and error states
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!newsItem) return <div>No data found</div>;
-
-  const TextOverlay: React.FC<{
-    title: string;
-    content: string;
-    onClose: () => void;
-  }> = ({ title, content, onClose }) => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
-      <div className="relative w-full max-w-4xl rounded-xl bg-[#1d2030] p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-xl font-bold text-white">{title}</h3>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-white"
-            aria-label="Close"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
-        <div className="max-h-[70vh] overflow-y-auto rounded-lg bg-[#131520] p-4 text-white whitespace-pre-wrap">
-          {content || (
-            <span className="text-gray-500">No content available</span>
-          )}
-        </div>
-      </div>
-    </div>
-  );
 
   if (!newsItem) {
     return (
@@ -521,96 +401,6 @@ const NewsDetailPage: React.FC = () => {
       </div>
     );
   }
-
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev: FormDataState) => ({
-      ...prev,
-      [name as keyof FormDataState]: value,
-    }));
-  };
-
-  // Categories Cell Component
-  const CategoriesCell: React.FC<{ categories: string[] }> = ({
-    categories = [],
-  }) => {
-    const [showOverlay, setShowOverlay] = useState(false);
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    const hasManyCategories = useMemo(() => {
-      return categories.length > 2;
-    }, [categories]);
-
-    const toggleOverlay = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      setShowOverlay(!showOverlay);
-    };
-
-    // Close overlay when clicking outside
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (
-          containerRef.current &&
-          !containerRef.current.contains(event.target as Node)
-        ) {
-          setShowOverlay(false);
-        }
-      };
-
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, []);
-
-    return (
-      <div className="relative" ref={containerRef}>
-        <div className="flex flex-wrap gap-2 items-center">
-          {categories.slice(0, 2).map((cat) => (
-            <span
-              key={cat}
-              className="inline-flex items-center rounded-full bg-[#282d43] px-4 py-1 text-xs font-medium text-white"
-            >
-              {cat}
-            </span>
-          ))}
-          {hasManyCategories && (
-            <button
-              type="button"
-              aria-label="Show all categories"
-              onClick={toggleOverlay}
-              className="inline-flex items-center justify-center rounded-full bg-[#282d43] px-2 py-1 text-xs text-gray-400 hover:bg-[#2d3349] hover:text-white transition-colors"
-            >
-              <svg
-                className="w-3 h-3"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-          )}
-        </div>
-        {showOverlay && (
-          <div className="absolute top-full left-1/2 -translate-x-1/2 bg-[#1d2030] p-4 rounded-lg shadow-lg w-64">
-            {categories.slice(2).map((cat) => (
-              <span
-                key={cat}
-                className="block rounded-full bg-[#282d43] px-4 py-1 text-xs font-medium text-white mb-2"
-              >
-                {cat}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-[#131520] text-white">
@@ -843,11 +633,15 @@ const NewsDetailPage: React.FC = () => {
             <TextArea
               name="originalText"
               value={formData.originalText}
-              onChange={handleChange}
+              onChange={handleInputChange}
               placeholder="Original Raw Submission"
-              sectionTitle="Original Raw Submission"
               readOnly={true}
-              setOverlayContent={setOverlayContent}
+              onViewFullContent={() => {
+                setOverlayContent({
+                  title: "Original Raw Submission",
+                  content: formData.originalText,
+                });
+              }}
             />
           </Section>
 
@@ -855,10 +649,14 @@ const NewsDetailPage: React.FC = () => {
             <TextArea
               name="aiGeneratedText"
               value={formData.aiGeneratedText}
-              onChange={handleChange}
+              onChange={handleInputChange}
               placeholder="AI-generated summary will appear here..."
-              sectionTitle="AI-Curated Summary"
-              setOverlayContent={setOverlayContent}
+              onViewFullContent={() => {
+                setOverlayContent({
+                  title: "AI-Curated Summary",
+                  content: formData.aiGeneratedText,
+                });
+              }}
             />
           </Section>
 
@@ -866,15 +664,19 @@ const NewsDetailPage: React.FC = () => {
             <TextArea
               name="keyIndividuals"
               value={formData.keyIndividuals}
-              onChange={handleChange}
+              onChange={handleInputChange}
               placeholder="List key individuals mentioned in the article..."
-              sectionTitle="Key Individuals Mentioned"
-              setOverlayContent={setOverlayContent}
+              onViewFullContent={() => {
+                setOverlayContent({
+                  title: "Key Individuals Mentioned",
+                  content: formData.keyIndividuals,
+                });
+              }}
             />
           </Section>
 
           <Section
-            title="Potential Impact"
+            title="Potential Risks"
             onRejectClick={(e) => {
               e.stopPropagation();
               setShowRejectModal(true);
@@ -883,10 +685,14 @@ const NewsDetailPage: React.FC = () => {
             <TextArea
               name="potentialImpact"
               value={formData.potentialImpact}
-              onChange={handleChange}
+              onChange={handleInputChange}
               placeholder="Describe the potential impact of this news..."
-              sectionTitle="Potential Impact"
-              setOverlayContent={setOverlayContent}
+              onViewFullContent={() => {
+                setOverlayContent({
+                  title: "Potential Risks",
+                  content: formData.potentialImpact,
+                });
+              }}
             />
           </Section>
 
@@ -911,6 +717,12 @@ const NewsDetailPage: React.FC = () => {
                             url={newsItem.userUploadedImage}
                             type="image"
                             isAI={false}
+                            onClick={() => {
+                              if (newsItem.userUploadedImage) {
+                                setSelectedImageUrl(newsItem.userUploadedImage);
+                                setShowImageOverlay(true);
+                              }
+                            }}
                           />
                         )}
                       </div>
@@ -942,6 +754,12 @@ const NewsDetailPage: React.FC = () => {
                             url={newsItem.aiGeneratedImage}
                             type="image"
                             isAI={true}
+                            onClick={() => {
+                              if (newsItem.aiGeneratedImage) {
+                                setSelectedImageUrl(newsItem.aiGeneratedImage);
+                                setShowImageOverlay(true);
+                              }
+                            }}
                           />
                         )}
                       </div>
@@ -962,24 +780,28 @@ const NewsDetailPage: React.FC = () => {
             </Section>
           )}
 
-          {showImageOverlay && (
+          {showImageOverlay && selectedImageUrl && (
             <div
               className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
-              onClick={() => setShowImageOverlay(false)}
+              onClick={() => {
+                setShowImageOverlay(false);
+                setSelectedImageUrl("");
+              }}
             >
               <button
                 className="absolute top-4 right-4 text-white text-2xl bg-[#394060] rounded-full w-10 h-10 flex items-center justify-center hover:bg-[#4a527f] transition-colors"
                 onClick={(e) => {
                   e.stopPropagation();
                   setShowImageOverlay(false);
+                  setSelectedImageUrl("");
                 }}
               >
                 &times;
               </button>
               <div className="relative max-w-4xl w-full max-h-[90vh]">
                 <img
-                  src="https://via.placeholder.com/1200x800"
-                  alt="AI Generated Thumbnail - Full Size"
+                  src={selectedImageUrl}
+                  alt="Full Size Preview"
                   className="w-full h-full object-contain"
                   onClick={(e) => e.stopPropagation()}
                 />
@@ -987,52 +809,14 @@ const NewsDetailPage: React.FC = () => {
             </div>
           )}
 
-          <div className="flex flex-col-reverse sm:flex-row justify-between gap-4 mt-6 p-4 border-t border-[#282d43]">
-            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-              <Link
-                to="/news"
-                className="flex items-center justify-center gap-2 px-6 py-2 bg-transparent hover:bg-[#282d43] text-[#99a0c2] border border-[#394060] rounded-lg transition-colors lg:hidden"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-                Back to News
-              </Link>
-              <button
-                onClick={handleDiscard}
-                className="px-6 py-2 bg-transparent hover:bg-[#282d43] text-[#99a0c2] border border-[#f87171] rounded-lg transition-colors"
-              >
-                Discard Changes
-              </button>
-            </div>
-            <button
-              onClick={handleSave}
-              className="px-6 py-2 bg-[#4f8ef7] hover:bg-[#3b7af5] text-white rounded-lg transition-colors"
-            >
-              Save Changes
-            </button>
-          </div>
+          <CTASection
+            onSave={handleSave}
+            onDiscard={handleDiscard}
+            backLink="/news"
+            hasChanges={hasChanges}
+          />
         </div>
       </main>
-
-      {overlayContent && (
-        <TextOverlay
-          title={overlayContent.title}
-          content={overlayContent.content}
-          onClose={() => setOverlayContent(null)}
-        />
-      )}
 
       {showRejectModal && (
         <RejectModal
@@ -1044,43 +828,19 @@ const NewsDetailPage: React.FC = () => {
         />
       )}
       {showCommentOverlay && newsItem?.comments && (
-        <div
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
-          onClick={() => setShowCommentOverlay(false)}
-        >
-          <div
-            className="bg-[#1a1e30] rounded-xl max-w-md w-full max-h-[80vh] overflow-hidden flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="p-4 border-b border-[#2d3349] flex justify-between items-center">
-              <h3 className="text-lg font-medium">Rejection Comment</h3>
-              <button
-                onClick={() => setShowCommentOverlay(false)}
-                className="text-gray-400 hover:text-white"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="p-6 overflow-y-auto flex-grow">
-              <div className="whitespace-pre-wrap bg-[#1d2030] p-4 rounded-lg">
-                {newsItem.comments}
-              </div>
-            </div>
-          </div>
-        </div>
+        <ContentModal
+          title="Comments"
+          content={newsItem.comments}
+          onClose={() => setShowCommentOverlay(false)}
+        />
+      )}
+
+      {overlayContent && (
+        <ContentModal
+          title={overlayContent.title}
+          content={overlayContent.content}
+          onClose={() => setOverlayContent(null)}
+        />
       )}
     </div>
   );

@@ -1,223 +1,178 @@
 <html>
-  <head>
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
-    <link
-      rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
-    />
 
-    <title>Stitch Design</title>
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+<head>
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+  <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900" />
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  </head>
-  <body>
-    <div class="relative flex size-full min-h-screen flex-col bg-[#131520] dark group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
-      <div class="layout-container flex h-full grow flex-col">
-        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#282d43] px-10 py-3">
-          <div class="flex items-center gap-4 text-white">
-            <div class="size-4">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"
-                  fill="currentColor"
-                ></path>
-              </svg>
-            </div>
-            <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">News Platform</h2>
+  <title>Stitch Design</title>
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+</head>
+
+<body>
+  <div class="relative flex size-full min-h-screen flex-col bg-[#131520] dark group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+    <div class="layout-container flex h-full grow flex-col">
+      <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#282d43] px-10 py-3">
+        <div class="flex items-center gap-4 text-white">
+          <div class="size-4">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z" fill="currentColor"></path>
+            </svg>
           </div>
-          <div class="flex flex-1 justify-end gap-8">
-            <div class="flex items-center gap-9">
-              <a class="text-white text-sm font-medium leading-normal" href="#">Dashboard</a>
-              <a class="text-white text-sm font-medium leading-normal" href="#">News Items</a>
-              <a class="text-white text-sm font-medium leading-normal" href="#">Analytics</a>
-              <a class="text-white text-sm font-medium leading-normal" href="#">Settings</a>
-            </div>
-            <div
-              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
-              style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDJPCdEw85B6hiHvyWWxQm8q5qjXR3a1TO_37bjXciocL-jx1TCMGmAHwzHH8f0_QMChZDYD7Ln85QmZd5KFQSWvb5kJ25dZT3xjuLrGUXWnbAgNqKhzhNsaMixFt3-Ys6UU253GKz4RAHvrXNfV_L0Py3JKZ_0Pvbmwgsft1gHgUD85n4f4DZrobC17wBSKPE5sI-hBijUPTy1fHdKHyXXJxgaBV1DBLIFC4UC3Se3XBOFD4mY57oRNpFwBLftAeaMI-mB0v3LGFui");'
-            ></div>
+          <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">News Platform</h2>
+        </div>
+        <div class="flex flex-1 justify-end gap-8">
+          <div class="flex items-center gap-9">
+            <a class="text-white text-sm font-medium leading-normal" href="#">Dashboard</a>
+            <a class="text-white text-sm font-medium leading-normal" href="#">News Items</a>
+            <a class="text-white text-sm font-medium leading-normal" href="#">Analytics</a>
+            <a class="text-white text-sm font-medium leading-normal" href="#">Settings</a>
           </div>
-        </header>
-        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
-          <div class="layout-content-container flex flex-col max-w-[920px] flex-1">
-            <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">News Item ID: 12345</p></div>
-            <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Original Raw Submission</h2>
-            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
-                <textarea
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#394060] min-h-36 placeholder:text-[#99a0c2] p-[15px] text-base font-normal leading-normal"
-                ></textarea>
-              </label>
+          <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDJPCdEw85B6hiHvyWWxQm8q5qjXR3a1TO_37bjXciocL-jx1TCMGmAHwzHH8f0_QMChZDYD7Ln85QmZd5KFQSWvb5kJ25dZT3xjuLrGUXWnbAgNqKhzhNsaMixFt3-Ys6UU253GKz4RAHvrXNfV_L0Py3JKZ_0Pvbmwgsft1gHgUD85n4f4DZrobC17wBSKPE5sI-hBijUPTy1fHdKHyXXJxgaBV1DBLIFC4UC3Se3XBOFD4mY57oRNpFwBLftAeaMI-mB0v3LGFui");'></div>
+        </div>
+      </header>
+      <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+        <div class="layout-content-container flex flex-col max-w-[920px] flex-1">
+          <div class="flex flex-wrap justify-between gap-3 p-4">
+            <p class="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">News Item ID: 12345</p>
+          </div>
+          <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Original Raw Submission</h2>
+          <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+            <label class="flex flex-col min-w-40 flex-1">
+              <textarea class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#394060] min-h-36 placeholder:text-[#99a0c2] p-[15px] text-base font-normal leading-normal"></textarea>
+            </label>
+          </div>
+          <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">AI-Curated Summary</h2>
+          <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+            <label class="flex flex-col min-w-40 flex-1">
+              <textarea class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#394060] min-h-36 placeholder:text-[#99a0c2] p-[15px] text-base font-normal leading-normal"></textarea>
+            </label>
+          </div>
+          <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Key Individuals Mentioned</h3>
+          <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+            <label class="flex flex-col min-w-40 flex-1">
+              <textarea class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#394060] min-h-36 placeholder:text-[#99a0c2] p-[15px] text-base font-normal leading-normal"></textarea>
+            </label>
+          </div>
+          <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Conflicting Details</h3>
+          <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+            <label class="flex flex-col min-w-40 flex-1">
+              <textarea class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#394060] min-h-36 placeholder:text-[#99a0c2] p-[15px] text-base font-normal leading-normal"></textarea>
+            </label>
+          </div>
+          <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Potential Risks</h3>
+          <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+            <label class="flex flex-col min-w-40 flex-1">
+              <textarea class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#394060] min-h-36 placeholder:text-[#99a0c2] p-[15px] text-base font-normal leading-normal"></textarea>
+            </label>
+          </div>
+          <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Suggested Data Points</h3>
+          <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+            <label class="flex flex-col min-w-40 flex-1">
+              <textarea class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#394060] min-h-36 placeholder:text-[#99a0c2] p-[15px] text-base font-normal leading-normal"></textarea>
+            </label>
+          </div>
+          <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">AI-generated Thumbnail Image</h2>
+          <div class="flex w-full grow bg-[#131520] @container p-4">
+            <div class="w-full gap-1 overflow-hidden bg-[#131520] @[480px]:gap-2 aspect-[3/2] rounded-xl flex">
+              <div class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDYjOellyUD5HSJQFljJ76K3WtGy5ltRASbDHLRHxJrwBoxls62GPxnPHhF7yPxFHWtIA2jAEf3tjtXBgBiiFsYzaY4s-4P1v3tBR07lCwPaDx_OW8s9adh3tolvDWGuF3aJicbgZG5EJEwzz8yi_ZvOirESM65VglFSd51QpXODHSQWGVORyoGxCamzgdMsCesEuVa47ipt5AeFb_qkq3d4pq0Gi_6dUTUDt6ymY8eaXh-IU9DkLZp3mMFPqXc4Nam7nU02FxnZ7SN");'></div>
             </div>
-            <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">AI-Curated Summary</h2>
-            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
-                <textarea
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#394060] min-h-36 placeholder:text-[#99a0c2] p-[15px] text-base font-normal leading-normal"
-                ></textarea>
-              </label>
-            </div>
-            <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Key Individuals Mentioned</h3>
-            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
-                <textarea
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#394060] min-h-36 placeholder:text-[#99a0c2] p-[15px] text-base font-normal leading-normal"
-                ></textarea>
-              </label>
-            </div>
-            <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Conflicting Details</h3>
-            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
-                <textarea
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#394060] min-h-36 placeholder:text-[#99a0c2] p-[15px] text-base font-normal leading-normal"
-                ></textarea>
-              </label>
-            </div>
-            <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Potential Impact</h3>
-            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
-                <textarea
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#394060] min-h-36 placeholder:text-[#99a0c2] p-[15px] text-base font-normal leading-normal"
-                ></textarea>
-              </label>
-            </div>
-            <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Suggested Data Points</h3>
-            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
-                <textarea
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#394060] min-h-36 placeholder:text-[#99a0c2] p-[15px] text-base font-normal leading-normal"
-                ></textarea>
-              </label>
-            </div>
-            <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">AI-generated Thumbnail Image</h2>
-            <div class="flex w-full grow bg-[#131520] @container p-4">
-              <div class="w-full gap-1 overflow-hidden bg-[#131520] @[480px]:gap-2 aspect-[3/2] rounded-xl flex">
-                <div
-                  class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1"
-                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDYjOellyUD5HSJQFljJ76K3WtGy5ltRASbDHLRHxJrwBoxls62GPxnPHhF7yPxFHWtIA2jAEf3tjtXBgBiiFsYzaY4s-4P1v3tBR07lCwPaDx_OW8s9adh3tolvDWGuF3aJicbgZG5EJEwzz8yi_ZvOirESM65VglFSd51QpXODHSQWGVORyoGxCamzgdMsCesEuVa47ipt5AeFb_qkq3d4pq0Gi_6dUTUDt6ymY8eaXh-IU9DkLZp3mMFPqXc4Nam7nU02FxnZ7SN");'
-                ></div>
-              </div>
-            </div>
-            <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">10-second GIF-like Video</h2>
-            <div class="p-4">
-              <div
-                class="relative flex items-center justify-center bg-[#eaedfa] bg-cover bg-center aspect-video rounded-xl p-4"
-                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCmwZKltOhRWSIZDNYjf8IFdDvmZi4yZyIypewYRBgFY4BrRzraz5XNcNZontoJjHXlKudTahvyOdrexBbRkQFN2iyvD0fBsfE6m8hTu1_bGyFvjgcHwtkjnqc7azG8QYek_j34Oans6wl36KoPK_DcuZRDfgnJ_zn9ZigaiA3AuWMZulQtTD_OvTQu-JuHZ28HN4zKAk1u4yq9triPu9aLkZxDw43eHdljj38zfajIiGZK5dYuDiQ_AAZ4TQR98LNKE4ujUCNpRaTb");'
-              >
-                <button class="flex shrink-0 items-center justify-center rounded-full size-16 bg-black/40 text-white">
-                  <div class="text-inherit" data-icon="Play" data-size="24px" data-weight="fill">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                      <path
-                        d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"
-                      ></path>
-                    </svg>
-                  </div>
-                </button>
-              </div>
-            </div>
-            <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Internal Notes</h2>
-            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
-                <textarea
-                  placeholder="Add internal notes here"
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#394060] min-h-36 placeholder:text-[#99a0c2] p-[15px] text-base font-normal leading-normal"
-                ></textarea>
-              </label>
-            </div>
-            <div class="flex px-4 py-3 justify-start">
-              <button
-                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#282d43] text-white text-sm font-bold leading-normal tracking-[0.015em]"
-              >
-                <span class="truncate">Back to List</span>
+          </div>
+          <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">10-second GIF-like Video</h2>
+          <div class="p-4">
+            <div class="relative flex items-center justify-center bg-[#eaedfa] bg-cover bg-center aspect-video rounded-xl p-4" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCmwZKltOhRWSIZDNYjf8IFdDvmZi4yZyIypewYRBgFY4BrRzraz5XNcNZontoJjHXlKudTahvyOdrexBbRkQFN2iyvD0fBsfE6m8hTu1_bGyFvjgcHwtkjnqc7azG8QYek_j34Oans6wl36KoPK_DcuZRDfgnJ_zn9ZigaiA3AuWMZulQtTD_OvTQu-JuHZ28HN4zKAk1u4yq9triPu9aLkZxDw43eHdljj38zfajIiGZK5dYuDiQ_AAZ4TQR98LNKE4ujUCNpRaTb");'>
+              <button class="flex shrink-0 items-center justify-center rounded-full size-16 bg-black/40 text-white">
+                <div class="text-inherit" data-icon="Play" data-size="24px" data-weight="fill">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"></path>
+                  </svg>
+                </div>
               </button>
             </div>
           </div>
-          <div class="layout-content-container flex flex-col w-[360px]">
-            <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Social Media Verification</h2>
-            <div class="flex items-center gap-4 bg-[#131520] px-4 min-h-[72px] py-2">
-              <div class="text-white flex items-center justify-center rounded-lg bg-[#282d43] shrink-0 size-12" data-icon="ShieldCheck" data-size="24px" data-weight="regular">
+          <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Internal Notes</h2>
+          <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+            <label class="flex flex-col min-w-40 flex-1">
+              <textarea placeholder="Add internal notes here" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#394060] min-h-36 placeholder:text-[#99a0c2] p-[15px] text-base font-normal leading-normal"></textarea>
+            </label>
+          </div>
+          <div class="flex px-4 py-3 justify-start">
+            <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#282d43] text-white text-sm font-bold leading-normal tracking-[0.015em]">
+              <span class="truncate">Back to List</span>
+            </button>
+          </div>
+        </div>
+        <div class="layout-content-container flex flex-col w-[360px]">
+          <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Social Media Verification</h2>
+          <div class="flex items-center gap-4 bg-[#131520] px-4 min-h-[72px] py-2">
+            <div class="text-white flex items-center justify-center rounded-lg bg-[#282d43] shrink-0 size-12" data-icon="ShieldCheck" data-size="24px" data-weight="regular">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M208,40H48A16,16,0,0,0,32,56v58.78c0,89.61,75.82,119.34,91,124.39a15.53,15.53,0,0,0,10,0c15.2-5.05,91-34.78,91-124.39V56A16,16,0,0,0,208,40Zm0,74.79c0,78.42-66.35,104.62-80,109.18-13.53-4.51-80-30.69-80-109.18V56H208ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.68l50.34-50.34a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z"></path>
+              </svg>
+            </div>
+            <div class="flex flex-col justify-center">
+              <p class="text-white text-base font-medium leading-normal line-clamp-1">Verified</p>
+              <p class="text-[#99a0c2] text-sm font-normal leading-normal line-clamp-2">Confidence: 95%</p>
+            </div>
+          </div>
+          <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Found Links</h3>
+          <div class="flex items-center gap-4 bg-[#131520] px-4 min-h-14 justify-between">
+            <p class="text-white text-base font-normal leading-normal flex-1 truncate">News Article 1</p>
+            <div class="shrink-0">
+              <div class="text-white flex size-7 items-center justify-center" data-icon="ArrowRight" data-size="24px" data-weight="regular">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                  <path
-                    d="M208,40H48A16,16,0,0,0,32,56v58.78c0,89.61,75.82,119.34,91,124.39a15.53,15.53,0,0,0,10,0c15.2-5.05,91-34.78,91-124.39V56A16,16,0,0,0,208,40Zm0,74.79c0,78.42-66.35,104.62-80,109.18-13.53-4.51-80-30.69-80-109.18V56H208ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.68l50.34-50.34a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z"
-                  ></path>
+                  <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path>
                 </svg>
               </div>
-              <div class="flex flex-col justify-center">
-                <p class="text-white text-base font-medium leading-normal line-clamp-1">Verified</p>
-                <p class="text-[#99a0c2] text-sm font-normal leading-normal line-clamp-2">Confidence: 95%</p>
-              </div>
             </div>
-            <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Found Links</h3>
-            <div class="flex items-center gap-4 bg-[#131520] px-4 min-h-14 justify-between">
-              <p class="text-white text-base font-normal leading-normal flex-1 truncate">News Article 1</p>
-              <div class="shrink-0">
-                <div class="text-white flex size-7 items-center justify-center" data-icon="ArrowRight" data-size="24px" data-weight="regular">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                    <path
-                      d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"
-                    ></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div class="flex items-center gap-4 bg-[#131520] px-4 min-h-14 justify-between">
-              <p class="text-white text-base font-normal leading-normal flex-1 truncate">News Article 2</p>
-              <div class="shrink-0">
-                <div class="text-white flex size-7 items-center justify-center" data-icon="ArrowRight" data-size="24px" data-weight="regular">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                    <path
-                      d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"
-                    ></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div class="flex items-center gap-4 bg-[#131520] px-4 min-h-14 justify-between">
-              <p class="text-white text-base font-normal leading-normal flex-1 truncate">Social Media Post 1</p>
-              <div class="shrink-0">
-                <div class="text-white flex size-7 items-center justify-center" data-icon="ArrowRight" data-size="24px" data-weight="regular">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                    <path
-                      d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"
-                    ></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Client Validation Panel</h2>
-            <div class="flex items-center gap-4 bg-[#131520] px-4 min-h-[72px] py-2">
-              <div class="text-white flex items-center justify-center rounded-lg bg-[#282d43] shrink-0 size-12" data-icon="Buildings" data-size="24px" data-weight="regular">
+          </div>
+          <div class="flex items-center gap-4 bg-[#131520] px-4 min-h-14 justify-between">
+            <p class="text-white text-base font-normal leading-normal flex-1 truncate">News Article 2</p>
+            <div class="shrink-0">
+              <div class="text-white flex size-7 items-center justify-center" data-icon="ArrowRight" data-size="24px" data-weight="regular">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                  <path
-                    d="M240,208H224V96a16,16,0,0,0-16-16H144V32a16,16,0,0,0-24.88-13.32L39.12,72A16,16,0,0,0,32,85.34V208H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM208,96V208H144V96ZM48,85.34,128,32V208H48ZM112,112v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm-32,0v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm0,56v16a8,8,0,0,1-16,0V168a8,8,0,0,1,16,0Zm32,0v16a8,8,0,0,1-16,0V168a8,8,0,0,1,16,0Z"
-                  ></path>
+                  <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path>
                 </svg>
               </div>
-              <div class="flex flex-col justify-center">
-                <p class="text-white text-base font-medium leading-normal line-clamp-1">Client: News Corp</p>
-                <p class="text-[#99a0c2] text-sm font-normal leading-normal line-clamp-2">Status: Pending</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 bg-[#131520] px-4 min-h-14 justify-between">
+            <p class="text-white text-base font-normal leading-normal flex-1 truncate">Social Media Post 1</p>
+            <div class="shrink-0">
+              <div class="text-white flex size-7 items-center justify-center" data-icon="ArrowRight" data-size="24px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                  <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path>
+                </svg>
               </div>
             </div>
-            <div class="flex justify-center">
-              <div class="flex flex-1 gap-3 max-w-[480px] flex-col items-stretch px-4 py-3">
-                <button
-                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#eaedfa] text-[#131520] text-sm font-bold leading-normal tracking-[0.015em] w-full"
-                >
-                  <span class="truncate">Mark as Accepted</span>
-                </button>
-                <button
-                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#282d43] text-white text-sm font-bold leading-normal tracking-[0.015em] w-full"
-                >
-                  <span class="truncate">Rejected</span>
-                </button>
-              </div>
+          </div>
+          <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Client Validation Panel</h2>
+          <div class="flex items-center gap-4 bg-[#131520] px-4 min-h-[72px] py-2">
+            <div class="text-white flex items-center justify-center rounded-lg bg-[#282d43] shrink-0 size-12" data-icon="Buildings" data-size="24px" data-weight="regular">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M240,208H224V96a16,16,0,0,0-16-16H144V32a16,16,0,0,0-24.88-13.32L39.12,72A16,16,0,0,0,32,85.34V208H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM208,96V208H144V96ZM48,85.34,128,32V208H48ZM112,112v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm-32,0v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm0,56v16a8,8,0,0,1-16,0V168a8,8,0,0,1,16,0Zm32,0v16a8,8,0,0,1-16,0V168a8,8,0,0,1,16,0Z"></path>
+              </svg>
+            </div>
+            <div class="flex flex-col justify-center">
+              <p class="text-white text-base font-medium leading-normal line-clamp-1">Client: News Corp</p>
+              <p class="text-[#99a0c2] text-sm font-normal leading-normal line-clamp-2">Status: Pending</p>
+            </div>
+          </div>
+          <div class="flex justify-center">
+            <div class="flex flex-1 gap-3 max-w-[480px] flex-col items-stretch px-4 py-3">
+              <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#eaedfa] text-[#131520] text-sm font-bold leading-normal tracking-[0.015em] w-full">
+                <span class="truncate">Mark as Accepted</span>
+              </button>
+              <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#282d43] text-white text-sm font-bold leading-normal tracking-[0.015em] w-full">
+                <span class="truncate">Rejected</span>
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
