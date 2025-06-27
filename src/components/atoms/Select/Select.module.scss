@@ -28,7 +28,9 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
 
   &:focus {
     border-color: #3b82f6;

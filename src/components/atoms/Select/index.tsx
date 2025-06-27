@@ -31,7 +31,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         {error && <span className={styles.errorMessage}>{error}</span>}
       </div>
     );
-  }
+  },
 );
 
 Select.displayName = "Select";

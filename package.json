@@ -7,6 +7,10 @@
     "build": "webpack --mode production",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "format": "prettier --write 'src/**/*.{ts,tsx,scss,css,json,md}'",
+    "format:check": "prettier --check 'src/**/*.{ts,tsx,scss,css,json,md}'",
+    "format:fix": "yarn format",
+    "prettify": "prettier --write .",
+    "prettify:check": "prettier --check .",
     "server": "json-server-auth --watch db.json --port 3001",
     "dev": "concurrently \"yarn server\" \"yarn start\""
   },
