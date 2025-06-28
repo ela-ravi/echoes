@@ -1,17 +1,35 @@
 import React from "react";
 import Badge from "../atoms/Badge";
 
-interface CategoriesModalProps {
+interface TagModalProps {
   isOpen: boolean;
-  onClose: (e: React.MouseEvent) => void;
-  categories: string[];
+  onClose: () => void;
+  tags: string[];
+  title?: string;
+  type?: "publishedBy" | "rejectedBy" | "categories";
 }
 
-const CategoriesModal: React.FC<CategoriesModalProps> = ({
+const getDefaultTitle = (type?: string) => {
+  switch (type) {
+    case "publishedBy":
+      return "Published By";
+    case "rejectedBy":
+      return "Rejected By";
+    case "categories":
+      return "Categories";
+    default:
+      return "Items";
+  }
+};
+
+const TagModal: React.FC<TagModalProps> = ({
   isOpen,
   onClose,
-  categories = [],
+  tags = [],
+  title,
+  type,
 }) => {
+  const modalTitle = title || getDefaultTitle(type);
   if (!isOpen) return null;
 
   return (
@@ -24,7 +42,7 @@ const CategoriesModal: React.FC<CategoriesModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-3">
-          <h3 className="text-lg font-medium">Categories</h3>
+          <h3 className="text-lg font-medium mb-4">{modalTitle}</h3>
           <button
             type="button"
             onClick={onClose}
@@ -46,9 +64,9 @@ const CategoriesModal: React.FC<CategoriesModalProps> = ({
           </button>
         </div>
         <div className="flex flex-wrap gap-2">
-          {categories.map((cat) => (
-            <Badge key={cat} fullText={true}>
-              {cat}
+          {tags.map((tag) => (
+            <Badge key={tag} fullText={true}>
+              {tag}
             </Badge>
           ))}
         </div>
@@ -57,4 +75,4 @@ const CategoriesModal: React.FC<CategoriesModalProps> = ({
   );
 };
 
-export default CategoriesModal;
+export default TagModal;

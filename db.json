@@ -213,7 +213,8 @@
       "clientStatus": "PENDING",
       "categories": [
         "crime",
-        "health"
+        "health",
+        "politics"
       ],
       "publishedAt": null,
       "reviewedAt": null,
@@ -224,8 +225,8 @@
       "rewardPoints": null,
       "comments": null,
       "aiStatus": "COMPLETED",
-      "rejectedBy": [],
-      "publishedBy": []
+      "rejectedBy": ["TOI", "Hindustan Times", "FOX", "News 18"],
+      "publishedBy": ["CNN", "BBC", "Al Jazeera"]
     },
     {
       "id": 31,

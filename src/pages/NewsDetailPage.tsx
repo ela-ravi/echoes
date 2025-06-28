@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaUserCircle, FaComment } from "react-icons/fa";
 
 // Components
+import TagCell from "../components/molecules/TagCell";
 import HeaderNav from "../components/organisms/HeaderNav";
 import TranslationSection from "../components/organisms/TranslationSection";
 import Section from "../components/atoms/Section";
@@ -542,6 +543,56 @@ const NewsDetailPage: React.FC = () => {
                       timestamp={newsItem.reviewedAt}
                       fallbackText="Not reviewed"
                     />
+
+                    {/* Published By */}
+                    <div className="col-span-1">
+                      <div className="text-xs text-gray-400 mb-1">
+                        {newsItem.publishedBy && newsItem.publishedBy.length > 0
+                          ? "PUBLISHED BY"
+                          : "NOT PUBLISHED"}
+                      </div>
+                      {newsItem.publishedBy &&
+                      newsItem.publishedBy.length > 0 ? (
+                        <div>
+                          <TagCell
+                            tags={newsItem.publishedBy}
+                            className="text-sm"
+                            type="publishedBy"
+                          />
+                          {newsItem.publishedAt && (
+                            <div className="text-xs text-gray-400 mt-1">
+                              {new Date(newsItem.publishedAt).toLocaleString()}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="text-sm text-gray-400">
+                          Not published
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Rejected By */}
+                    <div className="col-span-1">
+                      <div className="text-xs text-gray-400 mb-1">
+                        {newsItem.rejectedBy && newsItem.rejectedBy.length > 0
+                          ? "REJECTED BY"
+                          : "NOT REJECTED"}
+                      </div>
+                      {newsItem.rejectedBy && newsItem.rejectedBy.length > 0 ? (
+                        <div>
+                          <TagCell
+                            tags={newsItem.rejectedBy}
+                            className="text-sm"
+                            type="rejectedBy"
+                          />
+                        </div>
+                      ) : (
+                        <div className="text-sm text-gray-400">
+                          Not rejected
+                        </div>
+                      )}
+                    </div>
 
                     {/* Reward Points - Always show, default to 0 if not available */}
                     <UserInfoItem
