@@ -15,10 +15,22 @@ interface ApiClientConfig extends RequestInit {
   params?: Record<string, string | number | boolean | undefined>;
 }
 
-const defaultHeaders: HeadersInit = {
-  "Content-Type": "application/json",
-  "ngrok-skip-browser-warning": "true",
-  accept: "*/*",
+const getDefaultHeaders = (endpoint: string): HeadersInit => {
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": "true",
+    accept: "*/*",
+  };
+
+  // Skip adding token for login and registration endpoints
+  if (!endpoint.includes("login") && !endpoint.includes("register-user")) {
+    const token = sessionStorage.getItem("tkn");
+    if (token) {
+      headers["tkn"] = token;
+    }
+  }
+
+  return headers;
 };
 
 /**
@@ -41,7 +53,7 @@ export async function apiClient<T = unknown>(
   const config: RequestInit = {
     method,
     headers: {
-      ...defaultHeaders,
+      ...getDefaultHeaders(endpoint),
       ...headers,
     },
     ...customConfig,

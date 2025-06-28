@@ -1,0 +1,61 @@
+/* Global styles for the application */
+
+/* Date Picker Overrides */
+.react-date-picker__wrapper {
+  border: none !important; /* Remove the inner border */
+//   background-color: #2b2f40;
+//   border-radius: 0.75rem;
+//   padding: 0.5rem;
+//   height: 3.5rem;
+}
+
+// /* Input field styles */
+// .react-date-picker__inputGroup__input {
+//   color: white !important;
+//   background: transparent;
+//   border: none;
+//   outline: none;
+// }
+
+// /* Dropdown button styles */
+// .react-date-picker__button {
+//   color: #9da3be !important;
+// }
+
+// /* Calendar dropdown styles */
+// .react-calendar {
+//   background: #2b2f40 !important;
+//   border: 1px solid #3d435c !important;
+//   border-radius: 0.75rem !important;
+//   color: white !important;
+// }
+
+// /* Navigation buttons */
+// .react-calendar__navigation button {
+//   color: white !important;
+// }
+
+// /* Day tiles */
+// .react-calendar__tile {
+//   color: white !important;
+// }
+
+// .react-calendar__tile--now {
+//   background: #394060 !important;
+// }
+
+// .react-calendar__tile--active {
+//   background: #304dce !important;
+//   color: white !important;
+// }
+
+// /* Disabled days */
+// .react-calendar__tile:disabled {
+//   color: #6b7280 !important;
+// }
+
+// /* Weekdays */
+// .react-calendar__month-view__weekdays__weekday abbr {
+//   text-decoration: none;
+//   color: #9da3be !important;
+// }

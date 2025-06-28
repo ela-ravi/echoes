@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from "../config/api";
+import { API_ENDPOINTS, getAuthHeaders } from "../config/api";
 
 export const newsService = {
   /**
@@ -10,8 +10,7 @@ export const newsService = {
     const response = await fetch(API_ENDPOINTS.NEWS.AI_RETRY(id), {
       method: "GET",
       headers: {
-        accept: "*/*",
-        "ngrok-skip-browser-warning": "true",
+        ...getAuthHeaders(),
         "client-key": "admin",
       },
     });

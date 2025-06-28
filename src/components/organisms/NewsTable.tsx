@@ -10,7 +10,7 @@ import {
   XCircleIcon,
   ArrowPathIcon,
 } from "@heroicons/react/24/outline";
-import { API_ENDPOINTS } from "../../config/api";
+import { API_ENDPOINTS, getAuthHeaders } from "../../config/api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAIRefresh } from "../../hooks/useAIRefresh";
@@ -138,11 +138,8 @@ const NewsTable: React.FC<NewsTableProps> = ({
 
       const response = await fetch(url.toString(), {
         method: "POST",
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-expect-error
         headers: {
-          "ngrok-skip-browser-warning": true,
-          "Content-Type": "application/json",
+          ...getAuthHeaders(),
           "client-key": "admin",
         },
       });
@@ -166,6 +163,7 @@ const NewsTable: React.FC<NewsTableProps> = ({
           <tr className="bg-[#1d2030] text-left">
             <th className="px-4 py-3 w-[160px]">News ID</th>
             <th className="px-4 py-3">Title</th>
+            <th className="px-4 py-3">User</th>
             <th className="px-4 py-3">Categories</th>
             <th className="px-4 py-3">Similar Source</th>
             <th className="px-4 py-3 whitespace-nowrap">Published At</th>
@@ -197,6 +195,9 @@ const NewsTable: React.FC<NewsTableProps> = ({
                 </Link>
               </td>
               <td className="px-4 py-2 truncate max-w-xs">{item.title}</td>
+              <td className="px-4 py-2 whitespace-nowrap">
+                {item.submittedBy || "N/A"}
+              </td>
               <td className="px-4 py-2 max-w-[220px]">
                 <CategoriesCell categories={item.categories || []} />
               </td>

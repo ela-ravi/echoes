@@ -11,6 +11,10 @@
     "format:fix": "yarn format",
     "prettify": "prettier --write .",
     "prettify:check": "prettier --check .",
+    "format:tsx": "yarn format:files 'src/**/*.tsx'",
+    "format:ts": "yarn format:files 'src/**/*.ts'",
+    "format:styles": "yarn format:files 'src/**/*.scss' 'src/**/*.css'",
+    "format:config": "yarn format:files '*.{json,js}'",
     "server": "json-server-auth --watch db.json --port 3001",
     "dev": "concurrently \"yarn server\" \"yarn start\""
   },
@@ -19,6 +23,7 @@
     "@types/react-toastify": "^4.0.2",
     "copy-webpack-plugin": "6.3.1",
     "react": "^18.2.0",
+    "react-date-picker": "^11.0.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0",
     "react-router-dom": "^6.22.1",

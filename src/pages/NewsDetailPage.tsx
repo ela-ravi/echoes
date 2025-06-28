@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import HeaderNav from "../components/organisms/HeaderNav";
-import { API_ENDPOINTS } from "../config/api";
+import { API_ENDPOINTS, getAuthHeaders } from "../config/api";
 import { INewsItem } from "../types/NewsItem";
 import ContentModal from "../components/molecules/ContentModal";
 import { FaUserCircle, FaComment } from "react-icons/fa";
@@ -136,7 +136,7 @@ const NewsDetailPage: React.FC = () => {
           API_ENDPOINTS.NEWS.DETAIL(newsItem.id.toString()),
           {
             headers: {
-              "Content-Type": "application/json",
+              ...getAuthHeaders(),
               "client-key": "admin",
             },
           },
@@ -164,12 +164,9 @@ const NewsDetailPage: React.FC = () => {
         API_ENDPOINTS.NEWS.UPDATE(newsItem.id.toString()),
         {
           method: "POST",
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-expect-error
           headers: {
-            "ngrok-skip-browser-warning": true,
-            accept: "*/*",
-            "Content-Type": "application/json",
+            ...getAuthHeaders(),
+            "client-key": "admin",
           },
           body: JSON.stringify({
             aiGeneratedText: formData.aiGeneratedText,
@@ -222,10 +219,8 @@ const NewsDetailPage: React.FC = () => {
 
       const response = await fetch(url.toString(), {
         method: "POST",
-        // @ts-expect-error - Skip TypeScript check for custom headers
         headers: {
-          "ngrok-skip-browser-warning": true,
-          "Content-Type": "application/json",
+          ...getAuthHeaders(),
           "client-key": "admin",
         },
       });
@@ -282,8 +277,7 @@ const NewsDetailPage: React.FC = () => {
         const response = await fetch(API_ENDPOINTS.NEWS.DETAIL(newsId), {
           signal: controller.signal,
           headers: {
-            "ngrok-skip-browser-warning": "true",
-            "Content-Type": "application/json",
+            ...getAuthHeaders(),
             "client-key": "admin",
           },
         });
@@ -437,13 +431,14 @@ const NewsDetailPage: React.FC = () => {
                   {/* First Row */}
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     {/* Similar Source */}
-                    {(newsItem.similarSourceName ||
-                      newsItem.similarSourceUrl) && (
+                    {
+                      // (newsItem.similarSourceName ||
+                      //   newsItem.similarSourceUrl) &&
                       <UserInfoItem
                         label="SIMILAR SOURCE"
                         content={similarSourceContent}
                       />
-                    )}
+                    }
 
                     {/* Status */}
                     <UserInfoItem label="STATUS" content={statusContent} />
@@ -469,6 +464,7 @@ const NewsDetailPage: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-[#2d3349]">
                     {/* Submitted At */}
                     <UserInfoItem
+                      userName={newsItem.user}
                       label="SUBMITTED AT"
                       timestamp={newsItem.submittedAt}
                       fallbackText="N/A"
@@ -482,16 +478,24 @@ const NewsDetailPage: React.FC = () => {
                       fallbackText="Not reviewed"
                     />
 
-                    {/* Reward Points */}
-                    {typeof newsItem.rewardPoints === "number" && (
-                      <UserInfoItem
-                        label="REWARD POINTS"
-                        rewardPoints={newsItem.rewardPoints}
-                      />
-                    )}
+                    {/* Reward Points - Always show, default to 0 if not available */}
+                    <UserInfoItem
+                      label="REWARD POINTS"
+                      rewardPoints={
+                        typeof newsItem.rewardPoints === "number"
+                          ? newsItem.rewardPoints
+                          : 0
+                      }
+                    />
 
-                    {/* Badges */}
-                    <BadgesSection badges={newsItem.badges} />
+                    {/* Badges - Show with default values if not available */}
+                    <BadgesSection
+                      badges={{
+                        GOLD: newsItem.badges?.GOLD || 0,
+                        SILVER: newsItem.badges?.SILVER || 0,
+                        BRONZE: newsItem.badges?.BRONZE || 0,
+                      }}
+                    />
                   </div>
                 </div>
               </div>

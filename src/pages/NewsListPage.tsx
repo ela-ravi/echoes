@@ -4,8 +4,9 @@ import NewsTable from "../components/organisms/NewsTable";
 import styles from "./NewsListPage.module.scss";
 
 import { INewsList } from "../types/NewsItem";
-import { API_ENDPOINTS } from "../config/api";
+import { API_ENDPOINTS, getAuthHeaders } from "../config/api";
 import useDebounce from "../hooks/useDebounce";
+import PageContainer from "../components/atoms/PageContainer";
 import NewsFilters from "../components/organisms/NewsFilters";
 
 export type NewsFilterKey = "category" | "status" | "search";
@@ -104,12 +105,7 @@ const NewsListPage: React.FC = () => {
         const apiUrl = API_ENDPOINTS.NEWS.LIST(queryParams);
 
         const response = await fetch(apiUrl, {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-expect-error
-          headers: {
-            "ngrok-skip-browser-warning": true,
-            "Content-Type": "application/json",
-          },
+          headers: getAuthHeaders(),
           signal: abortController.signal,
         });
 
@@ -198,47 +194,47 @@ const NewsListPage: React.FC = () => {
   }, [debouncedSearchTerm]);
 
   // Set up intersection observer for infinite scroll
-  useEffect(() => {
-    const currentRef = loadMoreRef.current;
-    if (
-      !currentRef ||
-      loading ||
-      loadingMore ||
-      !hasMore ||
-      !hasInitialLoad.current
-    )
-      return;
+  // useEffect(() => {
+  //   const currentRef = loadMoreRef.current;
+  //   if (
+  //     !currentRef ||
+  //     loading ||
+  //     loadingMore ||
+  //     !hasMore ||
+  //     !hasInitialLoad.current
+  //   )
+  //     return;
 
-    console.log("Setting up intersection observer");
-    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-      if (entries[0].isIntersecting) {
-        console.log("Intersection observer triggered - loading more");
-        fetchNews(page + 1, true);
-      }
-    };
+  //   console.log("Setting up intersection observer");
+  //   const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+  //     if (entries[0].isIntersecting) {
+  //       console.log("Intersection observer triggered - loading more");
+  //       fetchNews(page + 1, true);
+  //     }
+  //   };
 
-    // Clean up previous observer if it exists
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
+  //   // Clean up previous observer if it exists
+  //   if (observerRef.current) {
+  //     observerRef.current.disconnect();
+  //   }
 
-    // Create new observer
-    observerRef.current = new IntersectionObserver(handleIntersect, {
-      root: null,
-      rootMargin: "100px",
-      threshold: 0.1,
-    });
+  //   // Create new observer
+  //   observerRef.current = new IntersectionObserver(handleIntersect, {
+  //     root: null,
+  //     rootMargin: "100px",
+  //     threshold: 0.1,
+  //   });
 
-    observerRef.current.observe(currentRef);
+  //   observerRef.current.observe(currentRef);
 
-    // Cleanup function
-    return () => {
-      if (observerRef.current) {
-        console.log("Cleaning up intersection observer");
-        observerRef.current.disconnect();
-      }
-    };
-  }, [loading, loadingMore, hasMore, page, fetchNews]);
+  //   // Cleanup function
+  //   return () => {
+  //     if (observerRef.current) {
+  //       console.log("Cleaning up intersection observer");
+  //       observerRef.current.disconnect();
+  //     }
+  //   };
+  // }, [loading, loadingMore, hasMore, page, fetchNews]);
 
   // Don't return early, we'll handle loading and error states in the main return
   return (
@@ -247,7 +243,7 @@ const NewsListPage: React.FC = () => {
     >
       <HeaderNav hideSearch={true} />
 
-      <main className="flex flex-1 justify-center px-3 md:px-10 pt-24 pb-5">
+      <PageContainer>
         <div className="w-full max-w-[95%] md:max-w-[90%]">
           <h1 className="mb-4 text-[32px] font-bold leading-tight tracking-tight text-white">
             All News Items
@@ -260,6 +256,7 @@ const NewsListPage: React.FC = () => {
             onFilterChange={handleFilterChange}
             onResetFilters={resetFilters}
             isResetDisabled={areFiltersDefault()}
+            // hideSearch={true}
           />
 
           {loading && newsItems.length === 0 ? (
@@ -289,7 +286,7 @@ const NewsListPage: React.FC = () => {
             </>
           )}
         </div>
-      </main>
+      </PageContainer>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 // Using json-server as our mock API
-const API_BASE_URL = process.env.SERVER_APP_BASE_URL || "http://localhost:3001";
+export const API_BASE_URL =
+  process.env.SERVER_APP_BASE_URL || "http://localhost:3001";
 const API_ENDPOINT_NEWS_LIST =
   process.env.API_ENDPOINT_NEWS_LIST || "admin-news-list";
 const API_ENDPOINT_NEWS_DETAIL =
@@ -10,6 +11,11 @@ const API_ENDPOINT_NEWS_REVIEW =
   process.env.API_ENDPOINT_NEWS_REVIEW || "review-news";
 const API_ENDPOINT_NEWS_AI_RETRY =
   process.env.API_ENDPOINT_NEWS_AI_RETRY || "admin-ai-retry";
+const API_ENDPOINT_USER_REGISTRATION =
+  process.env.API_ENDPOINT_USER_REGISTRATION || "register-user";
+const API_ENDPOINT_USER_LOGIN = process.env.API_ENDPOINT_USER_LOGIN || "login";
+const API_ENDPOINT_USER_LOGOUT =
+  process.env.API_ENDPOINT_USER_LOGOUT || "logout";
 interface NewsListQueryParams {
   category?: string;
   keyword?: string;
@@ -43,6 +49,22 @@ const buildQueryString = (
   return queryString ? `?${queryString}` : "";
 };
 
+export const getAuthHeaders = (): HeadersInit => {
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": "true",
+    accept: "*/*",
+  };
+
+  const token =
+    typeof window !== "undefined" ? sessionStorage.getItem("tkn") : null;
+  if (token) {
+    headers["tkn"] = token;
+  }
+
+  return headers;
+};
+
 export const API_ENDPOINTS = {
   NEWS: {
     LIST: (params: NewsListQueryParams = {}) => {
@@ -59,6 +81,11 @@ export const API_ENDPOINTS = {
     REVIEW: (id: string) => `${API_BASE_URL}/${API_ENDPOINT_NEWS_REVIEW}/${id}`,
     AI_RETRY: (id: string) =>
       `${API_BASE_URL}/${API_ENDPOINT_NEWS_AI_RETRY}/${id}`,
+  },
+  USER: {
+    REGISTER: () => `${API_BASE_URL}/${API_ENDPOINT_USER_REGISTRATION}`,
+    LOGIN: () => `${API_BASE_URL}/${API_ENDPOINT_USER_LOGIN}`,
+    LOGOUT: () => `${API_BASE_URL}/${API_ENDPOINT_USER_LOGOUT}`,
   },
 } as const;
 

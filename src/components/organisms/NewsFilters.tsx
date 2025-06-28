@@ -13,6 +13,7 @@ interface NewsFiltersProps {
   onFilterChange: (key: NewsFilterKey, value: string) => void;
   onResetFilters: () => void;
   isResetDisabled?: boolean;
+  hideSearch?: boolean;
 }
 
 const NewsFilters: React.FC<NewsFiltersProps> = ({
@@ -22,32 +23,35 @@ const NewsFilters: React.FC<NewsFiltersProps> = ({
   onFilterChange,
   onResetFilters,
   isResetDisabled = false,
+  hideSearch = false,
 }) => {
   return (
     <div className="flex flex-col gap-4 w-full sm:grid sm:grid-cols-2 sm:gap-4 lg:flex lg:flex-row">
-      <div className="w-full">
-        <div className={styles.searchWrapper}>
-          <div className="relative">
-            <Input
-              id="search-news"
-              type="text"
-              placeholder="Search news..."
-              value={searchTerm}
-              onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full"
-            />
-            {searchTerm && (
-              <button
-                type="button"
-                onClick={() => onSearchChange("")}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                ✕
-              </button>
-            )}
+      {!hideSearch && (
+        <div className="w-full">
+          <div className={styles.searchWrapper}>
+            <div className="relative">
+              <Input
+                id="search-news"
+                type="text"
+                placeholder="Search news..."
+                value={searchTerm}
+                onChange={(e) => onSearchChange(e.target.value)}
+                containerClass="w-full"
+              />
+              {searchTerm && (
+                <button
+                  type="button"
+                  onClick={() => onSearchChange("")}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className={`${styles.selectWrapper} w-full`}>
         <Select
