@@ -104,7 +104,7 @@ const UserInfoItem: React.FC<UserInfoItemProps> = ({
       return (
         <div className="flex justify-between items-start">
           <p className="text-sm text-gray-400">{status || fallbackText}</p>
-          {(status === "FAILED" || status === "IN_PROGRESS") && onRefresh && (
+          {/* {(status === "FAILED" || status === "IN_PROGRESS") && onRefresh && (
             <button
               type="button"
               onClick={(e) => {
@@ -121,7 +121,7 @@ const UserInfoItem: React.FC<UserInfoItemProps> = ({
                 className={`w-3 h-3 ${isRefreshing ? "animate-spin" : ""}`}
               />
             </button>
-          )}
+          )} */}
         </div>
       );
     }

@@ -1,21 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import HeaderNav from "../components/organisms/HeaderNav";
-import { API_ENDPOINTS, getHeaders } from "../config/api";
-import { INewsItem } from "../types/NewsItem";
-import ContentModal from "../components/molecules/ContentModal";
-import { FaUserCircle, FaComment } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useAIRefresh } from "../hooks/useAIRefresh";
-import Section from "../components/atoms/Section";
+import { FaUserCircle, FaComment } from "react-icons/fa";
+
+// Components
+import HeaderNav from "../components/organisms/HeaderNav";
 import TranslationSection from "../components/organisms/TranslationSection";
+import Section from "../components/atoms/Section";
 import TextArea from "../components/atoms/TextArea";
+import ContentModal from "../components/molecules/ContentModal";
 import RejectModal from "../components/molecules/RejectModal";
 import CTASection from "../components/molecules/CTASection";
 import BadgesSection from "../components/molecules/BadgesSection";
 import UserInfoItem from "../components/molecules/UserInfoItem";
 import MediaRow from "../components/molecules/MediaRow";
+
+// Hooks
+import { INewsItem } from "../types/NewsItem";
+import { useAIRefresh } from "../hooks/useAIRefresh";
+import { NewsReviewAction, newsService } from "../services/newsService";
+import { TRANSLATION_LANGUAGES } from "../types/NewsItem";
+import { API_ENDPOINTS, getHeaders } from "../config/api";
+
+// Language options for the translation dropdown
+const LANGUAGES = [
+  { value: "hin_Deva", label: "Hindi" },
+  { value: "tam_Taml", label: "Tamil" },
+  { value: "tel_Telu", label: "Telugu" },
+  { value: "kan_Knda", label: "Kannada" },
+  { value: "mal_Mlym", label: "Malayalam" },
+  { value: "eng_Latn", label: "English" },
+];
 
 interface StatusBadgeProps {
   status?: string;
@@ -81,6 +97,13 @@ const NewsDetailPage: React.FC = () => {
     keyIndividuals: "",
     potentialImpact: "",
   });
+  const [hasChanges, setHasChanges] = useState(false);
+  const [initialFormData, setInitialFormData] = useState<FormDataState>({
+    originalText: "",
+    aiGeneratedText: "",
+    keyIndividuals: "",
+    potentialImpact: "",
+  });
 
   const similarSourceContent = newsItem?.similarSourceUrl ? (
     <a
@@ -116,13 +139,6 @@ const NewsDetailPage: React.FC = () => {
         )}
     </div>
   );
-  const [initialFormData, setInitialFormData] = useState<FormDataState>({
-    originalText: "",
-    aiGeneratedText: "",
-    keyIndividuals: "",
-    potentialImpact: "",
-  });
-  const [hasChanges, setHasChanges] = useState(false);
 
   // Custom hooks must be called unconditionally
   const { isRefreshing, handleAIRefresh } = useAIRefresh();
@@ -133,21 +149,9 @@ const NewsDetailPage: React.FC = () => {
     try {
       await handleAIRefresh(newsItem.id.toString(), async () => {
         // Refetch the news item to get updated status after successful refresh
-        const response = await fetch(
-          API_ENDPOINTS.NEWS.DETAIL(newsItem.id.toString()),
-          {
-            headers: {
-              ...getHeaders(),
-              "client-key": "admin",
-            },
-          },
+        const updatedData = await newsService.fetchNewsDetail(
+          newsItem.id.toString(),
         );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch updated news item");
-        }
-
-        const updatedData = await response.json();
         setNewsItem(updatedData);
       });
     } catch (err) {
@@ -156,41 +160,90 @@ const NewsDetailPage: React.FC = () => {
     }
   };
 
+  const fetchNewsDetail = async (languageCode?: string) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const newsId = urlParams.get("id");
+
+    if (!newsId) {
+      setError("No news ID provided");
+      setLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+    try {
+      const data = await newsService.fetchNewsDetail(newsId, {
+        signal: controller.signal,
+        languageCode: languageCode as TRANSLATION_LANGUAGES,
+      });
+
+      setNewsItem((prev) => ({
+        ...prev,
+        ...data,
+        // Only update these fields if they exist in the response
+        ...(data.originalText && { originalText: data.originalText }),
+        ...(data.aiGeneratedText && { aiGeneratedText: data.aiGeneratedText }),
+        ...(data.keyIndividuals && { keyIndividuals: data.keyIndividuals }),
+        ...(data.potentialImpact && { potentialImpact: data.potentialImpact }),
+      }));
+
+      // Update form data with the new values
+      setFormData((prev) => ({
+        ...prev,
+        ...(data.originalText && { originalText: data.originalText }),
+        ...(data.aiGeneratedText && { aiGeneratedText: data.aiGeneratedText }),
+        ...(data.keyIndividuals && { keyIndividuals: data.keyIndividuals }),
+        ...(data.potentialImpact && { potentialImpact: data.potentialImpact }),
+      }));
+
+      // Show success message if this was a language change
+      if (languageCode) {
+        const languageName =
+          LANGUAGES.find(
+            (lang: { value: string; label: string }) =>
+              lang.value === languageCode,
+          )?.label || languageCode;
+        toast.success(`Switched to ${languageName} translation`);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+        toast.error(`Failed to load translation: ${err.message}`);
+      } else {
+        setError("An unknown error occurred");
+        toast.error("Failed to load translation");
+      }
+    } finally {
+      clearTimeout(timeoutId);
+      setLoading(false);
+    }
+  };
+
   // Save form data
   const handleSave = async () => {
     if (!newsItem) return;
 
     try {
-      const response = await fetch(
-        API_ENDPOINTS.NEWS.UPDATE(newsItem.id.toString()),
+      const updatedNewsItem = await newsService.updateNewsItem(
+        newsItem.id.toString(),
         {
-          method: "POST",
-          headers: {
-            ...getHeaders(),
-            "client-key": "admin",
-          },
-          body: JSON.stringify({
-            aiGeneratedText: formData.aiGeneratedText,
-            keyIndividuals: formData.keyIndividuals,
-            potentialImpact: formData.potentialImpact,
-          }),
+          ...formData,
+          id: newsItem.id,
         },
       );
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || "Failed to save changes");
-      }
-
-      // Update initial form data to current values
+      setNewsItem(updatedNewsItem);
       setInitialFormData(formData);
+      setHasChanges(false);
       toast.success("Changes saved successfully!");
-    } catch (err) {
-      console.error("Error saving changes:", err);
+    } catch (error) {
+      console.error("Error saving changes:", error);
       toast.error(
-        `Failed to save changes: ${
-          err instanceof Error ? err.message : "Unknown error"
-        }`,
+        error instanceof Error
+          ? error.message
+          : "Failed to save changes. Please try again.",
       );
     }
   };
@@ -209,26 +262,11 @@ const NewsDetailPage: React.FC = () => {
     if (!newsItem?.id) return;
 
     try {
-      const url = new URL(API_ENDPOINTS.NEWS.REVIEW(newsItem.id));
-      url.searchParams.append("reviewerId", "2"); // Replace with actual reviewer ID
-      url.searchParams.append("status", "REJECTED");
-
-      // Add comment if it exists
-      if (rejectComment?.trim()) {
-        url.searchParams.append("comment", rejectComment.trim());
-      }
-
-      const response = await fetch(url.toString(), {
-        method: "POST",
-        headers: {
-          ...getHeaders(),
-          "client-key": "admin",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to reject news item");
-      }
+      await newsService.reviewNewsItem(
+        newsItem.id.toString(),
+        NewsReviewAction.REJECT,
+        rejectComment,
+      );
 
       toast.success("Successfully rejected news item");
       setShowRejectModal(false);
@@ -238,7 +276,9 @@ const NewsDetailPage: React.FC = () => {
       window.location.reload();
     } catch (error) {
       console.error("Error rejecting news item:", error);
-      toast.error("Failed to reject news item");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to reject news item",
+      );
     }
   };
 
@@ -246,93 +286,53 @@ const NewsDetailPage: React.FC = () => {
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
-    let retryCount = 0;
-    const MAX_RETRIES = 2;
     let isFetching = false;
 
-    const fetchNewsDetail = async () => {
+    const fetchNewsData = async () => {
       // Prevent multiple simultaneous fetches
       if (isFetching) return;
       isFetching = true;
 
+      // Get the news ID from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const newsId = urlParams.get("id");
+
+      if (!newsId) {
+        setError("No news ID provided in the URL");
+        setLoading(false);
+        isFetching = false;
+        return;
+      }
+
       try {
-        // Get the news ID from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const newsId = urlParams.get("id");
+        setLoading(true);
+        setError(null);
 
-        if (!newsId) {
-          throw new Error("No news ID provided in the URL");
-        }
+        await fetchNewsDetail();
 
-        if (isMounted) {
-          setLoading(true);
-          setError(null);
-        }
+        if (!isMounted) return;
 
-        // Skip if this is a retry and we've hit the limit
-        if (retryCount >= MAX_RETRIES) {
-          isFetching = false;
-          return;
-        }
-
-        const response = await fetch(API_ENDPOINTS.NEWS.DETAIL(newsId), {
-          signal: controller.signal,
-          headers: {
-            ...getHeaders(),
-            "client-key": "admin",
-          },
-        });
-
-        if (!isMounted) {
-          isFetching = false;
-          return;
-        }
-
-        if (!response.ok) {
-          if (response.status === 404) {
-            throw new Error("News article not found");
-          }
-          // If we get a 500 error, retry a few times
-          if (response.status === 500 && retryCount < MAX_RETRIES) {
-            retryCount++;
-            console.log(
-              `Retrying API call (attempt ${retryCount}/${MAX_RETRIES})`,
-            );
-            setTimeout(fetchNewsDetail, 1000 * retryCount); // Exponential backoff
-            isFetching = false;
-            return;
-          }
-          throw new Error(
-            `Failed to fetch news detail: ${response.statusText}`,
-          );
-        }
-
-        const data: INewsItem = await response.json();
-
-        if (!isMounted) {
-          isFetching = false;
-          return;
-        }
-
-        setNewsItem(data);
-
-        // Initialize form data with the fetched news item
+        // Update form data with the fetched news item
         const newFormData = {
-          originalText: data.originalText || "",
-          aiGeneratedText: data.aiGeneratedText || "",
-          keyIndividuals: data.keyIndividuals || "",
-          potentialImpact: data.potentialImpact || "",
+          originalText: newsItem?.originalText || "",
+          aiGeneratedText: newsItem?.aiGeneratedText || "",
+          keyIndividuals: newsItem?.keyIndividuals || "",
+          potentialImpact: newsItem?.potentialImpact || "",
         };
 
         setFormData(newFormData);
         setInitialFormData(newFormData);
       } catch (err) {
-        if (err instanceof Error && err.name === "AbortError") {
-          console.log("Fetch aborted");
-          return;
-        }
         if (isMounted) {
-          setError(err instanceof Error ? err.message : "An error occurred");
+          if (err instanceof Error && err.name === "AbortError") {
+            console.log("Fetch aborted");
+          } else {
+            setError(
+              err instanceof Error
+                ? err.message
+                : "Failed to load news details",
+            );
+          }
         }
       } finally {
         if (isMounted) {
@@ -342,8 +342,11 @@ const NewsDetailPage: React.FC = () => {
       }
     };
 
-    // Small delay to allow potential previous fetch to be aborted
-    const timer = setTimeout(fetchNewsDetail, 0);
+    // Use a small timeout to allow potential previous renders to complete
+    // This helps prevent the double-fetch in development mode
+    const timer = setTimeout(() => {
+      fetchNewsData();
+    }, 0);
 
     // Cleanup function
     return () => {
@@ -427,12 +430,62 @@ const NewsDetailPage: React.FC = () => {
                   </div>
                   <div className="ml-auto">
                     <TranslationSection
-                      onRequestTranslation={(language) => {
-                        // TODO: Implement translation API call
-                        console.log(`Requesting translation to ${language}`);
-                        toast.success(
-                          `Translation to ${language} requested successfully!`,
-                        );
+                      onLanguageChange={async (languageCode) => {
+                        try {
+                          setLoading(true);
+                          await fetchNewsDetail(languageCode);
+                        } catch (error) {
+                          console.error("Error changing language:", error);
+                        } finally {
+                          setLoading(false);
+                        }
+                      }}
+                      onRequestTranslation={async (languageCode) => {
+                        try {
+                          setLoading(true);
+                          const urlParams = new URLSearchParams(
+                            window.location.search,
+                          );
+                          const newsId = urlParams.get("id");
+
+                          if (!newsId) {
+                            throw new Error("News ID not found");
+                          }
+
+                          const response = await fetch(
+                            `${API_ENDPOINTS.CLIENT.TRANSLATE(newsId)}?languageCode=${languageCode}`,
+                            {
+                              method: "GET",
+                              headers: {
+                                ...getHeaders(),
+                                accept: "*/*",
+                              },
+                            },
+                          );
+
+                          if (!response.ok) {
+                            const errorData = await response
+                              .json()
+                              .catch(() => ({}));
+                            throw new Error(
+                              errorData.message ||
+                                "Failed to request translation",
+                            );
+                          }
+
+                          toast.success(
+                            `Successfully requested translation to ${languageCode}`,
+                          );
+                        } catch (error) {
+                          console.error("Error requesting translation:", error);
+                          toast.error(
+                            error instanceof Error
+                              ? error.message
+                              : "Failed to request translation",
+                          );
+                        } finally {
+                          setLoading(false);
+                        }
                       }}
                     />
                   </div>

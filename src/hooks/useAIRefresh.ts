@@ -4,7 +4,10 @@ import { newsService } from "../services/newsService";
 
 interface UseAIRefreshReturn {
   isRefreshing: boolean;
-  handleAIRefresh: (newsId: string, onSuccess?: () => void) => Promise<void>;
+  handleAIRefresh: (
+    newsId: string,
+    onSuccess?: () => Promise<void>,
+  ) => Promise<void>;
 }
 
 export const useAIRefresh = (): UseAIRefreshReturn => {
@@ -12,16 +15,18 @@ export const useAIRefresh = (): UseAIRefreshReturn => {
 
   const handleAIRefresh = async (
     newsId: string,
-    onSuccess?: () => void,
+    onSuccess?: () => Promise<void>,
   ): Promise<void> => {
     if (!newsId) return;
 
     try {
       setIsRefreshing(true);
       await newsService.retryAIProcessing(newsId);
+
       if (onSuccess) {
-        onSuccess();
+        await onSuccess();
       }
+
       toast.success("AI refresh initiated");
     } catch (err) {
       console.error("Error refreshing AI status:", err);
@@ -30,6 +35,7 @@ export const useAIRefresh = (): UseAIRefreshReturn => {
           err instanceof Error ? err.message : "Unknown error"
         }`,
       );
+      throw err; // Re-throw to allow error handling in the component
     } finally {
       setIsRefreshing(false);
     }

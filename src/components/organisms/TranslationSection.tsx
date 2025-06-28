@@ -5,6 +5,7 @@ import ContentModal from "../molecules/ContentModal";
 
 interface TranslationSectionProps {
   onRequestTranslation: (language: string) => void;
+  onLanguageChange?: (language: string) => void;
   className?: string;
 }
 
@@ -19,11 +20,20 @@ const LANGUAGES: Array<{ value: string; label: string }> = [
 
 const TranslationSection: React.FC<TranslationSectionProps> = ({
   onRequestTranslation,
+  onLanguageChange,
   className = "",
 }) => {
   const [selectedLanguage, setSelectedLanguage] = useState("english");
   const [translationLanguage, setTranslationLanguage] = useState("tamil");
   const [showModal, setShowModal] = useState(false);
+
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLanguage = e.target.value;
+    setSelectedLanguage(newLanguage);
+    if (onLanguageChange) {
+      onLanguageChange(newLanguage);
+    }
+  };
 
   const handleRequestTranslation = () => {
     onRequestTranslation(translationLanguage);
@@ -40,9 +50,7 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
         <div className="flex-1">
           <Select
             value={selectedLanguage}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-              setSelectedLanguage(e.target.value)
-            }
+            onChange={handleLanguageChange}
             options={LANGUAGES}
             className="w-full"
           />

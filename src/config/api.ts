@@ -95,11 +95,3 @@ export const API_ENDPOINTS = {
       `${API_BASE_URL}/${API_ENDPOINT_NEWS_TRANSLATE}/${id}`,
   },
 } as const;
-
-// For development with mock data
-export const MOCK_ENDPOINTS = {
-  NEWS: {
-    LIST: "/api/mockNews.json",
-    DETAIL: "/api/mockNewsDetail.json",
-  },
-} as const;

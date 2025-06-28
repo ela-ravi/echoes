@@ -10,12 +10,11 @@ import {
   XCircleIcon,
   ArrowPathIcon,
 } from "@heroicons/react/24/outline";
-import { API_ENDPOINTS, getHeaders } from "../../config/api";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useAIRefresh } from "../../hooks/useAIRefresh";
+import { NewsReviewAction, newsService } from "../../services/newsService";
 
-// export type NewsAction = "REVIEWED" | "PUBLISHED" | "REJECTED";
+// Define NEWSACTION enum locally since it's only used in this file
 enum NEWSACTION {
   REVIEWED = "REVIEWED",
   PUBLISHED = "PUBLISHED",
@@ -112,7 +111,16 @@ const NewsTable: React.FC<NewsTableProps> = ({
   const handleRefreshClick = async (id: string) => {
     try {
       setRefreshingItems((prev) => ({ ...prev, [id]: true }));
-      await handleAIRefresh(id, onUpdate);
+      await handleAIRefresh(
+        id,
+        onUpdate
+          ? async () => {
+              if (onUpdate) {
+                await onUpdate();
+              }
+            }
+          : undefined,
+      );
     } catch (error) {
       console.error("Error refreshing AI status:", error);
       toast.error("Failed to refresh AI status");
@@ -127,32 +135,30 @@ const NewsTable: React.FC<NewsTableProps> = ({
     comment?: string,
   ) => {
     try {
-      const url = new URL(API_ENDPOINTS.NEWS.REVIEW(id));
-      url.searchParams.append("reviewerId", "2"); // Replace with actual reviewer ID
-      url.searchParams.append("status", action);
+      // Map NEWSACTION to NewsReviewAction
+      const reviewAction =
+        action === NEWSACTION.REVIEWED
+          ? NewsReviewAction.APPROVE
+          : action === NEWSACTION.REJECTED
+            ? NewsReviewAction.REJECT
+            : NewsReviewAction.PENDING;
 
-      // Add comment to query params if it's a rejection and comment exists
-      if (action === NEWSACTION.REJECTED && comment?.trim()) {
-        url.searchParams.append("comment", comment.trim());
+      await newsService.reviewNewsItem(id, reviewAction, comment);
+
+      // Refresh the news list
+      if (onUpdate) {
+        await onUpdate();
       }
 
-      const response = await fetch(url.toString(), {
-        method: "POST",
-        headers: {
-          ...getHeaders(),
-          "client-key": "admin",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to ${action} news item`);
-      }
-
-      toast.success(`Successfully ${action} news item`);
-      onUpdate?.(); // Refresh the news list
+      // Show success message
+      toast.success(`News item ${action.toLowerCase()} successfully`);
     } catch (error) {
-      console.error(`Error ${action}ing news item:`, error);
-      toast.error(`Failed to ${action} news item`);
+      console.error(`Error ${action.toLowerCase()}ing news item:`, error);
+      toast.error(
+        `Failed to ${action.toLowerCase()} news item: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
+      );
     }
   };
 
