@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import HeaderNav from "../components/organisms/HeaderNav";
-import { API_ENDPOINTS, getAuthHeaders } from "../config/api";
+import { API_ENDPOINTS, getHeaders } from "../config/api";
 import { INewsItem } from "../types/NewsItem";
 import ContentModal from "../components/molecules/ContentModal";
 import { FaUserCircle, FaComment } from "react-icons/fa";
@@ -137,7 +137,7 @@ const NewsDetailPage: React.FC = () => {
           API_ENDPOINTS.NEWS.DETAIL(newsItem.id.toString()),
           {
             headers: {
-              ...getAuthHeaders(),
+              ...getHeaders(),
               "client-key": "admin",
             },
           },
@@ -166,7 +166,7 @@ const NewsDetailPage: React.FC = () => {
         {
           method: "POST",
           headers: {
-            ...getAuthHeaders(),
+            ...getHeaders(),
             "client-key": "admin",
           },
           body: JSON.stringify({
@@ -221,7 +221,7 @@ const NewsDetailPage: React.FC = () => {
       const response = await fetch(url.toString(), {
         method: "POST",
         headers: {
-          ...getAuthHeaders(),
+          ...getHeaders(),
           "client-key": "admin",
         },
       });
@@ -278,7 +278,7 @@ const NewsDetailPage: React.FC = () => {
         const response = await fetch(API_ENDPOINTS.NEWS.DETAIL(newsId), {
           signal: controller.signal,
           headers: {
-            ...getAuthHeaders(),
+            ...getHeaders(),
             "client-key": "admin",
           },
         });
