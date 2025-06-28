@@ -16,6 +16,9 @@ const API_ENDPOINT_USER_REGISTRATION =
 const API_ENDPOINT_USER_LOGIN = process.env.API_ENDPOINT_USER_LOGIN || "login";
 const API_ENDPOINT_USER_LOGOUT =
   process.env.API_ENDPOINT_USER_LOGOUT || "logout";
+const API_ENDPOINT_NEWS_TRANSLATE =
+  process.env.API_ENDPOINT_NEWS_TRANSLATE || "client-translate-mew";
+
 interface NewsListQueryParams {
   category?: string;
   keyword?: string;
@@ -49,7 +52,7 @@ const buildQueryString = (
   return queryString ? `?${queryString}` : "";
 };
 
-export const getAuthHeaders = (): HeadersInit => {
+export const getHeaders = (): HeadersInit => {
   const headers: HeadersInit = {
     "Content-Type": "application/json",
     "ngrok-skip-browser-warning": "true",
@@ -86,6 +89,10 @@ export const API_ENDPOINTS = {
     REGISTER: () => `${API_BASE_URL}/${API_ENDPOINT_USER_REGISTRATION}`,
     LOGIN: () => `${API_BASE_URL}/${API_ENDPOINT_USER_LOGIN}`,
     LOGOUT: () => `${API_BASE_URL}/${API_ENDPOINT_USER_LOGOUT}`,
+  },
+  CLIENT: {
+    TRANSLATE: (id: string) =>
+      `${API_BASE_URL}/${API_ENDPOINT_NEWS_TRANSLATE}/${id}`,
   },
 } as const;
 

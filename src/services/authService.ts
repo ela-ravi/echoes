@@ -1,4 +1,4 @@
-import { API_ENDPOINTS, getAuthHeaders } from "../config/api";
+import { API_ENDPOINTS, getHeaders } from "../config/api";
 
 export interface LoginResponse {
   status: string;
@@ -52,7 +52,7 @@ export const authService = {
     try {
       const response = await fetch(API_ENDPOINTS.USER.LOGOUT(), {
         method: "POST",
-        headers: getAuthHeaders(),
+        headers: getHeaders(),
       });
 
       if (!response.ok) {

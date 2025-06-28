@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAIRefresh } from "../hooks/useAIRefresh";
 import Section from "../components/atoms/Section";
+import TranslationSection from "../components/organisms/TranslationSection";
 import TextArea from "../components/atoms/TextArea";
 import RejectModal from "../components/molecules/RejectModal";
 import CTASection from "../components/molecules/CTASection";
@@ -423,6 +424,17 @@ const NewsDetailPage: React.FC = () => {
                     <p className="text-gray-400">
                       {newsItem.userMailId || "No email provided"}
                     </p>
+                  </div>
+                  <div className="ml-auto">
+                    <TranslationSection
+                      onRequestTranslation={(language) => {
+                        // TODO: Implement translation API call
+                        console.log(`Requesting translation to ${language}`);
+                        toast.success(
+                          `Translation to ${language} requested successfully!`,
+                        );
+                      }}
+                    />
                   </div>
                 </div>
 

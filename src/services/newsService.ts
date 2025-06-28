@@ -1,4 +1,4 @@
-import { API_ENDPOINTS, getAuthHeaders } from "../config/api";
+import { API_ENDPOINTS, getHeaders } from "../config/api";
 
 export const newsService = {
   /**
@@ -10,7 +10,7 @@ export const newsService = {
     const response = await fetch(API_ENDPOINTS.NEWS.AI_RETRY(id), {
       method: "GET",
       headers: {
-        ...getAuthHeaders(),
+        ...getHeaders(),
         "client-key": "admin",
       },
     });

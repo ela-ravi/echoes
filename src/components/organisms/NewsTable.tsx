@@ -10,7 +10,7 @@ import {
   XCircleIcon,
   ArrowPathIcon,
 } from "@heroicons/react/24/outline";
-import { API_ENDPOINTS, getAuthHeaders } from "../../config/api";
+import { API_ENDPOINTS, getHeaders } from "../../config/api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAIRefresh } from "../../hooks/useAIRefresh";
@@ -139,7 +139,7 @@ const NewsTable: React.FC<NewsTableProps> = ({
       const response = await fetch(url.toString(), {
         method: "POST",
         headers: {
-          ...getAuthHeaders(),
+          ...getHeaders(),
           "client-key": "admin",
         },
       });

@@ -4,7 +4,7 @@ import NewsTable from "../components/organisms/NewsTable";
 import styles from "./NewsListPage.module.scss";
 
 import { INewsList } from "../types/NewsItem";
-import { API_ENDPOINTS, getAuthHeaders } from "../config/api";
+import { API_ENDPOINTS, getHeaders } from "../config/api";
 import useDebounce from "../hooks/useDebounce";
 import PageContainer from "../components/atoms/PageContainer";
 import NewsFilters from "../components/organisms/NewsFilters";
@@ -105,7 +105,7 @@ const NewsListPage: React.FC = () => {
         const apiUrl = API_ENDPOINTS.NEWS.LIST(queryParams);
 
         const response = await fetch(apiUrl, {
-          headers: getAuthHeaders(),
+          headers: getHeaders(),
           signal: abortController.signal,
         });
 
