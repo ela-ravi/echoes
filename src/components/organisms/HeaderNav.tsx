@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./HeaderNav.module.scss";
 import authService from "../../services/authService";
+import styles from "./HeaderNav.module.scss";
 
 interface HeaderNavProps {
   hideSearch?: boolean;
@@ -96,7 +96,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
             </div>
             <span className="hidden md:inline">User</span>
             <svg
-              className={`size-4 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`}
+              className={`size-4 transition-transform ${userMenuOpen ? "rotate-180" : ""}`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -114,29 +114,29 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
           {/* Dropdown menu */}
           {userMenuOpen && (
             <>
-              <div 
-                className="fixed inset-0 z-10" 
+              <div
+                className="fixed inset-0 z-10"
                 onClick={() => setUserMenuOpen(false)}
                 aria-hidden="true"
               />
-              <div className="absolute right-0 mt-2 w-48 bg-[#1a1f33] rounded-md shadow-lg py-1 z-20">
+              <div className="absolute right-0 mt-2 w-48 bg-[var(--color-bg-card)] rounded-md shadow-lg py-1 z-20">
                 <Link
                   to="/profile"
-                  className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#252e4e] hover:text-white"
+                  className="block px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]"
                   onClick={() => setUserMenuOpen(false)}
                 >
                   Profile
                 </Link>
                 <Link
                   to="/settings"
-                  className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#252e4e] hover:text-white"
+                  className="block px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]"
                   onClick={() => setUserMenuOpen(false)}
                 >
                   Settings
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-[#252e4e] hover:text-red-400"
+                  className="w-full text-left px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-status-error)]"
                 >
                   Sign out
                 </button>

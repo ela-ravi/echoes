@@ -54,12 +54,12 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#131520] text-white">
+    <div className="min-h-screen bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] flex flex-col">
       <HeaderNav hideSearch={true} />
 
-      <PageContainer className="px-4 sm:px-10 md:px-40">
+      <PageContainer className="flex-1 flex items-center justify-center py-12">
         <form onSubmit={handleSubmit} className="w-full max-w-[512px] py-5">
-          <h2 className="text-white tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">
+          <h2 className="text-[var(--color-text-primary)] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">
             Welcome back
           </h2>
 
@@ -71,7 +71,7 @@ const Login: React.FC = () => {
               placeholder="Email"
               value={formData.email}
               onChange={handleInputChange}
-              containerClass="w-full bg-[#282d43] border-none rounded-xl h-14 px-2 text-white placeholder-[#99a0c2] focus:ring-0 py-2 content-center"
+              containerClass="w-full bg-[var(--color-bg-card)] border-none rounded-xl h-14 px-2 text-[var(--color-text-placeholder)] placeholder-[var(--color-text-placeholder)] focus:ring-0 py-2 content-center"
               required
             />
           </div>
@@ -84,13 +84,13 @@ const Login: React.FC = () => {
               placeholder="Password"
               value={formData.password}
               onChange={handleInputChange}
-              containerClass="w-full bg-[#282d43] border-none rounded-xl h-14 px-2 text-white placeholder-[#99a0c2] focus:ring-0 py-2 content-center"
+              containerClass="w-full bg-[var(--color-bg-card)] border-none rounded-xl h-14 px-2 text-[var(--color-text-placeholder)] placeholder-[var(--color-text-placeholder)] focus:ring-0 py-2 content-center"
               required
             />
           </div>
 
           <p
-            className="text-[#99a0c2] text-sm font-normal leading-normal pb-3 pt-1 px-4 underline cursor-pointer hover:text-white transition-colors"
+            className="text-[var(--color-text-placeholder)] text-sm font-normal leading-normal pb-3 pt-1 px-4 underline cursor-pointer hover:text-white transition-colors"
             onClick={handleForgotPassword}
           >
             Forgot password?
@@ -102,21 +102,27 @@ const Login: React.FC = () => {
               disabled={isLoading}
               className={`w-full h-10 rounded-full text-sm font-bold tracking-[0.015em] ${
                 isLoading
-                  ? "bg-[#2a44bb] cursor-not-allowed"
-                  : "bg-[#304dce] hover:bg-[#2a44bb]"
+                  ? "bg-[var(--color-button-disabled)] cursor-not-allowed"
+                  : "bg-[var(--color-button-primary)] hover:bg-[var(--color-button-primary-hover)]"
               }`}
             >
               {isLoading ? "Logging in..." : "Submit"}
             </Button>
           </div>
 
-          <p className="text-[#99a0c2] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center">
+          <p className="text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center">
             New User?{" "}
             <span
-              className="underline cursor-pointer hover:text-white transition-colors"
+              className="underline cursor-pointer transition-colors hover:text-white"
               onClick={handleRegister}
             >
-              Register here
+              <Button
+                type="button"
+                variant="secondary"
+                className="w-full bg-[var(--color-button-secondary)] hover:bg-[var(--color-button-secondary-hover)] text-white font-medium py-3 px-6 rounded-lg transition-colors"
+              >
+                Register here
+              </Button>
             </span>
           </p>
 

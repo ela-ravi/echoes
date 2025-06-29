@@ -7,6 +7,7 @@ import Registration from "./pages/Registration/Registration";
 import Login from "./pages/Login/Login";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./theme/global.css";
 
 const App: React.FC = () => {
   return (
