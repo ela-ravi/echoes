@@ -17,7 +17,9 @@ const API_ENDPOINT_USER_LOGIN = process.env.API_ENDPOINT_USER_LOGIN || "login";
 const API_ENDPOINT_USER_LOGOUT =
   process.env.API_ENDPOINT_USER_LOGOUT || "logout";
 const API_ENDPOINT_NEWS_TRANSLATE =
-  process.env.API_ENDPOINT_NEWS_TRANSLATE || "client-translate-mew";
+  process.env.API_ENDPOINT_NEWS_TRANSLATE || "client-translate-request";
+const API_ENDPOINT_USER_INFO =
+  process.env.API_ENDPOINT_USER_INFO || "user-info";
 
 interface NewsListQueryParams {
   category?: string;
@@ -61,9 +63,9 @@ export const getHeaders = (): HeadersInit => {
 
   const token =
     typeof window !== "undefined" ? sessionStorage.getItem("tkn") : null;
-  if (token) {
-    headers["tkn"] = token;
-  }
+  // if (token) {
+  headers["tkn"] = token || "";
+  // }
 
   return headers;
 };
@@ -89,6 +91,7 @@ export const API_ENDPOINTS = {
     REGISTER: () => `${API_BASE_URL}/${API_ENDPOINT_USER_REGISTRATION}`,
     LOGIN: () => `${API_BASE_URL}/${API_ENDPOINT_USER_LOGIN}`,
     LOGOUT: () => `${API_BASE_URL}/${API_ENDPOINT_USER_LOGOUT}`,
+    INFO: () => `${API_BASE_URL}/${API_ENDPOINT_USER_INFO}`,
   },
   CLIENT: {
     TRANSLATE: (id: string) =>

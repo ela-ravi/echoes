@@ -59,10 +59,11 @@ nav {
 .react-calendar__navigation button {
   background-color: #2b2f40 !important;
 }
-.react-calendar__navigation button:enabled:hover, .react-calendar__tile:enabled:hover {
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__tile:enabled:hover {
   background-color: green !important;
 }
-.react-calendar__tile--now  {
+.react-calendar__tile--now {
   background-color: #000d41 !important;
 }
 .react-calendar__tile:disabled {

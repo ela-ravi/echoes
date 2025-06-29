@@ -225,8 +225,17 @@
       "rewardPoints": null,
       "comments": null,
       "aiStatus": "COMPLETED",
-      "rejectedBy": ["TOI", "Hindustan Times", "FOX", "News 18"],
-      "publishedBy": ["CNN", "BBC", "Al Jazeera"]
+      "rejectedBy": [
+        "TOI",
+        "Hindustan Times",
+        "FOX",
+        "News 18"
+      ],
+      "publishedBy": [
+        "CNN",
+        "BBC",
+        "Al Jazeera"
+      ]
     },
     {
       "id": 31,
@@ -511,5 +520,6 @@
       "rejectedBy": [],
       "publishedBy": []
     }
-  ]
+  ],
+  "user-info": {}
 }

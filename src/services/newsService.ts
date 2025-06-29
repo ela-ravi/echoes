@@ -1,5 +1,6 @@
 import { API_ENDPOINTS, getHeaders } from "../config/api";
 import { INewsItem, TRANSLATION_LANGUAGES } from "../types/NewsItem";
+import { UserInfo } from "../types/user";
 
 export enum NewsReviewAction {
   APPROVE = "APPROVED",
@@ -12,6 +13,26 @@ interface FetchNewsDetailOptions {
   maxRetries?: number;
   languageCode?: TRANSLATION_LANGUAGES;
 }
+
+/**
+ * Fetches the current user's information
+ * @returns Promise that resolves with the user's information
+ */
+export const fetchUserInfo = async (
+  signal?: AbortSignal,
+): Promise<UserInfo> => {
+  const response = await fetch(API_ENDPOINTS.USER.INFO(), {
+    method: "GET",
+    headers: getHeaders(),
+    signal,
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch user info");
+  }
+
+  return response.json();
+};
 
 export const newsService = {
   /**
@@ -74,12 +95,6 @@ export const newsService = {
   },
 
   /**
-   * Fetches news details by ID with retry mechanism
-   * @param id News item ID
-   * @param options Configuration options including signal for aborting and maxRetries
-   * @returns Promise that resolves with the news item data
-   */
-  /**
    * Updates a news item with the provided data
    * @param id News item ID
    * @param data Partial news item data to update
@@ -102,19 +117,13 @@ export const newsService = {
       const errorData = await response.json().catch(() => ({}));
       throw new Error(
         errorData.message ||
-        `Failed to update news item: ${response.statusText}`,
+          `Failed to update news item: ${response.statusText}`,
       );
     }
 
     return response.json();
   },
 
-  /**
-   * Fetches news details by ID with retry mechanism
-   * @param id News item ID
-   * @param options Configuration options including signal for aborting and maxRetries
-   * @returns Promise that resolves with the news item data
-   */
   /**
    * Fetches news details by ID with retry mechanism
    * @param id News item ID

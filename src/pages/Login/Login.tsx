@@ -37,7 +37,7 @@ const Login: React.FC = () => {
       setError(
         err instanceof Error
           ? err.message
-          : "An error occurred during login. Please try again."
+          : "An error occurred during login. Please try again.",
       );
     } finally {
       setIsLoading(false);

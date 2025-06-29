@@ -92,19 +92,21 @@ const NewsDetailPage: React.FC = () => {
   const [showCommentOverlay, setShowCommentOverlay] = useState(false);
   const [showImageOverlay, setShowImageOverlay] = useState(false);
   const [selectedImage, setSelectedImage] = useState<SelectedImage>(null);
+  // Initialize form data with null values to track if data has been loaded
+
   const [formData, setFormData] = useState<FormDataState>({
     originalText: "",
     aiGeneratedText: "",
     keyIndividuals: "",
     potentialImpact: "",
   });
-  const [hasChanges, setHasChanges] = useState(false);
   const [initialFormData, setInitialFormData] = useState<FormDataState>({
     originalText: "",
     aiGeneratedText: "",
     keyIndividuals: "",
     potentialImpact: "",
   });
+  const [hasChanges, setHasChanges] = useState(false);
 
   const similarSourceContent = newsItem?.similarSourceUrl ? (
     <a
@@ -190,13 +192,13 @@ const NewsDetailPage: React.FC = () => {
         ...(data.potentialImpact && { potentialImpact: data.potentialImpact }),
       }));
 
-      // Update form data with the new values
+      // Update form data with the new values, ensuring all fields are strings
       setFormData((prev) => ({
-        ...prev,
-        ...(data.originalText && { originalText: data.originalText }),
-        ...(data.aiGeneratedText && { aiGeneratedText: data.aiGeneratedText }),
-        ...(data.keyIndividuals && { keyIndividuals: data.keyIndividuals }),
-        ...(data.potentialImpact && { potentialImpact: data.potentialImpact }),
+        ...(prev || {}),
+        originalText: data.originalText || prev?.originalText || "",
+        aiGeneratedText: data.aiGeneratedText || prev?.aiGeneratedText || "",
+        keyIndividuals: data.keyIndividuals || prev?.keyIndividuals || "",
+        potentialImpact: data.potentialImpact || prev?.potentialImpact || "",
       }));
 
       // Show success message if this was a language change
@@ -224,7 +226,7 @@ const NewsDetailPage: React.FC = () => {
 
   // Save form data
   const handleSave = async () => {
-    if (!newsItem) return;
+    if (!newsItem || !hasChanges || !formData) return;
 
     try {
       const updatedNewsItem = await newsService.updateNewsItem(
@@ -313,16 +315,22 @@ const NewsDetailPage: React.FC = () => {
 
         if (!isMounted) return;
 
-        // Update form data with the fetched news item
-        const newFormData = {
-          originalText: newsItem?.originalText || "",
-          aiGeneratedText: newsItem?.aiGeneratedText || "",
-          keyIndividuals: newsItem?.keyIndividuals || "",
-          potentialImpact: newsItem?.potentialImpact || "",
-        };
+        // Update form data when newsItem changes
+        if (newsItem) {
+          const newFormData = {
+            originalText: newsItem?.originalText || "",
+            aiGeneratedText: newsItem?.aiGeneratedText || "",
+            keyIndividuals: newsItem?.keyIndividuals || "",
+            potentialImpact: newsItem?.potentialImpact || "",
+          };
 
-        setFormData(newFormData);
-        setInitialFormData(newFormData);
+          // Only update form data if we don't have any data yet
+          // or if the newsItem ID has changed
+          if (!formData || formData.originalText !== newFormData.originalText) {
+            setFormData(newFormData);
+            setInitialFormData(newFormData);
+          }
+        }
       } catch (err) {
         if (isMounted) {
           if (err instanceof Error && err.name === "AbortError") {
@@ -363,25 +371,35 @@ const NewsDetailPage: React.FC = () => {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => {
+      if (!prev) return prev; // Don't update if formData is not initialized
+
       const newData = {
         ...prev,
         [name]: value,
       };
+
       // Check if any field has changed from its initial value
-      const hasChanges = Object.entries(newData).some(
-        ([key, val]) => initialFormData[key as keyof FormDataState] !== val,
-      );
-      setHasChanges(hasChanges);
+      if (initialFormData) {
+        const hasChanges = Object.entries(newData).some(
+          ([key, val]) => initialFormData[key as keyof FormDataState] !== val,
+        );
+        setHasChanges(hasChanges);
+      }
+
       return newData;
     });
   };
 
   // Update hasChanges when initial data is loaded
   useEffect(() => {
-    const changes = Object.entries(formData).some(
-      ([key, val]) => initialFormData[key as keyof FormDataState] !== val,
-    );
-    setHasChanges(changes);
+    if (formData && initialFormData) {
+      const changes = Object.entries(formData).some(
+        ([key, val]) => initialFormData[key as keyof FormDataState] !== val,
+      );
+      setHasChanges(changes);
+    } else {
+      setHasChanges(false);
+    }
   }, [formData, initialFormData]);
 
   // Loading and error states
@@ -546,10 +564,8 @@ const NewsDetailPage: React.FC = () => {
 
                     {/* Published By */}
                     <div className="col-span-1">
-                      <div className="text-xs text-gray-400 mb-1">
-                        {newsItem.publishedBy && newsItem.publishedBy.length > 0
-                          ? "PUBLISHED BY"
-                          : "NOT PUBLISHED"}
+                      <div className="text-xs text-gray-500 mb-1">
+                        PUBLISHED BY
                       </div>
                       {newsItem.publishedBy &&
                       newsItem.publishedBy.length > 0 ? (
@@ -574,10 +590,8 @@ const NewsDetailPage: React.FC = () => {
 
                     {/* Rejected By */}
                     <div className="col-span-1">
-                      <div className="text-xs text-gray-400 mb-1">
-                        {newsItem.rejectedBy && newsItem.rejectedBy.length > 0
-                          ? "REJECTED BY"
-                          : "NOT REJECTED"}
+                      <div className="text-xs text-gray-500 mb-1">
+                        REJECTED BY
                       </div>
                       {newsItem.rejectedBy && newsItem.rejectedBy.length > 0 ? (
                         <div>

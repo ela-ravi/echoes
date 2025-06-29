@@ -3,11 +3,15 @@ import HeaderNav from "../components/organisms/HeaderNav";
 import NewsTable from "../components/organisms/NewsTable";
 import styles from "./NewsListPage.module.scss";
 
+import { useNavigate } from "react-router-dom";
 import { INewsList } from "../types/NewsItem";
+import { UserInfo } from "../types/user";
 import { API_ENDPOINTS, getHeaders } from "../config/api";
+import { fetchUserInfo } from "../services/newsService";
 import useDebounce from "../hooks/useDebounce";
 import PageContainer from "../components/atoms/PageContainer";
 import NewsFilters from "../components/organisms/NewsFilters";
+import { ROUTES } from "../config/routes";
 
 export type NewsFilterKey = "category" | "status" | "search";
 
@@ -33,6 +37,11 @@ const NewsListPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms delay
   const [newsItems, setNewsItems] = useState<INewsList[]>([]);
+  const [userInfoError, setUserInfoError] = useState<string | null>(null);
+  const hasFetchedUserInfo = useRef(false);
+  const navigate = useNavigate();
+  // Keep userInfo state in case it's needed later
+  const [, setUserInfo] = useState<UserInfo | null>(null);
 
   // Handle filter changes
   const handleFilterChange = (key: NewsFilterKey, value: string) => {
@@ -161,6 +170,69 @@ const NewsListPage: React.FC = () => {
     [PAGE_SIZE, filters, isMounted, loading, loadingMore, hasMore],
   );
 
+  // Fetch user info on initial load only
+  useEffect(() => {
+    // Skip if we've already fetched the user info
+    if (hasFetchedUserInfo.current) {
+      return;
+    }
+
+    const controller = new AbortController();
+    let isSubscribed = true;
+
+    const fetchUserData = async () => {
+      try {
+        console.log("Fetching user info...");
+        const userData = await fetchUserInfo(controller.signal);
+        if (isSubscribed) {
+          console.log("User info loaded:", userData);
+          setUserInfo(userData);
+          hasFetchedUserInfo.current = true;
+        }
+      } catch (error) {
+        if (isSubscribed && error instanceof Error) {
+          if (error.name !== "AbortError") {
+            const errorMessage =
+              error.message || "Failed to load user information";
+            console.error("Error fetching user info:", error);
+
+            // If it's an authentication error (401), redirect to login
+            if (
+              error.message.includes("401") ||
+              error.message.toLowerCase().includes("unauthorized")
+            ) {
+              console.log("Authentication failed, redirecting to login...");
+              navigate(ROUTES.LOGIN);
+              return;
+            }
+
+            // For other errors, show the error message
+            if (isSubscribed) {
+              setUserInfoError(errorMessage);
+            }
+          } else {
+            console.log("User info fetch was aborted");
+          }
+          // Reset the flag to allow retry on next mount if needed
+          hasFetchedUserInfo.current = false;
+        }
+      }
+    };
+
+    // Add a small delay to ensure the component is properly mounted
+    const timer = setTimeout(() => {
+      if (isSubscribed) {
+        fetchUserData();
+      }
+    }, 100);
+
+    return () => {
+      isSubscribed = false;
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, []);
+
   // Initial data load and filter changes with debounce
   useEffect(() => {
     isMounted.current = true;
@@ -179,7 +251,7 @@ const NewsListPage: React.FC = () => {
       if (isMounted.current) {
         fetchData();
       }
-    }, 100); // Reduced debounce time
+    }, 100);
 
     return () => {
       isMounted.current = false;
@@ -259,7 +331,45 @@ const NewsListPage: React.FC = () => {
             // hideSearch={true}
           />
 
-          {loading && newsItems.length === 0 ? (
+          {userInfoError ? (
+            <div className="mb-4 rounded-md bg-red-50 p-4">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-5 w-5 text-red-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-red-800">
+                    Error loading user information
+                  </h3>
+                  <div className="mt-2 text-sm text-red-700">
+                    <p>{userInfoError}</p>
+                  </div>
+                  <div className="mt-4">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUserInfoError(null);
+                        hasFetchedUserInfo.current = false;
+                      }}
+                      className="rounded-md bg-red-50 px-2 py-1.5 text-sm font-medium text-red-800 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-red-50"
+                    >
+                      Retry
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : loading && newsItems.length === 0 ? (
             <div className="flex flex-1 items-center justify-center py-10">
               <div className="text-xl">Loading news items...</div>
             </div>

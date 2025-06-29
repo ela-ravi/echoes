@@ -11,11 +11,11 @@ interface TranslationSectionProps {
 
 const LANGUAGES: Array<{ value: string; label: string }> = [
   { value: "english", label: "English (Default)" },
-  { value: "tamil", label: "Tamil" },
-  { value: "telugu", label: "Telugu" },
-  { value: "kannada", label: "Kannada" },
-  { value: "malayalam", label: "Malayalam" },
-  { value: "hindi", label: "Hindi" },
+  { value: "tam_Taml", label: "Tamil" },
+  { value: "tel_Telu", label: "Telugu" },
+  { value: "kan_Knda", label: "Kannada" },
+  { value: "mal_Mlym", label: "Malayalam" },
+  { value: "hin_Deva", label: "Hindi" },
 ];
 
 const TranslationSection: React.FC<TranslationSectionProps> = ({
@@ -30,6 +30,7 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLanguage = e.target.value;
     setSelectedLanguage(newLanguage);
+    console.log("===>>> newLanguage", newLanguage, e);
     if (onLanguageChange) {
       onLanguageChange(newLanguage);
     }
