@@ -13,16 +13,22 @@ const ContentModal: React.FC<ContentModalProps> = ({
   onClose,
   showCloseButton = true,
 }) => {
+  const userType = sessionStorage.getItem("userType");
+  const isClient = userType === "CLIENT";
+  const bgColor = isClient ? "bg-[#301d1d]" : "bg-[#1d2030]";
+  const borderColor = isClient ? "border-[#603939]" : "border-[#394060]";
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
       onClick={onClose}
     >
       <div
-        className="bg-[#1d2030] rounded-xl w-full max-w-4xl max-h-[90vh] flex flex-col"
+        className={`bg-[${bgColor}] rounded-xl w-full max-w-4xl max-h-[90vh] flex flex-col`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center p-4 border-b border-[#394060]">
+        <div
+          className={`flex justify-between items-center p-4 border-b ${borderColor}`}
+        >
           <h3 className="text-xl font-semibold">{title}</h3>
           {showCloseButton && (
             <button
@@ -48,7 +54,9 @@ const ContentModal: React.FC<ContentModalProps> = ({
           )}
         </div>
         <div className="p-6 overflow-y-auto flex-grow">
-          <div className="bg-[#1d2030] p-4 rounded-lg">
+          <div
+            className={`bg-[${isClient ? "#301d1d" : "#1d2030"}] p-4 rounded-lg`}
+          >
             {typeof content === "string" ? (
               <div className="whitespace-pre-wrap">{content}</div>
             ) : (

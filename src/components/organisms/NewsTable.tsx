@@ -8,14 +8,15 @@ import type { INewsList } from "../../types/NewsItem";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
 import { useAIRefresh } from "../../hooks/useAIRefresh";
-import { NewsReviewAction, newsService } from "../../services/newsService";
+import { newsService } from "../../services/newsService";
+import {
+  isActionAllowed,
+  getActionTooltip,
+  handleAction,
+  NEWSACTION,
+} from "../../utils/newsUtils";
 
 // Define NEWSACTION enum locally since it's only used in this file
-enum NEWSACTION {
-  REVIEWED = "REVIEWED",
-  PUBLISHED = "PUBLISHED",
-  REJECTED = "REJECTED",
-}
 
 export interface NewsActionPayload {
   id: string;
@@ -40,45 +41,6 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
 
   const newsDetailRoute = (id: string) =>
     isAdmin ? `/news-detail?id=${id}` : `/client-news-detail?id=${id}`;
-
-  const isActionAllowed = (status: string, actionType: string) => {
-    switch (status) {
-      case "PENDING":
-        return actionType === "review";
-      case "REVIEWED":
-        return actionType === "publish" || actionType === "reject";
-      case "PUBLISHED":
-      case "REJECTED":
-      case "SUBMITTED":
-        return false;
-      default:
-        return true; // Default to allowing actions if status is not recognized
-    }
-  };
-
-  const getActionTooltip = (status: string, actionType: string) => {
-    if (!isActionAllowed(status, actionType)) {
-      switch (status) {
-        case "PENDING":
-          return "Only Start Review action is allowed for PENDING items";
-        case "REVIEWED":
-          return "Only Publish and Reject actions are allowed for REVIEWED items";
-        case "PUBLISHED":
-          return "No actions allowed for PUBLISHED items";
-        case "REJECTED":
-          return "No actions allowed for REJECTED items";
-        case "SUBMITTED":
-          return "No actions allowed for SUBMITTED items";
-        default:
-          return "Action not allowed";
-      }
-    }
-    return actionType === "review"
-      ? "Mark as Reviewed"
-      : actionType === "publish"
-        ? "Publish"
-        : "Reject";
-  };
 
   const { isRefreshing: isGlobalRefreshing, handleAIRefresh } = useAIRefresh();
   const [refreshingItems, setRefreshingItems] = useState<
@@ -128,38 +90,28 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
     }
   };
 
-  const handleAction = async (
-    id: string,
-    action: NEWSACTION,
-    comment?: string
-  ) => {
-    try {
-      // Map NEWSACTION to NewsReviewAction
-      const reviewAction =
-        action === NEWSACTION.REVIEWED
-          ? NewsReviewAction.APPROVE
-          : action === NEWSACTION.REJECTED
-            ? NewsReviewAction.REJECT
-            : NewsReviewAction.PENDING;
-
-      await newsService.reviewNewsItem(id, reviewAction, comment);
-
-      // Refresh the news list
-      if (onUpdate) {
-        await onUpdate();
-      }
-
-      // Show success message
-      toast.success(`News item ${action.toLowerCase()} successfully`);
-    } catch (error) {
-      console.error(`Error ${action.toLowerCase()}ing news item:`, error);
-      toast.error(
-        `Failed to ${action.toLowerCase()} news item: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`
-      );
-    }
-  };
+  // const handleAction = async (
+  //   id: string,
+  //   action: NEWSACTION,
+  //   comment?: string
+  // ) => {
+  //   try {
+  //     await handleNewsAction(
+  //       id,
+  //       action as "REVIEWED" | "PUBLISHED" | "REJECTED",
+  //       newsService,
+  //       comment
+  //     );
+  //     toast.success(`News item ${action.toLowerCase()} successfully`);
+  //   } catch (error) {
+  //     console.error(`Error ${action.toLowerCase()}ing news item:`, error);
+  //     toast.error(
+  //       `Failed to ${action.toLowerCase()} news item: ${
+  //         error instanceof Error ? error.message : "Unknown error"
+  //       }`
+  //     );
+  //   }
+  // };
 
   return (
     <div

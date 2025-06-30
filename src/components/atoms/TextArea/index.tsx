@@ -28,7 +28,7 @@ const TextArea: React.FC<TextAreaProps> = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[${borderColor}] bg-[#1d2030] focus:border-[#4f8ef7] min-h-36 placeholder:text-[#99a2c2] p-4 text-base font-normal leading-normal ${className}`}
+        className={`form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl ${readOnly ? "text-gray-400" : "text-white"} focus:outline-0 focus:ring-0 border border-[${borderColor}] bg-[#1d2030] focus:border-[#4f8ef7] min-h-36 placeholder:text-[#99a2c2] p-4 text-base font-normal leading-normal ${className}`}
         readOnly={readOnly}
         disabled={readOnly}
       />

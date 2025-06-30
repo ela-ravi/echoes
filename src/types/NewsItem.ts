@@ -26,7 +26,7 @@ export interface INewsItem {
   /** Name of the reviewer, if reviewed */
   reviewedBy?: string | null;
   /** Current status of the item for the client */
-  clientStatus?: ClientStatus;
+  clientStatus: ClientStatus;
   /** List of category names the news item belongs to */
   categories?: string[];
   /** Publication date in ISO format */

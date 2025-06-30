@@ -24,6 +24,8 @@ import { NewsReviewAction, newsService } from "../../services/newsService";
 import { TRANSLATION_LANGUAGES } from "../../types/NewsItem";
 import { API_ENDPOINTS, getHeaders } from "../../config/api";
 import ClientHeaderNav from "../../components/organisms/ClientHeaderNav";
+import { NewsItemActions } from "../../components/molecules/NewsItemActions";
+import { getActionTooltip, handleAction, isActionAllowed } from "../../utils/newsUtils";
 
 // Language options for the translation dropdown
 const LANGUAGES = [
@@ -79,7 +81,7 @@ type SelectedImage = {
   src: string;
 } | null;
 
-const NewsDetailPage: React.FC = () => {
+const ClientNewsDetailPage: React.FC = () => {
   // All state hooks must be called unconditionally at the top level
   const [newsItem, setNewsItem] = useState<INewsItem | null>(null);
   const [loading, setLoading] = useState(true);
@@ -522,15 +524,18 @@ const NewsDetailPage: React.FC = () => {
                     </div>
                   </div>
                 ) : (
-                  // <NewsItemActions
-                  //   itemId={newsItem.id}
-                  //   status={newsItem.clientStatus}
-                  //   onAction={handleAction}
-                  //   onReject={handleRejectClick}
-                  //   isActionAllowed={isActionAllowed}
-                  //   getActionTooltip={getActionTooltip}
-                  // />
-                  <></>
+                  <NewsItemActions
+                    itemId={newsItem.id}
+                    status={newsItem.clientStatus}
+                    onAction={handleAction}
+                    onReject={(e: React.MouseEvent) => {
+                      e.stopPropagation();
+                      setShowRejectModal(true);
+                    }}
+                    isActionAllowed={isActionAllowed}
+                    getActionTooltip={getActionTooltip}
+                  />
+                  // <></>
                 )}
 
                 {/* Bottom Row: Additional Info */}
@@ -847,4 +852,4 @@ const NewsDetailPage: React.FC = () => {
   );
 };
 
-export default NewsDetailPage;
+export default ClientNewsDetailPage;

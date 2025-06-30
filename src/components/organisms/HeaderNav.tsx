@@ -82,8 +82,33 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
           </button>
         )}
 
+        {/* Logout button */}
+        <button
+          onClick={handleLogout}
+          className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2"
+          aria-label="Sign out"
+        >
+          <span className="hidden md:inline">Sign out</span>
+          <svg
+            className="size-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+            />
+          </svg>
+        </button>
+      </div>
+
+
         {/* User menu */}
-        <div className="relative ml-4">
+        {/* <div className="relative ml-4">
           <button
             type="button"
             onClick={() => setUserMenuOpen(!userMenuOpen)}
@@ -111,7 +136,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
             </svg>
           </button>
 
-          {/* Dropdown menu */}
+          
           {userMenuOpen && (
             <>
               <div
@@ -143,8 +168,8 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
               </div>
             </>
           )}
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
 
       {/* Mobile/Tablet search overlay */}
       {searchOpen && (

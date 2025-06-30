@@ -10,13 +10,14 @@ const Home = () => {
     const userType = sessionStorage.getItem("userType");
 
     if (token && userType) {
+      console.log("Token and UserType are available:", userType);
       // Redirect based on user type
       switch (userType) {
         case "ADMIN":
           navigate("/news");
           break;
         case "CLIENT":
-          navigate("/test-navigation");
+          navigate("/client-news");
           break;
         case "JOURNALIST":
           // Redirect to journalist page when created
@@ -26,6 +27,7 @@ const Home = () => {
           navigate("/login");
       }
     } else {
+      console.log("Token and UserType are not available");
       // If not logged in, redirect to login
       navigate("/login");
     }

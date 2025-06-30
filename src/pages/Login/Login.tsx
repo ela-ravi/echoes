@@ -37,7 +37,7 @@ const Login: React.FC = () => {
         // await authService.login(formData.email, formData.password);
         sessionStorage.setItem("userType", "ADMIN");
       }
-      navigate("/news");
+      navigate("/");
     } catch (err) {
       console.error("Login error:", err);
       setError(

@@ -23,7 +23,7 @@ const App: React.FC = () => {
         <Route
           path="/news-detail"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute requiredRole="ADMIN">
               <NewsDetailPage />
             </ProtectedRoute>
           }

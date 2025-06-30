@@ -153,7 +153,7 @@ const NewsDetailPage: React.FC = () => {
       await handleAIRefresh(newsItem.id.toString(), async () => {
         // Refetch the news item to get updated status after successful refresh
         const updatedData = await newsService.fetchNewsDetail(
-          newsItem.id.toString(),
+          newsItem.id.toString()
         );
         setNewsItem(updatedData);
       });
@@ -206,7 +206,7 @@ const NewsDetailPage: React.FC = () => {
         const languageName =
           LANGUAGES.find(
             (lang: { value: string; label: string }) =>
-              lang.value === languageCode,
+              lang.value === languageCode
           )?.label || languageCode;
         toast.success(`Switched to ${languageName} translation`);
       }
@@ -234,7 +234,7 @@ const NewsDetailPage: React.FC = () => {
         {
           ...formData,
           id: newsItem.id,
-        },
+        }
       );
 
       setNewsItem(updatedNewsItem);
@@ -246,7 +246,7 @@ const NewsDetailPage: React.FC = () => {
       toast.error(
         error instanceof Error
           ? error.message
-          : "Failed to save changes. Please try again.",
+          : "Failed to save changes. Please try again."
       );
     }
   };
@@ -268,7 +268,7 @@ const NewsDetailPage: React.FC = () => {
       await newsService.reviewNewsItem(
         newsItem.id.toString(),
         NewsReviewAction.REJECT,
-        rejectComment,
+        rejectComment
       );
 
       toast.success("Successfully rejected news item");
@@ -280,7 +280,7 @@ const NewsDetailPage: React.FC = () => {
     } catch (error) {
       console.error("Error rejecting news item:", error);
       toast.error(
-        error instanceof Error ? error.message : "Failed to reject news item",
+        error instanceof Error ? error.message : "Failed to reject news item"
       );
     }
   };
@@ -337,9 +337,7 @@ const NewsDetailPage: React.FC = () => {
             console.log("Fetch aborted");
           } else {
             setError(
-              err instanceof Error
-                ? err.message
-                : "Failed to load news details",
+              err instanceof Error ? err.message : "Failed to load news details"
             );
           }
         }
@@ -367,7 +365,7 @@ const NewsDetailPage: React.FC = () => {
 
   // Handle form input changes and track modifications
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => {
@@ -381,7 +379,7 @@ const NewsDetailPage: React.FC = () => {
       // Check if any field has changed from its initial value
       if (initialFormData) {
         const hasChanges = Object.entries(newData).some(
-          ([key, val]) => initialFormData[key as keyof FormDataState] !== val,
+          ([key, val]) => initialFormData[key as keyof FormDataState] !== val
         );
         setHasChanges(hasChanges);
       }
@@ -394,7 +392,7 @@ const NewsDetailPage: React.FC = () => {
   useEffect(() => {
     if (formData && initialFormData) {
       const changes = Object.entries(formData).some(
-        ([key, val]) => initialFormData[key as keyof FormDataState] !== val,
+        ([key, val]) => initialFormData[key as keyof FormDataState] !== val
       );
       setHasChanges(changes);
     } else {
@@ -463,7 +461,7 @@ const NewsDetailPage: React.FC = () => {
                         try {
                           setLoading(true);
                           const urlParams = new URLSearchParams(
-                            window.location.search,
+                            window.location.search
                           );
                           const newsId = urlParams.get("id");
 
@@ -479,7 +477,7 @@ const NewsDetailPage: React.FC = () => {
                                 ...getHeaders(),
                                 accept: "*/*",
                               },
-                            },
+                            }
                           );
 
                           if (!response.ok) {
@@ -488,19 +486,19 @@ const NewsDetailPage: React.FC = () => {
                               .catch(() => ({}));
                             throw new Error(
                               errorData.message ||
-                                "Failed to request translation",
+                                "Failed to request translation"
                             );
                           }
 
                           toast.success(
-                            `Successfully requested translation to ${languageCode}`,
+                            `Successfully requested translation to ${languageCode}`
                           );
                         } catch (error) {
                           console.error("Error requesting translation:", error);
                           toast.error(
                             error instanceof Error
                               ? error.message
-                              : "Failed to request translation",
+                              : "Failed to request translation"
                           );
                         } finally {
                           setLoading(false);
@@ -636,6 +634,7 @@ const NewsDetailPage: React.FC = () => {
             <TextArea
               name="originalText"
               value={formData.originalText}
+              className="border-none"
               onChange={handleInputChange}
               placeholder="Original Raw Submission"
               readOnly={true}
