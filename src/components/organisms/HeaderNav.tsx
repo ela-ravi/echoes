@@ -60,9 +60,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
   const [searchText, setSearchText] = useState("");
   // const [userMenuOpen, setUserMenuOpen] = useState(false);
 
-  const isAuthPage = ["/login", "/logged-out"].includes(
-    window.location.pathname
-  );
+  const isRegisterPage = ["/register"].includes(window.location.pathname);
 
   const handleLogout = async () => {
     try {
@@ -88,17 +86,19 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
   return (
     <header className={styles.header}>
       <div className="flex items-center justify-between w-full h-full">
-        <Link
-          to="/news"
-          className="flex items-center gap-3 text-white hover:opacity-80 transition-opacity"
-        >
-          <img
-            src="/assets/echoes-logo.png"
-            alt="Echoes Logo"
-            className="h-16 w-auto"
-          />
-          <h2 className="text-lg font-bold tracking-tight">Echoes</h2>
-        </Link>
+        {!isRegisterPage && (
+          <Link
+            to="/news"
+            className="flex items-center gap-3 text-white hover:opacity-80 transition-opacity"
+          >
+            <img
+              src="/assets/echoes-logo.png"
+              alt="Echoes Logo"
+              className="h-16 w-auto"
+            />
+            <h2 className="text-lg font-bold tracking-tight">Echoes</h2>
+          </Link>
+        )}
 
         {!hideSearch && (
           <button
@@ -129,12 +129,12 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
         )}
 
         {/* Login/Logout button */}
-        {!isAuthPage && (
-          <HeaderAuthSection
-            showLoginButton={showLoginButton}
-            handleLogout={handleLogout}
-          />
-        )}
+
+        <HeaderAuthSection
+          showLoginButton={showLoginButton}
+          handleLogout={handleLogout}
+        />
+
         {/* {showLoginButton ? (
           <Link
             to="/login"

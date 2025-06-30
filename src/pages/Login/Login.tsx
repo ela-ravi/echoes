@@ -65,7 +65,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] flex flex-col">
-      <HeaderNav hideSearch={true} />
+      {/* <HeaderNav hideSearch={true} /> */}
 
       <PageContainer className="flex-1 flex items-center justify-center py-12">
         <form onSubmit={handleSubmit} className="w-full max-w-[512px] py-5">
