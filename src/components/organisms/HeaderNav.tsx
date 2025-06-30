@@ -12,7 +12,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  // const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -40,17 +40,13 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
       <div className="flex items-center justify-between w-full h-full">
         <Link
           to="/news"
-          className="flex items-center gap-4 text-white hover:opacity-80 transition-opacity"
+          className="flex items-center gap-3 text-white hover:opacity-80 transition-opacity"
         >
-          <div className="size-4">
-            <svg
-              viewBox="0 0 48 48"
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle cx="24" cy="24" r="22" />
-            </svg>
-          </div>
+          <img
+            src="/assets/echoes-logo.png"
+            alt="Echoes Logo"
+            className="h-16 w-auto"
+          />
           <h2 className="text-lg font-bold tracking-tight">Echoes</h2>
         </Link>
 

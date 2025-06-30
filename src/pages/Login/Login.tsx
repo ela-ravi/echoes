@@ -6,6 +6,7 @@ import HeaderNav from "../../components/organisms/HeaderNav";
 import PageContainer from "../../components/atoms/PageContainer";
 import { authService } from "../../services/authService";
 import { API_BASE_URL } from "../../config/api";
+import { fetchUserInfo } from "../../services/newsService";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Login: React.FC = () => {
     email: "",
     password: "",
   });
+  const controller = new AbortController();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -33,17 +35,19 @@ const Login: React.FC = () => {
     try {
       if (API_BASE_URL !== "http://localhost:3001") {
         await authService.login(formData.email, formData.password);
+        const userInfo = await fetchUserInfo(controller.signal);
+        navigate(userInfo.type === "CLIENT" ? "/client-news" : "/news");
       } else {
         // await authService.login(formData.email, formData.password);
         sessionStorage.setItem("userType", "ADMIN");
+        navigate("/");
       }
-      navigate("/");
     } catch (err) {
       console.error("Login error:", err);
       setError(
         err instanceof Error
           ? err.message
-          : "An error occurred during login. Please try again."
+          : "An error occurred during login. Please try again.",
       );
     } finally {
       setIsLoading(false);
