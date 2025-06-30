@@ -67,7 +67,7 @@ module.exports = {
       patterns: [
         {
           from: path.resolve(__dirname, "public/assets"),
-          to: "public/assets",
+          to: "assets",
           noErrorOnMissing: true, // Don't throw error if assets directory doesn't exist
         },
         {
