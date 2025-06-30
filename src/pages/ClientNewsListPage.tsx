@@ -12,6 +12,7 @@ import useDebounce from "../hooks/useDebounce";
 import PageContainer from "../components/atoms/PageContainer";
 import NewsFilters from "../components/organisms/NewsFilters";
 import { ROUTES } from "../config/routes";
+import ClientHeaderNav from "../components/organisms/ClientHeaderNav";
 
 export type NewsFilterKey = "category" | "status" | "search";
 
@@ -23,7 +24,7 @@ export interface NewsFiltersType {
 
 const PAGE_SIZE = 10;
 
-const NewsListPage: React.FC = () => {
+const ClientNewsListPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -42,6 +43,8 @@ const NewsListPage: React.FC = () => {
   const navigate = useNavigate();
   // Keep userInfo state in case it's needed later
   const [, setUserInfo] = useState<UserInfo | null>(null);
+  const userType = sessionStorage.getItem("userType");
+  const isClient = userType === "CLIENT";
 
   // Handle filter changes
   const handleFilterChange = (key: NewsFilterKey, value: string) => {
@@ -121,7 +124,7 @@ const NewsListPage: React.FC = () => {
         if (!response.ok) {
           const errorText = await response.text();
           throw new Error(
-            `Failed to fetch news: ${response.status} ${errorText}`,
+            `Failed to fetch news: ${response.status} ${errorText}`
           );
         }
 
@@ -140,7 +143,7 @@ const NewsListPage: React.FC = () => {
         // Only update state if component is still mounted and not aborted
         if (isMounted.current && !isAborted.current) {
           setNewsItems((prevItems) =>
-            append ? [...prevItems, ...paginatedItems] : paginatedItems,
+            append ? [...prevItems, ...paginatedItems] : paginatedItems
           );
           setHasMore(paginatedItems.length === PAGE_SIZE);
           // setPage(pageNum);
@@ -167,7 +170,7 @@ const NewsListPage: React.FC = () => {
         abortController.abort();
       };
     },
-    [PAGE_SIZE, filters, isMounted, loading, loadingMore, hasMore],
+    [PAGE_SIZE, filters, isMounted, loading, loadingMore, hasMore]
   );
 
   // Fetch user info on initial load only
@@ -311,9 +314,15 @@ const NewsListPage: React.FC = () => {
   // Don't return early, we'll handle loading and error states in the main return
   return (
     <div
-      className={`relative flex min-h-screen flex-col overflow-x-hidden ${styles.pageRoot}`}
+      className={`relative flex min-h-screen flex-col overflow-x-hidden ${isClient ? styles.clientPageRoot : styles.pageRoot}`}
     >
-      <HeaderNav hideSearch={true} />
+      {/* <HeaderNav hideSearch={true} /> */}
+      {isClient ? (
+        <ClientHeaderNav hideSearch={true} />
+      ) : (
+        <HeaderNav hideSearch={true} />
+      )}
+      {/* <ClientHeaderNav hideSearch={true} /> */}
 
       <PageContainer>
         <div className="w-full max-w-[95%] md:max-w-[90%]">
@@ -401,4 +410,4 @@ const NewsListPage: React.FC = () => {
   );
 };
 
-export default NewsListPage;
+export default ClientNewsListPage;

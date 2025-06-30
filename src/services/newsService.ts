@@ -31,7 +31,18 @@ export const fetchUserInfo = async (
     throw new Error("Failed to fetch user info");
   }
 
-  return response.json();
+  const userInfo = await response.json();
+
+  // Store user type in session storage if available
+  if (userInfo) {
+    if (userInfo.type) {
+      sessionStorage.setItem("userType", userInfo.type);
+    }
+    // Store complete user info in sessionStorage
+    sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
+  }
+
+  return userInfo;
 };
 
 export const newsService = {

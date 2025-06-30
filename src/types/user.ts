@@ -8,4 +8,5 @@ export interface UserInfo {
   rewardPoint: number | null;
   badges: string[];
   doj: string;
+  type: string;
 }

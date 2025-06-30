@@ -20,7 +20,8 @@ const API_ENDPOINT_NEWS_TRANSLATE =
   process.env.API_ENDPOINT_NEWS_TRANSLATE || "client-translate-request";
 const API_ENDPOINT_USER_INFO =
   process.env.API_ENDPOINT_USER_INFO || "user-info";
-
+const API_ENDPOINT_CLIENT_NEWS_LIST =
+  process.env.API_ENDPOINT_CLIENT_NEWS_LIST || "list-client-news";
 interface NewsListQueryParams {
   category?: string;
   keyword?: string;
@@ -96,5 +97,6 @@ export const API_ENDPOINTS = {
   CLIENT: {
     TRANSLATE: (id: string) =>
       `${API_BASE_URL}/${API_ENDPOINT_NEWS_TRANSLATE}/${id}`,
+    NEWSLIST: () => `${API_BASE_URL}/${API_ENDPOINT_CLIENT_NEWS_LIST}`,
   },
 } as const;

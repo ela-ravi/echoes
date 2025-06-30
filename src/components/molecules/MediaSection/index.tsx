@@ -19,7 +19,10 @@ const MediaSection: React.FC<MediaSectionProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isVideoReady, setIsVideoReady] = useState(false);
+  const userType = sessionStorage.getItem("userType");
+  const isClient = userType === "CLIENT";
 
+  const borderColor = isClient ? "#603939" : "#394060";
   if (!url) {
     return null;
   }
@@ -30,11 +33,13 @@ const MediaSection: React.FC<MediaSectionProps> = ({
 
   return (
     <div
-      className="border border-[#394060] rounded-lg overflow-hidden mb-6 transition-all duration-300 hover:border-[#4f8ef7]"
+      className={`border border-[${borderColor}] rounded-lg overflow-hidden mb-6 transition-all duration-300 hover:border-[${isClient ? "#f74f4f" : "#4f8ef7"}]`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="flex items-center gap-2 p-3 bg-[#1d2030] border-b border-[#394060]">
+      <div
+        className={`flex items-center gap-2 p-3 bg-[${isClient ? "#3e181a" : "#1d2030"}] border-b border-[${borderColor}]`}
+      >
         {isAI ? (
           <SiOpenai className="text-[#4f8ef7]" />
         ) : type === "image" ? (
@@ -44,7 +49,9 @@ const MediaSection: React.FC<MediaSectionProps> = ({
         )}
         <span className="text-sm font-medium text-white">{title}</span>
       </div>
-      <div className="relative aspect-video bg-[#131520] overflow-hidden">
+      <div
+        className={`relative aspect-video bg-[${isClient ? "#201313" : "#131520"}] overflow-hidden`}
+      >
         {type === "image" ? (
           <img
             src={url}

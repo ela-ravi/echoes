@@ -521,5 +521,17 @@
       "publishedBy": []
     }
   ],
-  "user-info": {}
+  "user-info": {
+    "id": "Client 1",
+    "name": "Client 1",
+    "email": "client1@example.com",
+    "phone": "1234567890",
+    "dob": "2025-06-15",
+    "totalNews": 0,
+    "rewardPoint": 0,
+    "badges": [],
+    "doj": "2025-06-15",
+    "type": "CLIENT"
+  },
+  "login": {}
 }

@@ -6,14 +6,22 @@ interface ModalProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  bgColor?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
+const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  bgColor,
+}) => {
+  const bgColorClass = bgColor || "bg-[#1d2030]";
   if (!isOpen) return null;
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-[#1d2030] rounded-lg p-6 w-full max-w-md">
+      <div className={`${bgColorClass} rounded-lg p-6 w-full max-w-md`}>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-white">{title}</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-white">
@@ -36,7 +44,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
         <div className="mt-4">{children}</div>
       </div>
     </div>,
-    document.body,
+    document.body
   );
 };
 

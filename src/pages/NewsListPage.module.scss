@@ -134,6 +134,15 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.clientPageRoot {
+  font-family: "Inter", "Noto Sans", sans-serif;
+  background-color: #201313;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 // .filters {
 //   display: flex;

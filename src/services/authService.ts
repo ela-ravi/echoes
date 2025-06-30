@@ -62,8 +62,10 @@ export const authService = {
       console.error("Logout error:", error);
       // Even if the API call fails, we should still clear the local session
     } finally {
-      // Always clear the token from session storage
-      sessionStorage.removeItem("tkn");
+      // Clear all session storage
+      sessionStorage.clear();
+      // Redirect to logged out page
+      window.location.href = "/logged-out";
     }
   },
 };

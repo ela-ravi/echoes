@@ -2,17 +2,25 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "../../services/authService";
 import styles from "./HeaderNav.module.scss";
+import { UserInfo } from "types/user";
 
 interface HeaderNavProps {
   hideSearch?: boolean;
 }
 
-const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
+const ClientHeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userType = sessionStorage.getItem("userType");
+  const isAdmin = userType === "ADMIN";
+  const userInfo: UserInfo | null = JSON.parse(
+    sessionStorage.getItem("userInfo") || "{}"
+  );
+  const userName = userInfo?.name || "User";
+  const homeText = isAdmin ? "Echoes" : userInfo?.name || "Home";
 
   const handleLogout = async () => {
     try {
@@ -36,10 +44,10 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
   };
 
   return (
-    <header className={styles.header}>
+    <header className={`${isAdmin ? styles.header : styles.clientHeader}`}>
       <div className="flex items-center justify-between w-full h-full">
         <Link
-          to="/news"
+          to="/client-news"
           className="flex items-center gap-4 text-white hover:opacity-80 transition-opacity"
         >
           <div className="size-4">
@@ -51,7 +59,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
               <circle cx="24" cy="24" r="22" />
             </svg>
           </div>
-          <h2 className="text-lg font-bold tracking-tight">Echoes</h2>
+          <h2 className="text-lg font-bold tracking-tight">{homeText}</h2>
         </Link>
 
         {!hideSearch && (
@@ -94,7 +102,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
             <div className="size-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-medium">
               U
             </div>
-            <span className="hidden md:inline">User</span>
+            <span className="hidden md:inline">{userName}</span>
             <svg
               className={`size-4 transition-transform ${userMenuOpen ? "rotate-180" : ""}`}
               fill="none"
@@ -223,4 +231,4 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
   );
 };
 
-export default HeaderNav;
+export default ClientHeaderNav;
