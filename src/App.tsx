@@ -47,7 +47,7 @@ const App: React.FC = () => {
         <Route path="/test-navigation" element={<TestNavigationPage />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/logged-out" element={<LoggedOut />} />
+        <Route path="/logged-out" element={<Login />} />
       </Routes>
       <ToastContainer position="bottom-right" autoClose={3000} />
     </>
