@@ -1,22 +1,70 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import HeaderNav from "../components/organisms/HeaderNav";
-import { API_ENDPOINTS } from "../config/api";
-import { INewsItem } from "../types/NewsItem";
-import {
-  FaImage,
-  FaVideo,
-  FaPlay,
-  FaUserCircle,
-  FaSync,
-  FaComment,
-  FaTimesCircle,
-} from "react-icons/fa";
-import { SiOpenai } from "react-icons/si";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useAIRefresh } from "../hooks/useAIRefresh";
+import { FaUserCircle, FaComment } from "react-icons/fa";
+
+// Components
+import TagCell from "../components/molecules/TagCell";
+import HeaderNav from "../components/organisms/HeaderNav";
+import TranslationSection from "../components/organisms/TranslationSection";
+import Section from "../components/atoms/Section";
+import TextArea from "../components/atoms/TextArea";
+import ContentModal from "../components/molecules/ContentModal";
 import RejectModal from "../components/molecules/RejectModal";
+import CTASection from "../components/molecules/CTASection";
+import BadgesSection from "../components/molecules/BadgesSection";
+import UserInfoItem from "../components/molecules/UserInfoItem";
+import MediaRow from "../components/molecules/MediaRow";
+
+// Hooks
+import { INewsItem } from "../types/NewsItem";
+import { useAIRefresh } from "../hooks/useAIRefresh";
+import { NewsReviewAction, newsService } from "../services/newsService";
+import { TRANSLATION_LANGUAGES } from "../types/NewsItem";
+import { API_ENDPOINTS, getHeaders } from "../config/api";
+
+// Language options for the translation dropdown
+const LANGUAGES = [
+  { value: "hin_Deva", label: "Hindi" },
+  { value: "tam_Taml", label: "Tamil" },
+  { value: "tel_Telu", label: "Telugu" },
+  { value: "kan_Knda", label: "Kannada" },
+  { value: "mal_Mlym", label: "Malayalam" },
+  { value: "eng_Latn", label: "English" },
+];
+
+interface StatusBadgeProps {
+  status?: string;
+}
+
+const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
+  const statusLower = status?.toLowerCase() || "pending";
+  const statusText = status || "Pending";
+
+  const getStatusClasses = () => {
+    switch (statusLower) {
+      case "published":
+        return "bg-green-900/30 text-green-400";
+      case "rejected":
+        return "bg-red-900/30 text-red-400";
+      case "reviewed":
+        return "bg-[#1d2030] text-[#4f8ef7]";
+      case "submitted":
+        return "bg-[#282d43] text-white";
+      default:
+        return "bg-yellow-900/30 text-yellow-400";
+    }
+  };
+
+  return (
+    <span
+      className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getStatusClasses()}`}
+    >
+      {statusText}
+    </span>
+  );
+};
 
 type FormDataState = {
   originalText: string;
@@ -25,186 +73,16 @@ type FormDataState = {
   potentialImpact: string;
 };
 
-// Helper Components
-const Section: React.FC<{
+type SelectedImage = {
   title: string;
-  children: React.ReactNode;
-  onRejectClick?: (e: React.MouseEvent) => void;
-}> = ({ title, children, onRejectClick }) => (
-  <div className="mb-6">
-    <div className="flex items-center mb-2">
-      <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
-        {title}
-      </h2>
-      {title === "Potential Impact" && (
-        <button
-          className="text-red-500 hover:text-red-400 transition-colors ml-4"
-          onClick={onRejectClick}
-          title="Reject news item"
-        >
-          <FaTimesCircle className="h-5 w-5" />
-        </button>
-      )}
-    </div>
-    {children}
-  </div>
-);
-
-// Media Section Component
-const MediaSection: React.FC<{
-  title: string;
-  type: "image" | "video";
-  url?: string;
-  isAI?: boolean;
-}> = ({ title, type, url, isAI = false }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isVideoReady, setIsVideoReady] = useState(false);
-
-  if (!url) {
-    return null;
-  }
-
-  const handleVideoReady = () => {
-    setIsVideoReady(true);
-  };
-
-  return (
-    <div
-      className="border border-[#394060] rounded-lg overflow-hidden mb-6 transition-all duration-300 hover:border-[#4f8ef7]"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="flex items-center gap-2 p-3 bg-[#1d2030] border-b border-[#394060]">
-        {isAI ? (
-          <SiOpenai className="text-[#4f8ef7]" />
-        ) : type === "image" ? (
-          <FaImage className="text-[#99a2c2]" />
-        ) : (
-          <FaVideo className="text-[#99a2c2]" />
-        )}
-        <span className="text-sm font-medium text-white">{title}</span>
-      </div>
-      <div className="relative aspect-video bg-[#131520] overflow-hidden">
-        {type === "image" ? (
-          <img src={url} alt={title} className="w-full h-full object-cover" />
-        ) : (
-          <>
-            <video
-              src={url}
-              className="w-full h-full object-cover"
-              controls={isHovered}
-              onCanPlay={handleVideoReady}
-              onError={(e) => console.error("Video error:", e)}
-            />
-            {!isVideoReady && !isHovered && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                <div className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center">
-                  <FaPlay className="text-white ml-1" />
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-      <div className="p-2 text-right">
-        <span className="text-xs text-[#99a2c2]">
-          {isAI ? "AI-Generated" : "User Uploaded"}
-        </span>
-      </div>
-    </div>
-  );
-};
-
-const TextArea: React.FC<{
-  name: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  placeholder: string;
-  className?: string;
-  sectionTitle: string;
-  readOnly?: boolean;
-  setOverlayContent: (
-    content: { title: string; content: string } | null,
-  ) => void;
-}> = ({
-  name,
-  value,
-  onChange,
-  placeholder,
-  className = "",
-  sectionTitle,
-  readOnly = false,
-  setOverlayContent,
-}) => (
-  <div className="flex flex-col gap-2 py-3">
-    <div className="flex flex-1">
-      <textarea
-        name={name}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className={`form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#394060] bg-[#1d2030] focus:border-[#4f8ef7] min-h-36 placeholder:text-[#99a2c2] p-4 text-base font-normal leading-normal ${className}`}
-        readOnly={readOnly}
-      />
-    </div>
-    {value && (
-      <div className="flex justify-between items-center">
-        <span className="text-sm text-[#99a2c2]">
-          {value.length} characters
-        </span>
-        <button
-          type="button"
-          className="text-sm text-[#4f8ef7] hover:underline flex items-center gap-1"
-          onClick={() =>
-            setOverlayContent({
-              title: sectionTitle,
-              content: value,
-            })
-          }
-        >
-          View full content
-        </button>
-      </div>
-    )}
-  </div>
-);
+  src: string;
+} | null;
 
 const NewsDetailPage: React.FC = () => {
-  // State hooks at the top level
+  // All state hooks must be called unconditionally at the top level
   const [newsItem, setNewsItem] = useState<INewsItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { isRefreshing, handleAIRefresh } = useAIRefresh();
-
-  const handleRefreshClick = async () => {
-    if (!newsItem?.id) return;
-
-    try {
-      await handleAIRefresh(newsItem.id.toString(), async () => {
-        // Refetch the news item to get updated status after successful refresh
-        const response = await fetch(
-          API_ENDPOINTS.NEWS.DETAIL(newsItem.id.toString()),
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "client-key": "admin",
-            },
-          },
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch updated news item");
-        }
-
-        const updatedData = await response.json();
-        setNewsItem(updatedData);
-      });
-    } catch (err) {
-      console.error("Error refreshing AI status:", err);
-      // Error is already handled by useAIRefresh hook
-    }
-  };
-
   const [overlayContent, setOverlayContent] = useState<{
     title: string;
     content: string;
@@ -213,101 +91,171 @@ const NewsDetailPage: React.FC = () => {
   const [rejectComment, setRejectComment] = useState("");
   const [showCommentOverlay, setShowCommentOverlay] = useState(false);
   const [showImageOverlay, setShowImageOverlay] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<SelectedImage>(null);
+  // Initialize form data with null values to track if data has been loaded
+
   const [formData, setFormData] = useState<FormDataState>({
     originalText: "",
     aiGeneratedText: "",
     keyIndividuals: "",
     potentialImpact: "",
   });
-
-  // Store initial form data for reset functionality
   const [initialFormData, setInitialFormData] = useState<FormDataState>({
     originalText: "",
     aiGeneratedText: "",
     keyIndividuals: "",
     potentialImpact: "",
   });
+  const [hasChanges, setHasChanges] = useState(false);
+
+  const similarSourceContent = newsItem?.similarSourceUrl ? (
+    <a
+      href={newsItem.similarSourceUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-400 hover:underline text-sm"
+    >
+      {newsItem.similarSourceName || "View Source"}
+    </a>
+  ) : (
+    <span className="text-gray-400 text-sm">
+      {newsItem?.similarSourceName || "N/A"}
+    </span>
+  );
+
+  const statusContent = (
+    <div className="flex items-center gap-2">
+      <StatusBadge status={newsItem?.clientStatus} />
+      {newsItem?.clientStatus?.toLowerCase() === "rejected" &&
+        newsItem?.comments && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowCommentOverlay(true);
+            }}
+            className="text-gray-400 hover:text-blue-400 transition-colors"
+            title="View rejection comment"
+          >
+            <FaComment className="w-3.5 h-3.5" />
+          </button>
+        )}
+    </div>
+  );
+
+  // Custom hooks must be called unconditionally
+  const { isRefreshing, handleAIRefresh } = useAIRefresh();
+
+  const handleRefreshClick = async () => {
+    if (!newsItem?.id) return;
+
+    try {
+      await handleAIRefresh(newsItem.id.toString(), async () => {
+        // Refetch the news item to get updated status after successful refresh
+        const updatedData = await newsService.fetchNewsDetail(
+          newsItem.id.toString()
+        );
+        setNewsItem(updatedData);
+      });
+    } catch (err) {
+      console.error("Error refreshing AI status:", err);
+      // Error is already handled by useAIRefresh hook
+    }
+  };
+
+  const fetchNewsDetail = async (languageCode?: string) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const newsId = urlParams.get("id");
+
+    if (!newsId) {
+      setError("No news ID provided");
+      setLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+    try {
+      const data = await newsService.fetchNewsDetail(newsId, {
+        signal: controller.signal,
+        languageCode: languageCode as TRANSLATION_LANGUAGES,
+      });
+
+      setNewsItem((prev) => ({
+        ...prev,
+        ...data,
+        // Only update these fields if they exist in the response
+        ...(data.originalText && { originalText: data.originalText }),
+        ...(data.aiGeneratedText && { aiGeneratedText: data.aiGeneratedText }),
+        ...(data.keyIndividuals && { keyIndividuals: data.keyIndividuals }),
+        ...(data.potentialImpact && { potentialImpact: data.potentialImpact }),
+      }));
+
+      // Update form data with the new values, ensuring all fields are strings
+      setFormData((prev) => ({
+        ...(prev || {}),
+        originalText: data.originalText || prev?.originalText || "",
+        aiGeneratedText: data.aiGeneratedText || prev?.aiGeneratedText || "",
+        keyIndividuals: data.keyIndividuals || prev?.keyIndividuals || "",
+        potentialImpact: data.potentialImpact || prev?.potentialImpact || "",
+      }));
+
+      // Show success message if this was a language change
+      if (languageCode) {
+        const languageName =
+          LANGUAGES.find(
+            (lang: { value: string; label: string }) =>
+              lang.value === languageCode
+          )?.label || languageCode;
+        toast.success(`Switched to ${languageName} translation`);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+        toast.error(`Failed to load translation: ${err.message}`);
+      } else {
+        setError("An unknown error occurred");
+        toast.error("Failed to load translation");
+      }
+    } finally {
+      clearTimeout(timeoutId);
+      setLoading(false);
+    }
+  };
 
   // Save form data
   const handleSave = async () => {
-    if (!newsItem) return;
+    if (!newsItem || !hasChanges || !formData) return;
 
     try {
-      const response = await fetch(
-        API_ENDPOINTS.NEWS.UPDATE(newsItem.id.toString()),
+      const updatedNewsItem = await newsService.updateNewsItem(
+        newsItem.id.toString(),
         {
-          method: "POST",
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-expect-error
-          headers: {
-            "ngrok-skip-browser-warning": true,
-            accept: "*/*",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            aiGeneratedText: formData.aiGeneratedText,
-            keyIndividuals: formData.keyIndividuals,
-            potentialImpact: formData.potentialImpact,
-          }),
-        },
+          ...formData,
+          id: newsItem.id,
+        }
       );
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || "Failed to save changes");
-      }
-
-      // Update initial form data to current values
+      setNewsItem(updatedNewsItem);
       setInitialFormData(formData);
+      setHasChanges(false);
       toast.success("Changes saved successfully!");
-    } catch (err) {
-      console.error("Error saving changes:", err);
+    } catch (error) {
+      console.error("Error saving changes:", error);
       toast.error(
-        `Failed to save changes: ${
-          err instanceof Error ? err.message : "Unknown error"
-        }`,
+        error instanceof Error
+          ? error.message
+          : "Failed to save changes. Please try again."
       );
     }
   };
 
-  // Discard changes
+  // Reset hasChanges when form data is reset
   const handleDiscard = async () => {
-    const confirmResult = await new Promise((resolve) => {
-      toast.info(
-        <div>
-          <p className="mb-2">Are you sure you want to discard all changes?</p>
-          <div className="flex gap-2">
-            <button
-              className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-              onClick={() => {
-                toast.dismiss();
-                resolve(true);
-              }}
-            >
-              Discard
-            </button>
-            <button
-              className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600"
-              onClick={() => {
-                toast.dismiss();
-                resolve(false);
-              }}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>,
-        {
-          closeButton: false,
-          closeOnClick: false,
-          draggable: false,
-          autoClose: false,
-        },
-      );
-    });
-
-    if (confirmResult) {
+    if (window.confirm("Are you sure you want to discard all changes?")) {
       setFormData(initialFormData);
+      setHasChanges(false);
       toast.success("Changes discarded successfully!");
     }
   };
@@ -317,28 +265,11 @@ const NewsDetailPage: React.FC = () => {
     if (!newsItem?.id) return;
 
     try {
-      const url = new URL(API_ENDPOINTS.NEWS.REVIEW(newsItem.id));
-      url.searchParams.append("reviewerId", "2"); // Replace with actual reviewer ID
-      url.searchParams.append("status", "REJECTED");
-
-      // Add comment if it exists
-      if (rejectComment?.trim()) {
-        url.searchParams.append("comment", rejectComment.trim());
-      }
-
-      const response = await fetch(url.toString(), {
-        method: "POST",
-        // @ts-expect-error - Skip TypeScript check for custom headers
-        headers: {
-          "ngrok-skip-browser-warning": true,
-          "Content-Type": "application/json",
-          "client-key": "admin",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to reject news item");
-      }
+      await newsService.reviewNewsItem(
+        newsItem.id.toString(),
+        NewsReviewAction.REJECT,
+        rejectComment
+      );
 
       toast.success("Successfully rejected news item");
       setShowRejectModal(false);
@@ -348,7 +279,9 @@ const NewsDetailPage: React.FC = () => {
       window.location.reload();
     } catch (error) {
       console.error("Error rejecting news item:", error);
-      toast.error("Failed to reject news item");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to reject news item"
+      );
     }
   };
 
@@ -356,94 +289,57 @@ const NewsDetailPage: React.FC = () => {
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
-    let retryCount = 0;
-    const MAX_RETRIES = 2;
     let isFetching = false;
 
-    const fetchNewsDetail = async () => {
+    const fetchNewsData = async () => {
       // Prevent multiple simultaneous fetches
       if (isFetching) return;
       isFetching = true;
 
+      // Get the news ID from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const newsId = urlParams.get("id");
+
+      if (!newsId) {
+        setError("No news ID provided in the URL");
+        setLoading(false);
+        isFetching = false;
+        return;
+      }
+
       try {
-        // Get the news ID from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const newsId = urlParams.get("id");
+        setLoading(true);
+        setError(null);
 
-        if (!newsId) {
-          throw new Error("No news ID provided in the URL");
-        }
+        await fetchNewsDetail();
 
-        if (isMounted) {
-          setLoading(true);
-          setError(null);
-        }
+        if (!isMounted) return;
 
-        // Skip if this is a retry and we've hit the limit
-        if (retryCount >= MAX_RETRIES) {
-          isFetching = false;
-          return;
-        }
+        // Update form data when newsItem changes
+        if (newsItem) {
+          const newFormData = {
+            originalText: newsItem?.originalText || "",
+            aiGeneratedText: newsItem?.aiGeneratedText || "",
+            keyIndividuals: newsItem?.keyIndividuals || "",
+            potentialImpact: newsItem?.potentialImpact || "",
+          };
 
-        const response = await fetch(API_ENDPOINTS.NEWS.DETAIL(newsId), {
-          signal: controller.signal,
-          headers: {
-            "ngrok-skip-browser-warning": "true",
-            "Content-Type": "application/json",
-            "client-key": "admin",
-          },
-        });
-
-        if (!isMounted) {
-          isFetching = false;
-          return;
-        }
-
-        if (!response.ok) {
-          if (response.status === 404) {
-            throw new Error("News article not found");
+          // Only update form data if we don't have any data yet
+          // or if the newsItem ID has changed
+          if (!formData || formData.originalText !== newFormData.originalText) {
+            setFormData(newFormData);
+            setInitialFormData(newFormData);
           }
-          // If we get a 500 error, retry a few times
-          if (response.status === 500 && retryCount < MAX_RETRIES) {
-            retryCount++;
-            console.log(
-              `Retrying API call (attempt ${retryCount}/${MAX_RETRIES})`,
-            );
-            setTimeout(fetchNewsDetail, 1000 * retryCount); // Exponential backoff
-            isFetching = false;
-            return;
-          }
-          throw new Error(
-            `Failed to fetch news detail: ${response.statusText}`,
-          );
         }
-
-        const data: INewsItem = await response.json();
-
-        if (!isMounted) {
-          isFetching = false;
-          return;
-        }
-
-        setNewsItem(data);
-
-        // Initialize form data with the fetched news item
-        const newFormData = {
-          originalText: data.originalText || "",
-          aiGeneratedText: data.aiGeneratedText || "",
-          keyIndividuals: data.keyIndividuals || "",
-          potentialImpact: data.potentialImpact || "",
-        };
-
-        setFormData(newFormData);
-        setInitialFormData(newFormData);
       } catch (err) {
-        if (err instanceof Error && err.name === "AbortError") {
-          console.log("Fetch aborted");
-          return;
-        }
         if (isMounted) {
-          setError(err instanceof Error ? err.message : "An error occurred");
+          if (err instanceof Error && err.name === "AbortError") {
+            console.log("Fetch aborted");
+          } else {
+            setError(
+              err instanceof Error ? err.message : "Failed to load news details"
+            );
+          }
         }
       } finally {
         if (isMounted) {
@@ -453,8 +349,11 @@ const NewsDetailPage: React.FC = () => {
       }
     };
 
-    // Small delay to allow potential previous fetch to be aborted
-    const timer = setTimeout(fetchNewsDetail, 0);
+    // Use a small timeout to allow potential previous renders to complete
+    // This helps prevent the double-fetch in development mode
+    const timer = setTimeout(() => {
+      fetchNewsData();
+    }, 0);
 
     // Cleanup function
     return () => {
@@ -464,49 +363,47 @@ const NewsDetailPage: React.FC = () => {
     };
   }, []);
 
+  // Handle form input changes and track modifications
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      if (!prev) return prev; // Don't update if formData is not initialized
+
+      const newData = {
+        ...prev,
+        [name]: value,
+      };
+
+      // Check if any field has changed from its initial value
+      if (initialFormData) {
+        const hasChanges = Object.entries(newData).some(
+          ([key, val]) => initialFormData[key as keyof FormDataState] !== val
+        );
+        setHasChanges(hasChanges);
+      }
+
+      return newData;
+    });
+  };
+
+  // Update hasChanges when initial data is loaded
+  useEffect(() => {
+    if (formData && initialFormData) {
+      const changes = Object.entries(formData).some(
+        ([key, val]) => initialFormData[key as keyof FormDataState] !== val
+      );
+      setHasChanges(changes);
+    } else {
+      setHasChanges(false);
+    }
+  }, [formData, initialFormData]);
+
   // Loading and error states
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!newsItem) return <div>No data found</div>;
-
-  const TextOverlay: React.FC<{
-    title: string;
-    content: string;
-    onClose: () => void;
-  }> = ({ title, content, onClose }) => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
-      <div className="relative w-full max-w-4xl rounded-xl bg-[#1d2030] p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-xl font-bold text-white">{title}</h3>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-white"
-            aria-label="Close"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
-        <div className="max-h-[70vh] overflow-y-auto rounded-lg bg-[#131520] p-4 text-white whitespace-pre-wrap">
-          {content || (
-            <span className="text-gray-500">No content available</span>
-          )}
-        </div>
-      </div>
-    </div>
-  );
 
   if (!newsItem) {
     return (
@@ -521,96 +418,6 @@ const NewsDetailPage: React.FC = () => {
       </div>
     );
   }
-
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev: FormDataState) => ({
-      ...prev,
-      [name as keyof FormDataState]: value,
-    }));
-  };
-
-  // Categories Cell Component
-  const CategoriesCell: React.FC<{ categories: string[] }> = ({
-    categories = [],
-  }) => {
-    const [showOverlay, setShowOverlay] = useState(false);
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    const hasManyCategories = useMemo(() => {
-      return categories.length > 2;
-    }, [categories]);
-
-    const toggleOverlay = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      setShowOverlay(!showOverlay);
-    };
-
-    // Close overlay when clicking outside
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (
-          containerRef.current &&
-          !containerRef.current.contains(event.target as Node)
-        ) {
-          setShowOverlay(false);
-        }
-      };
-
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, []);
-
-    return (
-      <div className="relative" ref={containerRef}>
-        <div className="flex flex-wrap gap-2 items-center">
-          {categories.slice(0, 2).map((cat) => (
-            <span
-              key={cat}
-              className="inline-flex items-center rounded-full bg-[#282d43] px-4 py-1 text-xs font-medium text-white"
-            >
-              {cat}
-            </span>
-          ))}
-          {hasManyCategories && (
-            <button
-              type="button"
-              aria-label="Show all categories"
-              onClick={toggleOverlay}
-              className="inline-flex items-center justify-center rounded-full bg-[#282d43] px-2 py-1 text-xs text-gray-400 hover:bg-[#2d3349] hover:text-white transition-colors"
-            >
-              <svg
-                className="w-3 h-3"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-          )}
-        </div>
-        {showOverlay && (
-          <div className="absolute top-full left-1/2 -translate-x-1/2 bg-[#1d2030] p-4 rounded-lg shadow-lg w-64">
-            {categories.slice(2).map((cat) => (
-              <span
-                key={cat}
-                className="block rounded-full bg-[#282d43] px-4 py-1 text-xs font-medium text-white mb-2"
-              >
-                {cat}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-[#131520] text-white">
@@ -638,6 +445,67 @@ const NewsDetailPage: React.FC = () => {
                       {newsItem.userMailId || "No email provided"}
                     </p>
                   </div>
+                  <div className="ml-auto">
+                    <TranslationSection
+                      onLanguageChange={async (languageCode) => {
+                        try {
+                          setLoading(true);
+                          await fetchNewsDetail(languageCode);
+                        } catch (error) {
+                          console.error("Error changing language:", error);
+                        } finally {
+                          setLoading(false);
+                        }
+                      }}
+                      onRequestTranslation={async (languageCode) => {
+                        try {
+                          setLoading(true);
+                          const urlParams = new URLSearchParams(
+                            window.location.search
+                          );
+                          const newsId = urlParams.get("id");
+
+                          if (!newsId) {
+                            throw new Error("News ID not found");
+                          }
+
+                          const response = await fetch(
+                            `${API_ENDPOINTS.CLIENT.TRANSLATE(newsId)}?languageCode=${languageCode}`,
+                            {
+                              method: "GET",
+                              headers: {
+                                ...getHeaders(),
+                                accept: "*/*",
+                              },
+                            }
+                          );
+
+                          if (!response.ok) {
+                            const errorData = await response
+                              .json()
+                              .catch(() => ({}));
+                            throw new Error(
+                              errorData.message ||
+                                "Failed to request translation"
+                            );
+                          }
+
+                          toast.success(
+                            `Successfully requested translation to ${languageCode}`
+                          );
+                        } catch (error) {
+                          console.error("Error requesting translation:", error);
+                          toast.error(
+                            error instanceof Error
+                              ? error.message
+                              : "Failed to request translation"
+                          );
+                        } finally {
+                          setLoading(false);
+                        }
+                      }}
+                    />
+                  </div>
                 </div>
 
                 {/* Bottom Row: Additional Info */}
@@ -645,194 +513,117 @@ const NewsDetailPage: React.FC = () => {
                   {/* First Row */}
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     {/* Similar Source */}
-                    {(newsItem.similarSourceName ||
-                      newsItem.similarSourceUrl) && (
-                      <div>
-                        <p className="text-xs text-gray-500 font-medium mb-1">
-                          SIMILAR SOURCE
-                        </p>
-                        <p className="text-sm">
-                          {newsItem.similarSourceUrl ? (
-                            <a
-                              href={newsItem.similarSourceUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-400 hover:underline"
-                            >
-                              {newsItem.similarSourceName || "View Source"}
-                            </a>
-                          ) : (
-                            <span className="text-gray-400">
-                              {newsItem.similarSourceName || "N/A"}
-                            </span>
-                          )}
-                        </p>
-                      </div>
-                    )}
+                    {
+                      // (newsItem.similarSourceName ||
+                      //   newsItem.similarSourceUrl) &&
+                      <UserInfoItem
+                        label="SIMILAR SOURCE"
+                        content={similarSourceContent}
+                      />
+                    }
 
-                    {/* Status - Using clientStatus with StatusBadge styling */}
-                    <div>
-                      <p className="text-xs text-gray-500 font-medium mb-1">
-                        STATUS
-                      </p>
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
-                            newsItem.clientStatus?.toLowerCase() === "published"
-                              ? "bg-green-900/30 text-green-400"
-                              : newsItem.clientStatus?.toLowerCase() ===
-                                  "rejected"
-                                ? "bg-red-900/30 text-red-400"
-                                : newsItem.clientStatus?.toLowerCase() ===
-                                    "reviewed"
-                                  ? "bg-[#1d2030] text-[#4f8ef7]"
-                                  : newsItem.clientStatus?.toLowerCase() ===
-                                      "submitted"
-                                    ? "bg-[#282d43] text-white"
-                                    : "bg-yellow-900/30 text-yellow-400"
-                          }`}
-                        >
-                          {newsItem.clientStatus || "Pending"}
-                        </span>
-                        {newsItem.clientStatus?.toLowerCase() === "rejected" &&
-                          newsItem.comments && (
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setShowCommentOverlay(true);
-                              }}
-                              className="text-gray-400 hover:text-blue-400 transition-colors"
-                              title="View rejection comment"
-                            >
-                              <FaComment className="w-3.5 h-3.5" />
-                            </button>
-                          )}
-                      </div>
-                    </div>
+                    {/* Status */}
+                    <UserInfoItem label="STATUS" content={statusContent} />
 
                     {/* AI Status */}
-                    <div>
-                      <div className="flex items-center">
-                        <p className="text-xs text-gray-500 font-medium">
-                          AI STATUS
-                        </p>
-                        {(newsItem.aiStatus === "FAILED" ||
-                          newsItem.aiStatus === "IN_PROGRESS") && (
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleRefreshClick();
-                            }}
-                            disabled={isRefreshing}
-                            className={`text-gray-400 hover:text-blue-400 transition-colors ml-4 ${
-                              isRefreshing
-                                ? "opacity-50 cursor-not-allowed"
-                                : ""
-                            }`}
-                            title="Refresh AI status"
-                          >
-                            <FaSync
-                              className={`w-3 h-3 ${
-                                isRefreshing ? "animate-spin" : ""
-                              }`}
-                            />
-                          </button>
-                        )}
-                      </div>
-                      <p className="text-sm text-gray-400">
-                        {newsItem.aiStatus || "N/A"}
-                      </p>
-                    </div>
+                    <UserInfoItem
+                      label="AI STATUS"
+                      status={newsItem.aiStatus || "IN_PROGRESS"}
+                      onRefresh={handleRefreshClick}
+                      isRefreshing={isRefreshing}
+                    />
 
                     {/* Categories */}
                     {newsItem.categories && newsItem.categories.length > 0 && (
-                      <div>
-                        <p className="text-xs text-gray-500 font-medium mb-1">
-                          CATEGORIES
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          <CategoriesCell categories={newsItem.categories} />
-                        </div>
-                      </div>
+                      <UserInfoItem
+                        label="CATEGORIES"
+                        categories={newsItem.categories}
+                      />
                     )}
                   </div>
 
                   {/* Second Row */}
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-[#2d3349]">
                     {/* Submitted At */}
-                    <div>
-                      <p className="text-xs text-gray-500 font-medium mb-1">
-                        SUBMITTED AT
-                      </p>
-                      <p className="text-sm text-gray-400">
-                        {newsItem.submittedAt
-                          ? new Date(newsItem.submittedAt).toLocaleString()
-                          : "N/A"}
-                      </p>
-                    </div>
+                    <UserInfoItem
+                      userName={newsItem.user}
+                      label="SUBMITTED AT"
+                      timestamp={newsItem.submittedAt}
+                      fallbackText="N/A"
+                    />
 
                     {/* Reviewed By */}
-                    <div>
-                      <p className="text-xs text-gray-500 font-medium mb-1">
-                        REVIEWED BY
-                      </p>
-                      <div className="space-y-1">
-                        <p className="text-sm text-gray-400">
-                          {newsItem.reviewedBy || "Not reviewed"}
-                        </p>
-                        {newsItem.reviewedAt && (
-                          <p className="text-xs text-gray-500">
-                            {new Date(newsItem.reviewedAt).toLocaleString()}
-                          </p>
-                        )}
-                      </div>
-                    </div>
+                    <UserInfoItem
+                      label="REVIEWED BY"
+                      userName={newsItem.reviewedBy}
+                      timestamp={newsItem.reviewedAt}
+                      fallbackText="Not reviewed"
+                    />
 
-                    {/* Reward Points */}
-                    {typeof newsItem.rewardPoints === "number" && (
-                      <div>
-                        <p className="text-xs text-gray-500 font-medium mb-1">
-                          REWARD POINTS
-                        </p>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-sm font-medium text-yellow-400">
-                            {newsItem.rewardPoints}
-                          </span>
-                          <span className="text-xs text-gray-400">points</span>
-                        </div>
+                    {/* Published By */}
+                    <div className="col-span-1">
+                      <div className="text-xs text-gray-500 mb-1">
+                        PUBLISHED BY
                       </div>
-                    )}
-
-                    {/* Badges */}
-                    {newsItem.badges && (
-                      <div>
-                        <p className="text-xs text-gray-500 font-medium mb-1">
-                          BADGES
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          {Object.entries(newsItem.badges).map(
-                            ([badgeType, count]) =>
-                              count > 0 && (
-                                <div
-                                  key={badgeType}
-                                  className="flex items-center space-x-1 bg-[#2d3349] px-2 py-1 rounded-md"
-                                >
-                                  <img
-                                    src={`/assets/${badgeType.toLowerCase()}.png`}
-                                    alt={`${badgeType} badge`}
-                                    className="w-5 h-5 object-contain"
-                                  />
-                                  <span className="text-xs text-gray-200 capitalize">
-                                    {badgeType.toLowerCase()} ({count})
-                                  </span>
-                                </div>
-                              ),
+                      {newsItem.publishedBy &&
+                      newsItem.publishedBy.length > 0 ? (
+                        <div>
+                          <TagCell
+                            tags={newsItem.publishedBy}
+                            className="text-sm"
+                            type="publishedBy"
+                          />
+                          {newsItem.publishedAt && (
+                            <div className="text-xs text-gray-400 mt-1">
+                              {new Date(newsItem.publishedAt).toLocaleString()}
+                            </div>
                           )}
                         </div>
+                      ) : (
+                        <div className="text-sm text-gray-400">
+                          Not published
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Rejected By */}
+                    <div className="col-span-1">
+                      <div className="text-xs text-gray-500 mb-1">
+                        REJECTED BY
                       </div>
-                    )}
+                      {newsItem.rejectedBy && newsItem.rejectedBy.length > 0 ? (
+                        <div>
+                          <TagCell
+                            tags={newsItem.rejectedBy}
+                            className="text-sm"
+                            type="rejectedBy"
+                          />
+                        </div>
+                      ) : (
+                        <div className="text-sm text-gray-400">
+                          Not rejected
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Reward Points - Always show, default to 0 if not available */}
+                    <UserInfoItem
+                      label="REWARD POINTS"
+                      rewardPoints={
+                        typeof newsItem.rewardPoints === "number"
+                          ? newsItem.rewardPoints
+                          : 0
+                      }
+                    />
+
+                    {/* Badges - Show with default values if not available */}
+                    <BadgesSection
+                      badges={{
+                        GOLD: newsItem.badges?.GOLD || 0,
+                        SILVER: newsItem.badges?.SILVER || 0,
+                        BRONZE: newsItem.badges?.BRONZE || 0,
+                      }}
+                    />
                   </div>
                 </div>
               </div>
@@ -843,11 +634,16 @@ const NewsDetailPage: React.FC = () => {
             <TextArea
               name="originalText"
               value={formData.originalText}
-              onChange={handleChange}
+              className="border-none"
+              onChange={handleInputChange}
               placeholder="Original Raw Submission"
-              sectionTitle="Original Raw Submission"
               readOnly={true}
-              setOverlayContent={setOverlayContent}
+              onViewFullContent={() => {
+                setOverlayContent({
+                  title: "Original Raw Submission",
+                  content: formData.originalText,
+                });
+              }}
             />
           </Section>
 
@@ -855,10 +651,14 @@ const NewsDetailPage: React.FC = () => {
             <TextArea
               name="aiGeneratedText"
               value={formData.aiGeneratedText}
-              onChange={handleChange}
+              onChange={handleInputChange}
               placeholder="AI-generated summary will appear here..."
-              sectionTitle="AI-Curated Summary"
-              setOverlayContent={setOverlayContent}
+              onViewFullContent={() => {
+                setOverlayContent({
+                  title: "AI-Curated Summary",
+                  content: formData.aiGeneratedText,
+                });
+              }}
             />
           </Section>
 
@@ -866,15 +666,19 @@ const NewsDetailPage: React.FC = () => {
             <TextArea
               name="keyIndividuals"
               value={formData.keyIndividuals}
-              onChange={handleChange}
+              onChange={handleInputChange}
               placeholder="List key individuals mentioned in the article..."
-              sectionTitle="Key Individuals Mentioned"
-              setOverlayContent={setOverlayContent}
+              onViewFullContent={() => {
+                setOverlayContent({
+                  title: "Key Individuals Mentioned",
+                  content: formData.keyIndividuals,
+                });
+              }}
             />
           </Section>
 
           <Section
-            title="Potential Impact"
+            title="Potential Risks"
             onRejectClick={(e) => {
               e.stopPropagation();
               setShowRejectModal(true);
@@ -883,10 +687,14 @@ const NewsDetailPage: React.FC = () => {
             <TextArea
               name="potentialImpact"
               value={formData.potentialImpact}
-              onChange={handleChange}
+              onChange={handleInputChange}
               placeholder="Describe the potential impact of this news..."
-              sectionTitle="Potential Impact"
-              setOverlayContent={setOverlayContent}
+              onViewFullContent={() => {
+                setOverlayContent({
+                  title: "Potential Risks",
+                  content: formData.potentialImpact,
+                });
+              }}
             />
           </Section>
 
@@ -899,140 +707,64 @@ const NewsDetailPage: React.FC = () => {
               <div className="space-y-8 mt-4">
                 {/* User Uploaded Media Row */}
                 {(newsItem.userUploadedImage || newsItem.userUploadedVideo) && (
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-semibold text-white border-b border-[#394060] pb-2">
-                      User Uploaded Content
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-                      <div className="w-full">
-                        {newsItem.userUploadedImage && (
-                          <MediaSection
-                            title="Uploaded Image"
-                            url={newsItem.userUploadedImage}
-                            type="image"
-                            isAI={false}
-                          />
-                        )}
-                      </div>
-                      <div className="w-full">
-                        {newsItem.userUploadedVideo && (
-                          <MediaSection
-                            title="Uploaded Video"
-                            url={newsItem.userUploadedVideo}
-                            type="video"
-                            isAI={false}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <MediaRow
+                    title="User Uploaded Content"
+                    imageUrl={newsItem.userUploadedImage}
+                    videoUrl={newsItem.userUploadedVideo}
+                    isAI={false}
+                    onImageClick={(title, src) => {
+                      setSelectedImage({ title, src });
+                      setShowImageOverlay(true);
+                    }}
+                  />
                 )}
 
                 {/* AI Generated Media Row */}
                 {(newsItem.aiGeneratedImage || newsItem.aiGeneratedVideo) && (
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-semibold text-white border-b border-[#394060] pb-2">
-                      AI Generated Content
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-                      <div className="w-full">
-                        {newsItem.aiGeneratedImage && (
-                          <MediaSection
-                            title="AI Generated Image"
-                            url={newsItem.aiGeneratedImage}
-                            type="image"
-                            isAI={true}
-                          />
-                        )}
-                      </div>
-                      <div className="w-full">
-                        {newsItem.aiGeneratedVideo && (
-                          <MediaSection
-                            title="AI Generated Video"
-                            url={newsItem.aiGeneratedVideo}
-                            type="video"
-                            isAI={true}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <MediaRow
+                    title="AI Generated Content"
+                    imageUrl={newsItem.aiGeneratedImage}
+                    videoUrl={newsItem.aiGeneratedVideo}
+                    isAI={true}
+                    onImageClick={(title, src) => {
+                      setSelectedImage({ title, src });
+                      setShowImageOverlay(true);
+                    }}
+                  />
                 )}
               </div>
             </Section>
           )}
 
-          {showImageOverlay && (
-            <div
-              className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
-              onClick={() => setShowImageOverlay(false)}
-            >
-              <button
-                className="absolute top-4 right-4 text-white text-2xl bg-[#394060] rounded-full w-10 h-10 flex items-center justify-center hover:bg-[#4a527f] transition-colors"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowImageOverlay(false);
-                }}
-              >
-                &times;
-              </button>
-              <div className="relative max-w-4xl w-full max-h-[90vh]">
-                <img
-                  src="https://via.placeholder.com/1200x800"
-                  alt="AI Generated Thumbnail - Full Size"
-                  className="w-full h-full object-contain"
-                  onClick={(e) => e.stopPropagation()}
-                />
-              </div>
-            </div>
+          {showImageOverlay && selectedImage && (
+            <ContentModal
+              title={selectedImage.title}
+              onClose={() => {
+                setShowImageOverlay(false);
+                setSelectedImage(null);
+              }}
+              showCloseButton={true}
+              content={
+                <div className="w-full h-full flex flex-col items-center justify-center p-4 gap-4">
+                  <img
+                    src={selectedImage.src}
+                    alt="Full Size Preview"
+                    className="max-w-full max-h-[70vh] object-contain"
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                </div>
+              }
+            />
           )}
 
-          <div className="flex flex-col-reverse sm:flex-row justify-between gap-4 mt-6 p-4 border-t border-[#282d43]">
-            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-              <Link
-                to="/news"
-                className="flex items-center justify-center gap-2 px-6 py-2 bg-transparent hover:bg-[#282d43] text-[#99a0c2] border border-[#394060] rounded-lg transition-colors lg:hidden"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-                Back to News
-              </Link>
-              <button
-                onClick={handleDiscard}
-                className="px-6 py-2 bg-transparent hover:bg-[#282d43] text-[#99a0c2] border border-[#f87171] rounded-lg transition-colors"
-              >
-                Discard Changes
-              </button>
-            </div>
-            <button
-              onClick={handleSave}
-              className="px-6 py-2 bg-[#4f8ef7] hover:bg-[#3b7af5] text-white rounded-lg transition-colors"
-            >
-              Save Changes
-            </button>
-          </div>
+          <CTASection
+            onSave={handleSave}
+            onDiscard={handleDiscard}
+            backLink="/news"
+            hasChanges={hasChanges}
+          />
         </div>
       </main>
-
-      {overlayContent && (
-        <TextOverlay
-          title={overlayContent.title}
-          content={overlayContent.content}
-          onClose={() => setOverlayContent(null)}
-        />
-      )}
 
       {showRejectModal && (
         <RejectModal
@@ -1044,43 +776,19 @@ const NewsDetailPage: React.FC = () => {
         />
       )}
       {showCommentOverlay && newsItem?.comments && (
-        <div
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
-          onClick={() => setShowCommentOverlay(false)}
-        >
-          <div
-            className="bg-[#1a1e30] rounded-xl max-w-md w-full max-h-[80vh] overflow-hidden flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="p-4 border-b border-[#2d3349] flex justify-between items-center">
-              <h3 className="text-lg font-medium">Rejection Comment</h3>
-              <button
-                onClick={() => setShowCommentOverlay(false)}
-                className="text-gray-400 hover:text-white"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="p-6 overflow-y-auto flex-grow">
-              <div className="whitespace-pre-wrap bg-[#1d2030] p-4 rounded-lg">
-                {newsItem.comments}
-              </div>
-            </div>
-          </div>
-        </div>
+        <ContentModal
+          title="Comments"
+          content={newsItem.comments}
+          onClose={() => setShowCommentOverlay(false)}
+        />
+      )}
+
+      {overlayContent && (
+        <ContentModal
+          title={overlayContent.title}
+          content={overlayContent.content}
+          onClose={() => setOverlayContent(null)}
+        />
       )}
     </div>
   );

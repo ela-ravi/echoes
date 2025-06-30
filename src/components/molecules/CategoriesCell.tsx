@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Badge from "../atoms/Badge";
-import CategoriesModal from "./CategoriesModal";
+import TagModal from "./TagModal";
 
 interface CategoriesCellProps {
   categories: string[];
@@ -19,8 +19,7 @@ const CategoriesCell: React.FC<CategoriesCellProps> = ({ categories = [] }) => {
     }
   };
 
-  const handleCloseModal = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
@@ -60,10 +59,11 @@ const CategoriesCell: React.FC<CategoriesCellProps> = ({ categories = [] }) => {
         )}
       </div>
 
-      <CategoriesModal
+      <TagModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        categories={categories}
+        tags={categories}
+        type="categories"
       />
     </div>
   );

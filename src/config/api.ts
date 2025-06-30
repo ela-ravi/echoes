@@ -1,5 +1,6 @@
 // Using json-server as our mock API
-const API_BASE_URL = process.env.SERVER_APP_BASE_URL || "http://localhost:3001";
+export const API_BASE_URL =
+  process.env.SERVER_APP_BASE_URL || "http://localhost:3001";
 const API_ENDPOINT_NEWS_LIST =
   process.env.API_ENDPOINT_NEWS_LIST || "admin-news-list";
 const API_ENDPOINT_NEWS_DETAIL =
@@ -10,6 +11,17 @@ const API_ENDPOINT_NEWS_REVIEW =
   process.env.API_ENDPOINT_NEWS_REVIEW || "review-news";
 const API_ENDPOINT_NEWS_AI_RETRY =
   process.env.API_ENDPOINT_NEWS_AI_RETRY || "admin-ai-retry";
+const API_ENDPOINT_USER_REGISTRATION =
+  process.env.API_ENDPOINT_USER_REGISTRATION || "register-user";
+const API_ENDPOINT_USER_LOGIN = process.env.API_ENDPOINT_USER_LOGIN || "login";
+const API_ENDPOINT_USER_LOGOUT =
+  process.env.API_ENDPOINT_USER_LOGOUT || "logout";
+const API_ENDPOINT_NEWS_TRANSLATE =
+  process.env.API_ENDPOINT_NEWS_TRANSLATE || "client-translate-request";
+const API_ENDPOINT_USER_INFO =
+  process.env.API_ENDPOINT_USER_INFO || "user-info";
+const API_ENDPOINT_CLIENT_NEWS_LIST =
+  process.env.API_ENDPOINT_CLIENT_NEWS_LIST || "list-client-news";
 interface NewsListQueryParams {
   category?: string;
   keyword?: string;
@@ -43,6 +55,22 @@ const buildQueryString = (
   return queryString ? `?${queryString}` : "";
 };
 
+export const getHeaders = (): HeadersInit => {
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": "true",
+    accept: "*/*",
+  };
+
+  const token =
+    typeof window !== "undefined" ? sessionStorage.getItem("tkn") : null;
+  // if (token) {
+  headers["tkn"] = token || "";
+  // }
+
+  return headers;
+};
+
 export const API_ENDPOINTS = {
   NEWS: {
     LIST: (params: NewsListQueryParams = {}) => {
@@ -60,12 +88,15 @@ export const API_ENDPOINTS = {
     AI_RETRY: (id: string) =>
       `${API_BASE_URL}/${API_ENDPOINT_NEWS_AI_RETRY}/${id}`,
   },
-} as const;
-
-// For development with mock data
-export const MOCK_ENDPOINTS = {
-  NEWS: {
-    LIST: "/api/mockNews.json",
-    DETAIL: "/api/mockNewsDetail.json",
+  USER: {
+    REGISTER: () => `${API_BASE_URL}/${API_ENDPOINT_USER_REGISTRATION}`,
+    LOGIN: () => `${API_BASE_URL}/${API_ENDPOINT_USER_LOGIN}`,
+    LOGOUT: () => `${API_BASE_URL}/${API_ENDPOINT_USER_LOGOUT}`,
+    INFO: () => `${API_BASE_URL}/${API_ENDPOINT_USER_INFO}`,
+  },
+  CLIENT: {
+    TRANSLATE: (id: string) =>
+      `${API_BASE_URL}/${API_ENDPOINT_NEWS_TRANSLATE}/${id}`,
+    NEWSLIST: () => `${API_BASE_URL}/${API_ENDPOINT_CLIENT_NEWS_LIST}`,
   },
 } as const;

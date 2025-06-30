@@ -6,12 +6,13 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   error?: string;
   id: string;
   name?: string;
+  containerClass?: string;
 };
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className = "", label, error, id, name, ...props }, ref) => {
+  ({ containerClass = "", label, error, id, name, ...props }, ref) => {
     return (
-      <div className={`${styles.inputWrapper} ${className}`}>
+      <div className={`${styles.inputWrapper} ${containerClass}`}>
         {label && <label className={styles.label}>{label}</label>}
         <input
           ref={ref}

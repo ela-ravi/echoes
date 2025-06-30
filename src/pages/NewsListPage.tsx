@@ -3,10 +3,15 @@ import HeaderNav from "../components/organisms/HeaderNav";
 import NewsTable from "../components/organisms/NewsTable";
 import styles from "./NewsListPage.module.scss";
 
+import { useNavigate } from "react-router-dom";
 import { INewsList } from "../types/NewsItem";
-import { API_ENDPOINTS } from "../config/api";
+import { UserInfo } from "../types/user";
+import { API_ENDPOINTS, getHeaders } from "../config/api";
+import { fetchUserInfo } from "../services/newsService";
 import useDebounce from "../hooks/useDebounce";
+import PageContainer from "../components/atoms/PageContainer";
 import NewsFilters from "../components/organisms/NewsFilters";
+import { ROUTES } from "../config/routes";
 
 export type NewsFilterKey = "category" | "status" | "search";
 
@@ -22,7 +27,7 @@ const NewsListPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState<number>(0); // Using 0-based offset for API
+  // const [page, setPage] = useState<number>(0); // Using 0-based offset for API
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [filters, setFilters] = useState<NewsFiltersType>({
     category: "all",
@@ -32,6 +37,11 @@ const NewsListPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms delay
   const [newsItems, setNewsItems] = useState<INewsList[]>([]);
+  const [userInfoError, setUserInfoError] = useState<string | null>(null);
+  const hasFetchedUserInfo = useRef(false);
+  const navigate = useNavigate();
+  // Keep userInfo state in case it's needed later
+  const [, setUserInfo] = useState<UserInfo | null>(null);
 
   // Handle filter changes
   const handleFilterChange = (key: NewsFilterKey, value: string) => {
@@ -61,7 +71,7 @@ const NewsListPage: React.FC = () => {
   }, [filters]);
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
-  const observerRef = useRef<IntersectionObserver | null>(null);
+  // const observerRef = useRef<IntersectionObserver | null>(null);
   const isMounted = useRef(true);
   const hasInitialLoad = useRef(false);
 
@@ -104,12 +114,7 @@ const NewsListPage: React.FC = () => {
         const apiUrl = API_ENDPOINTS.NEWS.LIST(queryParams);
 
         const response = await fetch(apiUrl, {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-expect-error
-          headers: {
-            "ngrok-skip-browser-warning": true,
-            "Content-Type": "application/json",
-          },
+          headers: getHeaders(),
           signal: abortController.signal,
         });
 
@@ -138,7 +143,7 @@ const NewsListPage: React.FC = () => {
             append ? [...prevItems, ...paginatedItems] : paginatedItems,
           );
           setHasMore(paginatedItems.length === PAGE_SIZE);
-          setPage(pageNum);
+          // setPage(pageNum);
           setLoadingState(false);
         }
       } catch (err) {
@@ -165,6 +170,69 @@ const NewsListPage: React.FC = () => {
     [PAGE_SIZE, filters, isMounted, loading, loadingMore, hasMore],
   );
 
+  // Fetch user info on initial load only
+  useEffect(() => {
+    // Skip if we've already fetched the user info
+    if (hasFetchedUserInfo.current) {
+      return;
+    }
+
+    const controller = new AbortController();
+    let isSubscribed = true;
+
+    const fetchUserData = async () => {
+      try {
+        console.log("Fetching user info...");
+        const userData = await fetchUserInfo(controller.signal);
+        if (isSubscribed) {
+          console.log("User info loaded:", userData);
+          setUserInfo(userData);
+          hasFetchedUserInfo.current = true;
+        }
+      } catch (error) {
+        if (isSubscribed && error instanceof Error) {
+          if (error.name !== "AbortError") {
+            const errorMessage =
+              error.message || "Failed to load user information";
+            console.error("Error fetching user info:", error);
+
+            // If it's an authentication error (401), redirect to login
+            if (
+              error.message.includes("401") ||
+              error.message.toLowerCase().includes("unauthorized")
+            ) {
+              console.log("Authentication failed, redirecting to login...");
+              navigate(ROUTES.LOGIN);
+              return;
+            }
+
+            // For other errors, show the error message
+            if (isSubscribed) {
+              setUserInfoError(errorMessage);
+            }
+          } else {
+            console.log("User info fetch was aborted");
+          }
+          // Reset the flag to allow retry on next mount if needed
+          hasFetchedUserInfo.current = false;
+        }
+      }
+    };
+
+    // Add a small delay to ensure the component is properly mounted
+    const timer = setTimeout(() => {
+      if (isSubscribed) {
+        fetchUserData();
+      }
+    }, 100);
+
+    return () => {
+      isSubscribed = false;
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, []);
+
   // Initial data load and filter changes with debounce
   useEffect(() => {
     isMounted.current = true;
@@ -172,7 +240,7 @@ const NewsListPage: React.FC = () => {
 
     // Only fetch if component is mounted
     const fetchData = async () => {
-      setPage(0);
+      // setPage(0);
       setLoading(true);
       await fetchNews(0, false);
       hasInitialLoad.current = true;
@@ -183,7 +251,7 @@ const NewsListPage: React.FC = () => {
       if (isMounted.current) {
         fetchData();
       }
-    }, 100); // Reduced debounce time
+    }, 100);
 
     return () => {
       isMounted.current = false;
@@ -198,47 +266,47 @@ const NewsListPage: React.FC = () => {
   }, [debouncedSearchTerm]);
 
   // Set up intersection observer for infinite scroll
-  useEffect(() => {
-    const currentRef = loadMoreRef.current;
-    if (
-      !currentRef ||
-      loading ||
-      loadingMore ||
-      !hasMore ||
-      !hasInitialLoad.current
-    )
-      return;
+  // useEffect(() => {
+  //   const currentRef = loadMoreRef.current;
+  //   if (
+  //     !currentRef ||
+  //     loading ||
+  //     loadingMore ||
+  //     !hasMore ||
+  //     !hasInitialLoad.current
+  //   )
+  //     return;
 
-    console.log("Setting up intersection observer");
-    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-      if (entries[0].isIntersecting) {
-        console.log("Intersection observer triggered - loading more");
-        fetchNews(page + 1, true);
-      }
-    };
+  //   console.log("Setting up intersection observer");
+  //   const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+  //     if (entries[0].isIntersecting) {
+  //       console.log("Intersection observer triggered - loading more");
+  //       fetchNews(page + 1, true);
+  //     }
+  //   };
 
-    // Clean up previous observer if it exists
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
+  //   // Clean up previous observer if it exists
+  //   if (observerRef.current) {
+  //     observerRef.current.disconnect();
+  //   }
 
-    // Create new observer
-    observerRef.current = new IntersectionObserver(handleIntersect, {
-      root: null,
-      rootMargin: "100px",
-      threshold: 0.1,
-    });
+  //   // Create new observer
+  //   observerRef.current = new IntersectionObserver(handleIntersect, {
+  //     root: null,
+  //     rootMargin: "100px",
+  //     threshold: 0.1,
+  //   });
 
-    observerRef.current.observe(currentRef);
+  //   observerRef.current.observe(currentRef);
 
-    // Cleanup function
-    return () => {
-      if (observerRef.current) {
-        console.log("Cleaning up intersection observer");
-        observerRef.current.disconnect();
-      }
-    };
-  }, [loading, loadingMore, hasMore, page, fetchNews]);
+  //   // Cleanup function
+  //   return () => {
+  //     if (observerRef.current) {
+  //       console.log("Cleaning up intersection observer");
+  //       observerRef.current.disconnect();
+  //     }
+  //   };
+  // }, [loading, loadingMore, hasMore, page, fetchNews]);
 
   // Don't return early, we'll handle loading and error states in the main return
   return (
@@ -247,7 +315,7 @@ const NewsListPage: React.FC = () => {
     >
       <HeaderNav hideSearch={true} />
 
-      <main className="flex flex-1 justify-center px-3 md:px-10 pt-24 pb-5">
+      <PageContainer>
         <div className="w-full max-w-[95%] md:max-w-[90%]">
           <h1 className="mb-4 text-[32px] font-bold leading-tight tracking-tight text-white">
             All News Items
@@ -260,9 +328,48 @@ const NewsListPage: React.FC = () => {
             onFilterChange={handleFilterChange}
             onResetFilters={resetFilters}
             isResetDisabled={areFiltersDefault()}
+            // hideSearch={true}
           />
 
-          {loading && newsItems.length === 0 ? (
+          {userInfoError ? (
+            <div className="mb-4 rounded-md bg-red-50 p-4">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-5 w-5 text-red-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-red-800">
+                    Error loading user information
+                  </h3>
+                  <div className="mt-2 text-sm text-red-700">
+                    <p>{userInfoError}</p>
+                  </div>
+                  <div className="mt-4">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUserInfoError(null);
+                        hasFetchedUserInfo.current = false;
+                      }}
+                      className="rounded-md bg-red-50 px-2 py-1.5 text-sm font-medium text-red-800 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-red-50"
+                    >
+                      Retry
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : loading && newsItems.length === 0 ? (
             <div className="flex flex-1 items-center justify-center py-10">
               <div className="text-xl">Loading news items...</div>
             </div>
@@ -289,7 +396,7 @@ const NewsListPage: React.FC = () => {
             </>
           )}
         </div>
-      </main>
+      </PageContainer>
     </div>
   );
 };

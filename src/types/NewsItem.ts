@@ -26,7 +26,7 @@ export interface INewsItem {
   /** Name of the reviewer, if reviewed */
   reviewedBy?: string | null;
   /** Current status of the item for the client */
-  clientStatus?: ClientStatus;
+  clientStatus: ClientStatus;
   /** List of category names the news item belongs to */
   categories?: string[];
   /** Publication date in ISO format */
@@ -34,26 +34,34 @@ export interface INewsItem {
   reviewedAt?: string;
   submittedAt?: string;
   /** Status of AI processing */
-  aiStatus?: "IN_PROGRESS" | "COMPLETED" | "FAILED";
+  aiStatus?: AIStatus;
   /** Summary of the news */
   summary?: string;
   /** Key individuals mentioned in the content */
   keyIndividuals?: string;
   /** Potential impact of the news */
-  potentialImpact?: string;
+  potentialImpact?: string; // When there is some potential risk detected by AI and says not to publish news, keep ClientStatus in ONHOLD
   /** Badge level for the news item */
   badges?: { SILVER: number; GOLD: number; BRONZE: number };
   /** Reward points associated with the news item */
   rewardPoints?: number;
+  /** Comments associated with the news item (Available only when ClientStatus is REJECTED) */
   comments?: string;
+  /** List of clients who have rejected the news item (when clientStatus is ONHOLD, this should be empty array) */
+  rejectedBy?: string[];
+  /** List of clients who have published the news item (when clientStatus is ONHOLD, this should be empty array) */
+  publishedBy?: string[];
+  /** List of clients who have pending the news item (when clientStatus is ONHOLD, this should be empty array) */
+  pendingClients?: string[];
+  languages: TRANSLATION_LANGUAGES[];
 }
 export type AIStatus = "IN_PROGRESS" | "COMPLETED" | "FAILED";
-// export type ClientStatus =
-//   | "Submitted"
-//   | "Pending"
-//   | "Reviewed"
-//   | "Published"
-//   | "Rejected";
+export type TRANSLATION_LANGUAGES =
+  | "hin_Deva" // Hindi
+  | "tam_Taml" // Tamil
+  | "tel_Telu" // Telugu
+  | "kan_Knda" // Kannada
+  | "mal_Mlym"; // Malayalam
 
 export enum ClientStatus {
   SUBMITTED = "SUBMITTED",
@@ -61,6 +69,7 @@ export enum ClientStatus {
   REVIEWED = "REVIEWED",
   PUBLISHED = "PUBLISHED",
   REJECTED = "REJECTED",
+  ONHOLD = "ONHOLD", // This status should be applied only when AI detects some Potential Risks in publishing news
 }
 export interface INewsList {
   id: string;
@@ -69,7 +78,10 @@ export interface INewsList {
   similarSourceName?: string; // visible text
   similarSourceUrl?: string; // url embeded on visible text
   publishedAt?: string; // Date at which Published by Client
-  user?: string; // Date at which submitted by Client
+  submittedBy?: string;
   aiStatus: AIStatus;
   clientStatus: ClientStatus;
+  comments?: string;
+  publishedCount?: number;
+  rejectedCount?: number;
 }

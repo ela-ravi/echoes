@@ -3,24 +3,20 @@ import React, { useState } from "react";
 import StatusBadge from "../molecules/StatusBadge";
 import CategoriesCell from "../molecules/CategoriesCell";
 import RejectModal from "../molecules/RejectModal";
+import { NewsItemActions } from "../molecules/NewsItemActions";
 import type { INewsList } from "../../types/NewsItem";
-import {
-  EyeIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  ArrowPathIcon,
-} from "@heroicons/react/24/outline";
-import { API_ENDPOINTS } from "../../config/api";
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useAIRefresh } from "../../hooks/useAIRefresh";
+import { newsService } from "../../services/newsService";
+import {
+  isActionAllowed,
+  getActionTooltip,
+  handleAction,
+  NEWSACTION,
+} from "../../utils/newsUtils";
 
-// export type NewsAction = "REVIEWED" | "PUBLISHED" | "REJECTED";
-enum NEWSACTION {
-  REVIEWED = "REVIEWED",
-  PUBLISHED = "PUBLISHED",
-  REJECTED = "REJECTED",
-}
+// Define NEWSACTION enum locally since it's only used in this file
 
 export interface NewsActionPayload {
   id: string;
@@ -30,57 +26,21 @@ export interface NewsActionPayload {
 
 interface NewsTableProps {
   items: INewsList[];
-  showActions?: boolean;
   onUpdate?: () => void;
 }
 
-const NewsTable: React.FC<NewsTableProps> = ({
-  items,
-  showActions = true,
-  onUpdate,
-}) => {
+const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
+  // Get user type from sessionStorage
+  const userType =
+    typeof window !== "undefined" ? sessionStorage.getItem("userType") : null;
+  const isClient = userType === "CLIENT";
+  const isAdmin = userType === "ADMIN";
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [rejectComment, setRejectComment] = useState("");
 
-  const isActionAllowed = (status: string, actionType: string) => {
-    switch (status) {
-      case "PENDING":
-        return actionType === "review";
-      case "REVIEWED":
-        return actionType === "publish" || actionType === "reject";
-      case "PUBLISHED":
-      case "REJECTED":
-      case "SUBMITTED":
-        return false;
-      default:
-        return true; // Default to allowing actions if status is not recognized
-    }
-  };
-
-  const getActionTooltip = (status: string, actionType: string) => {
-    if (!isActionAllowed(status, actionType)) {
-      switch (status) {
-        case "PENDING":
-          return "Only Start Review action is allowed for PENDING items";
-        case "REVIEWED":
-          return "Only Publish and Reject actions are allowed for REVIEWED items";
-        case "PUBLISHED":
-          return "No actions allowed for PUBLISHED items";
-        case "REJECTED":
-          return "No actions allowed for REJECTED items";
-        case "SUBMITTED":
-          return "No actions allowed for SUBMITTED items";
-        default:
-          return "Action not allowed";
-      }
-    }
-    return actionType === "review"
-      ? "Mark as Reviewed"
-      : actionType === "publish"
-        ? "Publish"
-        : "Reject";
-  };
+  const newsDetailRoute = (id: string) =>
+    isAdmin ? `/news-detail?id=${id}` : `/client-news-detail?id=${id}`;
 
   const { isRefreshing: isGlobalRefreshing, handleAIRefresh } = useAIRefresh();
   const [refreshingItems, setRefreshingItems] = useState<
@@ -112,7 +72,16 @@ const NewsTable: React.FC<NewsTableProps> = ({
   const handleRefreshClick = async (id: string) => {
     try {
       setRefreshingItems((prev) => ({ ...prev, [id]: true }));
-      await handleAIRefresh(id, onUpdate);
+      await handleAIRefresh(
+        id,
+        onUpdate
+          ? async () => {
+              if (onUpdate) {
+                await onUpdate();
+              }
+            }
+          : undefined
+      );
     } catch (error) {
       console.error("Error refreshing AI status:", error);
       toast.error("Failed to refresh AI status");
@@ -121,74 +90,64 @@ const NewsTable: React.FC<NewsTableProps> = ({
     }
   };
 
-  const handleAction = async (
-    id: string,
-    action: NEWSACTION,
-    comment?: string,
-  ) => {
-    try {
-      const url = new URL(API_ENDPOINTS.NEWS.REVIEW(id));
-      url.searchParams.append("reviewerId", "2"); // Replace with actual reviewer ID
-      url.searchParams.append("status", action);
-
-      // Add comment to query params if it's a rejection and comment exists
-      if (action === NEWSACTION.REJECTED && comment?.trim()) {
-        url.searchParams.append("comment", comment.trim());
-      }
-
-      const response = await fetch(url.toString(), {
-        method: "POST",
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-expect-error
-        headers: {
-          "ngrok-skip-browser-warning": true,
-          "Content-Type": "application/json",
-          "client-key": "admin",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to ${action} news item`);
-      }
-
-      toast.success(`Successfully ${action} news item`);
-      onUpdate?.(); // Refresh the news list
-    } catch (error) {
-      console.error(`Error ${action}ing news item:`, error);
-      toast.error(`Failed to ${action} news item`);
-    }
-  };
+  // const handleAction = async (
+  //   id: string,
+  //   action: NEWSACTION,
+  //   comment?: string
+  // ) => {
+  //   try {
+  //     await handleNewsAction(
+  //       id,
+  //       action as "REVIEWED" | "PUBLISHED" | "REJECTED",
+  //       newsService,
+  //       comment
+  //     );
+  //     toast.success(`News item ${action.toLowerCase()} successfully`);
+  //   } catch (error) {
+  //     console.error(`Error ${action.toLowerCase()}ing news item:`, error);
+  //     toast.error(
+  //       `Failed to ${action.toLowerCase()} news item: ${
+  //         error instanceof Error ? error.message : "Unknown error"
+  //       }`
+  //     );
+  //   }
+  // };
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-[#394060] bg-[#131520] my-4">
+    <div
+      className={`overflow-x-auto rounded-xl border border-[${isAdmin ? "#394060" : "#603939"}] bg-[${isAdmin ? "#131520" : "#201313"}] my-4`}
+    >
       <table className="w-full text-sm text-white">
         <thead>
-          <tr className="bg-[#1d2030] text-left">
+          <tr className={`bg-[${isAdmin ? "#1d2030" : "#301d1d"}] text-left`}>
             <th className="px-4 py-3 w-[160px]">News ID</th>
             <th className="px-4 py-3">Title</th>
+            {isAdmin && <th className="px-4 py-3">User</th>}
             <th className="px-4 py-3">Categories</th>
             <th className="px-4 py-3">Similar Source</th>
             <th className="px-4 py-3 whitespace-nowrap">Published At</th>
-            <th className="px-4 py-3">AI Status</th>
-            <th className="px-4 py-3">Client Status</th>
-            {showActions && <th className="px-4 py-3 text-right">Actions</th>}
+            {isAdmin && <th className="px-4 py-3">AI Status</th>}
+            <th className="px-4 py-3">
+              {isAdmin ? "Client Status" : "Status"}
+            </th>
+            {isClient && <th className="px-4 py-3 text-right">Actions</th>}
           </tr>
         </thead>
         <tbody>
           {items.map((item) => (
             <tr
               key={item.id}
-              className="border-t border-[#394060] hover:bg-[#1d2030]/50"
+              className={`border-t border-[${isAdmin ? "#394060" : "#603939"}] ${isAdmin ? "hover:bg-[#1d2030]/50" : "hover:bg-[#301d1d]/50"}`}
             >
               <td className="px-4 py-2 font-medium tracking-wide w-[160px]">
                 <Link
-                  to={`/news-detail?id=${item.id}`}
+                  to={newsDetailRoute(item.id)}
                   onClick={(e) => {
                     // Prevent default to handle navigation programmatically
                     e.preventDefault();
                     // Add a small delay to ensure the click is processed
                     setTimeout(() => {
-                      window.location.href = `/news-detail?id=${item.id}`;
+                      window.location.href = newsDetailRoute(item.id);
                     }, 100);
                   }}
                   className="text-[#4f8ef7] hover:underline"
@@ -197,6 +156,11 @@ const NewsTable: React.FC<NewsTableProps> = ({
                 </Link>
               </td>
               <td className="px-4 py-2 truncate max-w-xs">{item.title}</td>
+              {isAdmin && (
+                <td className="px-4 py-2 whitespace-nowrap">
+                  {item.submittedBy || "N/A"}
+                </td>
+              )}
               <td className="px-4 py-2 max-w-[220px]">
                 <CategoriesCell categories={item.categories || []} />
               </td>
@@ -217,87 +181,52 @@ const NewsTable: React.FC<NewsTableProps> = ({
               <td className="px-4 py-2 whitespace-nowrap">
                 {item.publishedAt}
               </td>
-              <td className="px-4 py-2">
-                <div className="flex items-center gap-2">
-                  <StatusBadge status={item.aiStatus} type="ai" />
-                  {(item.aiStatus === "IN_PROGRESS" ||
-                    item.aiStatus === "FAILED") && (
-                    <button
-                      type="button"
-                      onClick={() => handleRefreshClick(item.id.toString())}
-                      disabled={refreshingItems[item.id] || isGlobalRefreshing}
-                      className={`text-gray-400 hover:text-blue-400 transition-colors ${
-                        refreshingItems[item.id] || isGlobalRefreshing
-                          ? "opacity-50 cursor-not-allowed"
-                          : ""
-                      }`}
-                      title={
-                        refreshingItems[item.id] || isGlobalRefreshing
-                          ? "Refreshing..."
-                          : "Refresh AI status"
-                      }
-                    >
-                      <ArrowPathIcon
-                        className={`w-4 h-4 ${
-                          refreshingItems[item.id] ? "animate-spin" : ""
+              {isAdmin && (
+                <td className="px-4 py-2">
+                  <div className="flex items-center gap-2">
+                    <StatusBadge status={item.aiStatus} type="ai" />
+                    {(item.aiStatus === "IN_PROGRESS" ||
+                      item.aiStatus === "FAILED") && (
+                      <button
+                        type="button"
+                        onClick={() => handleRefreshClick(item.id.toString())}
+                        disabled={
+                          refreshingItems[item.id] || isGlobalRefreshing
+                        }
+                        className={`text-gray-400 hover:text-blue-400 transition-colors ${
+                          refreshingItems[item.id] || isGlobalRefreshing
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
                         }`}
-                      />
-                    </button>
-                  )}
-                </div>
-              </td>
+                        title={
+                          refreshingItems[item.id] || isGlobalRefreshing
+                            ? "Refreshing..."
+                            : "Refresh AI status"
+                        }
+                      >
+                        <ArrowPathIcon
+                          className={`w-4 h-4 ${
+                            refreshingItems[item.id] ? "animate-spin" : ""
+                          }`}
+                        />
+                      </button>
+                    )}
+                  </div>
+                </td>
+              )}
               <td className="px-4 py-2">
                 <StatusBadge status={item.clientStatus} />
               </td>
-              {showActions && (
+              {isClient && (
                 <td className="px-4 py-2">
-                  <div className="flex justify-end space-x-1">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAction(item.id, NEWSACTION.REVIEWED);
-                      }}
-                      disabled={!isActionAllowed(item.clientStatus, "review")}
-                      className={`p-1.5 rounded transition-colors ${
-                        !isActionAllowed(item.clientStatus, "review")
-                          ? "opacity-50 cursor-not-allowed"
-                          : "text-blue-400 hover:bg-blue-900/50 hover:text-blue-300"
-                      }`}
-                      title={getActionTooltip(item.clientStatus, "review")}
-                    >
-                      <EyeIcon className="h-4 w-4" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAction(item.id, NEWSACTION.PUBLISHED);
-                      }}
-                      disabled={!isActionAllowed(item.clientStatus, "publish")}
-                      className={`p-1.5 rounded transition-colors ${
-                        !isActionAllowed(item.clientStatus, "publish")
-                          ? "text-gray-500 cursor-not-allowed"
-                          : "text-green-400 hover:bg-green-900/50 hover:text-green-300"
-                      }`}
-                      title={getActionTooltip(item.clientStatus, "publish")}
-                    >
-                      <CheckCircleIcon className="h-4 w-4" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={(e) => handleRejectClick(e, item.id)}
-                      disabled={!isActionAllowed(item.clientStatus, "reject")}
-                      className={`p-1.5 rounded transition-colors ${
-                        !isActionAllowed(item.clientStatus, "reject")
-                          ? "text-gray-500 cursor-not-allowed"
-                          : "text-red-400 hover:bg-red-900/50 hover:text-red-300"
-                      }`}
-                      title={getActionTooltip(item.clientStatus, "reject")}
-                    >
-                      <XCircleIcon className="h-4 w-4" />
-                    </button>
-                  </div>
+                  <NewsItemActions
+                    itemId={item.id}
+                    status={item.clientStatus}
+                    onAction={handleAction}
+                    onReject={handleRejectClick}
+                    isActionAllowed={isActionAllowed}
+                    getActionTooltip={getActionTooltip}
+                  />
                 </td>
               )}
             </tr>

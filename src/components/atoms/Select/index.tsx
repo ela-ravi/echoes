@@ -10,16 +10,20 @@ type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
   options: Option[];
   label?: string;
   error?: string;
+  containerClass?: string;
 };
 
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className = "", label, options, error, ...props }, ref) => {
+  (
+    { className = "", label, options, error, containerClass, ...props },
+    ref,
+  ) => {
     return (
-      <div className={`${styles.selectWrapper} ${className}`}>
+      <div className={`${styles.selectWrapper} ${containerClass}`}>
         {label && <label className={styles.label}>{label}</label>}
         <select
           ref={ref}
-          className={`${styles.select} ${error ? styles.error : ""}`}
+          className={`${styles.select} ${className} ${error ? styles.error : ""}`}
           {...props}
         >
           {options.map((option) => (
@@ -31,7 +35,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         {error && <span className={styles.errorMessage}>{error}</span>}
       </div>
     );
-  }
+  },
 );
 
 Select.displayName = "Select";

@@ -20,7 +20,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled,
       ...props
     },
-    ref
+    ref,
   ) => {
     const buttonClass = `${styles.button} ${styles[variant]} ${
       isLoading ? styles.loading : ""
@@ -37,7 +37,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <span className={styles.content}>{children}</span>
       </button>
     );
-  }
+  },
 );
 
 Button.displayName = "Button";

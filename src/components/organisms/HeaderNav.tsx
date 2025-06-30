@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-// import SearchBar from "../molecules/SearchBar";
+import { Link, useNavigate } from "react-router-dom";
+import authService from "../../services/authService";
 import styles from "./HeaderNav.module.scss";
 
 interface HeaderNavProps {
@@ -8,9 +8,22 @@ interface HeaderNavProps {
 }
 
 const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      navigate("/login");
+    }
+  };
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: hook in real search logic
@@ -22,31 +35,11 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
     setSearchOpen(false);
   };
 
-  // const navLinks = (
-  //   <>
-  //     <Link className="text-white" to="#">
-  //       Dashboard
-  //     </Link>
-  //     <Link className="text-white" to="/news">
-  //       News Items
-  //     </Link>
-  //     <Link className="text-white" to="#">
-  //       Clients
-  //     </Link>
-  //     <Link className="text-white" to="#">
-  //       Reports
-  //     </Link>
-  //     <Link className="text-white" to="#">
-  //       Settings
-  //     </Link>
-  //   </>
-  // );
-
   return (
     <header className={styles.header}>
       <div className="flex items-center justify-between w-full h-full">
         <Link
-          to="/"
+          to="/news"
           className="flex items-center gap-4 text-white hover:opacity-80 transition-opacity"
         >
           <div className="size-4">
@@ -60,16 +53,6 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
           </div>
           <h2 className="text-lg font-bold tracking-tight">Echoes</h2>
         </Link>
-
-        {/* <nav className="hidden lg:flex items-center gap-8 text-sm font-medium">
-          {navLinks}
-        </nav> */}
-
-        {/* {!hideSearch && (
-          <div className="hidden md:block max-w-xs flex-1">
-            <SearchBar />
-          </div>
-        )} */}
 
         {!hideSearch && (
           <button
@@ -99,30 +82,96 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
           </button>
         )}
 
-        {/* <button
-          type="button"
-          className="text-white lg:hidden mr-2"
-          onClick={() => setMobileOpen((prev) => !prev)}
-          aria-label="Toggle menu"
+        {/* Logout button */}
+        <button
+          onClick={handleLogout}
+          className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2"
+          aria-label="Sign out"
         >
+          <span className="hidden md:inline">Sign out</span>
           <svg
-            className="size-6"
+            className="size-5"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M4 6h16M4 12h16M4 18h16"
+              strokeWidth={2}
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
             />
           </svg>
-        </button> */}
+        </button>
       </div>
 
-      {/* Mobile / Tablet search overlay */}
+
+        {/* User menu */}
+        {/* <div className="relative ml-4">
+          <button
+            type="button"
+            onClick={() => setUserMenuOpen(!userMenuOpen)}
+            className="flex items-center gap-2 text-white hover:opacity-80 transition-opacity"
+            aria-label="User menu"
+            aria-expanded={userMenuOpen}
+          >
+            <div className="size-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-medium">
+              U
+            </div>
+            <span className="hidden md:inline">User</span>
+            <svg
+              className={`size-4 transition-transform ${userMenuOpen ? "rotate-180" : ""}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+
+          
+          {userMenuOpen && (
+            <>
+              <div
+                className="fixed inset-0 z-10"
+                onClick={() => setUserMenuOpen(false)}
+                aria-hidden="true"
+              />
+              <div className="absolute right-0 mt-2 w-48 bg-[var(--color-bg-card)] rounded-md shadow-lg py-1 z-20">
+                <Link
+                  to="/profile"
+                  className="block px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]"
+                  onClick={() => setUserMenuOpen(false)}
+                >
+                  Profile
+                </Link>
+                <Link
+                  to="/settings"
+                  className="block px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]"
+                  onClick={() => setUserMenuOpen(false)}
+                >
+                  Settings
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-status-error)]"
+                >
+                  Sign out
+                </button>
+              </div>
+            </>
+          )}
+        </div> */}
+      {/* </div> */}
+
+      {/* Mobile/Tablet search overlay */}
       {searchOpen && (
         <>
           <div className="fixed inset-x-0 top-0 z-50 flex items-center bg-[#131520] p-4 h-16">
@@ -193,9 +242,6 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
               </svg>
             </button>
           </div>
-          {/* <nav className="flex flex-col gap-6 p-6 text-lg font-medium">
-            {navLinks}
-          </nav> */}
         </div>
       )}
     </header>

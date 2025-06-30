@@ -1,0 +1,948 @@
+{
+  "admin-news-list": [
+    {
+      "id": "1",
+      "title": "AI Revolutionizes Drug Discovery",
+      "categories": [
+        "Science",
+        "Health",
+        "AI"
+      ],
+      "similarSourceName": "BBC News",
+      "similarSourceUrl": "https://twitter.com/news/status/17696",
+      "publishedAt": "2024-04-11T12:59:27.712615Z",
+      "user": "Rajesh",
+      "aiStatus": "Failed",
+      "clientStatus": "Rejected"
+    },
+    {
+      "id": "2",
+      "title": "Quantum Computing Advances Towards Real-World Applications",
+      "categories": [
+        "Technology",
+        "Research"
+      ],
+      "similarSourceName": "TechCrunch",
+      "similarSourceUrl": "https://twitter.com/techcrunch/status/56789",
+      "publishedAt": "2024-06-17T10:00:00Z",
+      "user": "Priya",
+      "aiStatus": "InProgress",
+      "clientStatus": "Submitted"
+    },
+    {
+      "id": "3",
+      "title": "Global Push for Renewable Energy Intensifies",
+      "categories": [
+        "Environment",
+        "Energy"
+      ],
+      "similarSourceName": "Reuters",
+      "similarSourceUrl": "https://twitter.com/reuters/status/98765",
+      "publishedAt": "2024-06-16T09:30:00Z",
+      "user": "Amit",
+      "aiStatus": "Completed",
+      "clientStatus": "Published"
+    },
+    {
+      "id": "4",
+      "title": "Breakthrough in Personalized Cancer Therapies",
+      "categories": [
+        "Health",
+        "Biotech"
+      ],
+      "similarSourceName": "Nature",
+      "similarSourceUrl": "https://twitter.com/nature/status/11223",
+      "publishedAt": "2024-06-15T11:45:00Z",
+      "user": "Meena",
+      "aiStatus": "InProgress",
+      "clientStatus": "Reviewed"
+    },
+    {
+      "id": "5",
+      "title": "Rise of AI in Creative Industries Sparks Debate",
+      "categories": [
+        "Technology",
+        "Arts"
+      ],
+      "similarSourceName": "The Verge",
+      "similarSourceUrl": "https://twitter.com/verge/status/22334",
+      "publishedAt": "2024-06-14T14:00:00Z",
+      "user": "Vikram",
+      "aiStatus": "Completed",
+      "clientStatus": "Rejected"
+    },
+    {
+      "id": "6",
+      "title": "New Diplomatic Efforts to Resolve Global Conflicts",
+      "categories": [
+        "Politics",
+        "International Relations"
+      ],
+      "similarSourceName": "Al Jazeera",
+      "similarSourceUrl": "https://twitter.com/aljazeera/status/33445",
+      "publishedAt": "2024-06-13T16:15:00Z",
+      "user": "Sophia",
+      "aiStatus": "InProgress",
+      "clientStatus": "Pending"
+    },
+    {
+      "id": "7",
+      "title": "Economic Slowdown Expected in Q3 Amidst Inflation Concerns",
+      "categories": [
+        "Economics",
+        "Finance"
+      ],
+      "similarSourceName": "Bloomberg",
+      "similarSourceUrl": "https://twitter.com/bloomberg/status/44556",
+      "publishedAt": "2024-06-12T08:00:00Z",
+      "user": "John",
+      "aiStatus": "Completed",
+      "clientStatus": "Published"
+    },
+    {
+      "id": "8",
+      "title": "Space Tourism Takes Off: New Orbital Hotels Announced",
+      "categories": [
+        "Space",
+        "Tourism"
+      ],
+      "similarSourceName": "Space.com",
+      "similarSourceUrl": "https://twitter.com/spacedotcom/status/55667",
+      "publishedAt": "2024-06-11T13:30:00Z",
+      "user": "Alice",
+      "aiStatus": "InProgress",
+      "clientStatus": "Pending"
+    },
+    {
+      "id": "9",
+      "title": "New Dietary Guidelines Emphasize Plant-Based Nutrition",
+      "categories": [
+        "Health",
+        "Nutrition"
+      ],
+      "similarSourceName": "WHO",
+      "similarSourceUrl": "https://twitter.com/who/status/66778",
+      "publishedAt": "2024-06-10T10:00:00Z",
+      "user": "Bob",
+      "aiStatus": "Completed",
+      "clientStatus": "Published"
+    },
+    {
+      "id": "10",
+      "title": "Cybersecurity Threats Escalate Globally",
+      "categories": [
+        "Cybersecurity",
+        "Technology"
+      ],
+      "similarSourceName": "Wired",
+      "similarSourceUrl": "https://twitter.com/wired/status/77889",
+      "publishedAt": "2024-06-09T15:00:00Z",
+      "user": "Charlie",
+      "aiStatus": "InProgress",
+      "clientStatus": "Pending"
+    },
+    {
+      "id": "11",
+      "title": "Advances in AI-Powered Education Platforms",
+      "categories": [
+        "Education",
+        "AI"
+      ],
+      "similarSourceName": "EdTech Review",
+      "similarSourceUrl": "https://twitter.com/edtech/status/88990",
+      "publishedAt": "2024-06-08T11:00:00Z",
+      "user": "Diana",
+      "aiStatus": "Completed",
+      "clientStatus": "Published"
+    },
+    {
+      "id": "12",
+      "title": "Global Water Scarcity Worsens, Urgent Action Needed",
+      "categories": [
+        "Environment",
+        "Water"
+      ],
+      "similarSourceName": "The Guardian",
+      "similarSourceUrl": "https://twitter.com/guardian/status/99001",
+      "publishedAt": "2024-06-07T09:00:00Z",
+      "user": "Evan",
+      "aiStatus": "Failed",
+      "clientStatus": "Rejected"
+    },
+    {
+      "id": "13",
+      "title": "New Regulations Aim to Curb Social Media Misinformation",
+      "categories": [
+        "Politics",
+        "Technology"
+      ],
+      "similarSourceName": "New York Times",
+      "similarSourceUrl": "https://twitter.com/nytimes/status/11012",
+      "publishedAt": "2024-06-06T12:00:00Z",
+      "user": "Fiona",
+      "aiStatus": "InProgress",
+      "clientStatus": "Rejected"
+    },
+    {
+      "id": "14",
+      "title": "Breakthrough in Battery Technology for EVs",
+      "categories": [
+        "Automotive",
+        "Innovation"
+      ],
+      "similarSourceName": "Electrek",
+      "similarSourceUrl": "https://twitter.com/electrek/status/22123",
+      "publishedAt": "2024-06-05T10:30:00Z",
+      "user": "George",
+      "aiStatus": "Completed",
+      "clientStatus": "Published"
+    },
+    {
+      "id": "15",
+      "title": "Archaeologists Uncover Ancient Lost City",
+      "categories": [
+        "Archaeology",
+        "History"
+      ],
+      "similarSourceName": "National Geographic",
+      "similarSourceUrl": "https://twitter.com/natgeo/status/33234",
+      "publishedAt": "2024-06-04T14:45:00Z",
+      "user": "Hannah",
+      "aiStatus": "InProgress",
+      "clientStatus": "Published"
+    },
+    {
+      "id": "16",
+      "title": "Mental Health Support in Workplaces Becomes Priority",
+      "categories": [
+        "Workplace",
+        "Health"
+      ],
+      "similarSourceName": "Forbes",
+      "similarSourceUrl": "https://twitter.com/forbes/status/44345",
+      "publishedAt": "2024-06-03T11:00:00Z",
+      "user": "Isaac",
+      "aiStatus": "Completed",
+      "clientStatus": "Published"
+    },
+    {
+      "id": "17",
+      "title": "Renewed Focus on Space Exploration Missions",
+      "categories": [
+        "Space",
+        "Exploration"
+      ],
+      "similarSourceName": "NASA",
+      "similarSourceUrl": "https://twitter.com/nasa/status/55456",
+      "publishedAt": "2024-06-02T13:00:00Z",
+      "user": "Julia",
+      "aiStatus": "InProgress",
+      "clientStatus": "Published"
+    },
+    {
+      "id": "18",
+      "title": "New Agricultural Techniques Boost Food Security",
+      "categories": [
+        "Agriculture",
+        "Food Security"
+      ],
+      "similarSourceName": "AgriNews",
+      "similarSourceUrl": "https://twitter.com/agrinews/status/66567",
+      "publishedAt": "2024-06-01T09:45:00Z",
+      "user": "Kevin",
+      "aiStatus": "Completed",
+      "clientStatus": "Pending"
+    },
+    {
+      "id": "19",
+      "title": "Ethical AI Development Gains Traction",
+      "categories": [
+        "AI",
+        "Ethics"
+      ],
+      "similarSourceName": "MIT Tech Review",
+      "similarSourceUrl": "https://twitter.com/techreview/status/77678",
+      "publishedAt": "2024-05-31T16:00:00Z",
+      "user": "Lena",
+      "aiStatus": "InProgress",
+      "clientStatus": "Published"
+    },
+    {
+      "id": "20",
+      "title": "Urban Planning Focus Shifts to Green Infrastructure",
+      "categories": [
+        "Urban Planning",
+        "Sustainability"
+      ],
+      "similarSourceName": "CityLab",
+      "similarSourceUrl": "https://twitter.com/citylab/status/88789",
+      "publishedAt": "2024-05-30T10:15:00Z",
+      "user": "Mike",
+      "aiStatus": "Completed",
+      "clientStatus": "Published"
+    }
+  ],
+  "admin-news-details": [
+    {
+      "id": "1",
+      "title": "AI Revolutionizes Drug Discovery",
+      "originalText": "Title: AI Revolutionizes Drug Discovery. This report explores the implications of recent changes in AI revolutionising drug discovery, mind you, it's quite a big deal here.",
+      "aiGeneratedText": "AI is significantly impacting drug discovery by accelerating research, identifying potential drug candidates, and optimizing experimental processes. This is a game-changer for the pharmaceutical industry, reducing development time and costs.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/76979871",
+      "userUploadedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/76979871",
+      "similarSourceName": "BBC News",
+      "similarSourceUrl": "https://twitter.com/news/status/17696",
+      "user": "Rajesh",
+      "userMailId": "rajesh123@gmail.com",
+      "reviewedBy": null,
+      "clientStatus": "Rejected",
+      "categories": [
+        "Science",
+        "Health",
+        "AI"
+      ],
+      "publishedAt": "2024-04-11T12:59:27.712615Z",
+      "reviewedAt": null,
+      "submittedAt": "2024-04-11T12:59:27.712615Z",
+      "aiStatus": "Failed",
+      "summary": "Title: AI Revolutionizes Drug Discovery. This report explores the implications of recent changes in AI revolutionizes drug discovery... AI-generated summary placeholder.",
+      "keyIndividuals": "Dr. Diana Smith - Lead Researcher\nCTO - Nature",
+      "potentialImpact": "May influence global policies, reshape landscapes, and affect millions worldwide.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 100
+    },
+    {
+      "id": "2",
+      "title": "Quantum Computing Advances Towards Real-World Applications",
+      "originalText": "Title: Quantum Computing Advances Towards Real-World Applications. A new paper details significant progress in error correction for quantum computers, bringing them closer to practical use, which is quite a development, you see.",
+      "aiGeneratedText": "Recent advancements in quantum computing, particularly in error correction, are bringing this revolutionary technology closer to practical applications. This could unlock solutions to complex problems currently beyond the reach of classical computers, impacting various industries.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/32001208",
+      "userUploadedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/32001208",
+      "similarSourceName": "TechCrunch",
+      "similarSourceUrl": "https://twitter.com/techcrunch/status/56789",
+      "user": "Priya",
+      "userMailId": "priya.s@example.com",
+      "reviewedBy": null,
+      "clientStatus": "Pending",
+      "categories": [
+        "Technology",
+        "Research"
+      ],
+      "publishedAt": "2024-06-17T10:00:00Z",
+      "reviewedAt": null,
+      "submittedAt": "2024-06-17T10:00:00Z",
+      "aiStatus": "InProgress",
+      "summary": "Title: Quantum Computing Advances Towards Real-World Applications. This report summarizes the latest breakthroughs in quantum computing, focusing on their potential impact on various industries. AI-generated summary placeholder.",
+      "keyIndividuals": "Dr. Emily Chen - Lead Scientist\nCEO - QuantumTech Inc.",
+      "potentialImpact": "Could revolutionize cryptography, drug discovery, and material science on a global scale.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 100
+    },
+    {
+      "id": "3",
+      "title": "Global Push for Renewable Energy Intensifies",
+      "originalText": "Title: Global Push for Renewable Energy Intensifies. Nations worldwide are committing to aggressive targets for solar and wind power deployment to combat climate change, which is a vital step, definitely.",
+      "aiGeneratedText": "The global commitment to renewable energy is intensifying, with many nations setting ambitious targets for solar and wind power. This collective effort is crucial in mitigating climate change and transitioning towards a sustainable energy future.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/13693845",
+      "userUploadedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/13693845",
+      "similarSourceName": "Reuters",
+      "similarSourceUrl": "https://twitter.com/reuters/status/98765",
+      "user": "Amit",
+      "userMailId": "amit.k@example.com",
+      "reviewedBy": "Sarah J.",
+      "clientStatus": "Published",
+      "categories": [
+        "Environment",
+        "Energy"
+      ],
+      "publishedAt": "2024-06-16T09:30:00Z",
+      "reviewedAt": "2024-06-16T10:00:00Z",
+      "submittedAt": "2024-06-16T09:30:00Z",
+      "aiStatus": "Completed",
+      "summary": "Title: Global Push for Renewable Energy Intensifies. This article highlights the increasing global investment and policy shifts towards renewable energy sources. AI-generated summary placeholder.",
+      "keyIndividuals": "UN Climate Envoy - John Doe\nGreenpeace CEO - Jane Smith",
+      "potentialImpact": "Significant reduction in carbon emissions, leading to improved climate stability globally.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 500
+    },
+    {
+      "id": "4",
+      "title": "Breakthrough in Personalized Cancer Therapies",
+      "originalText": "Title: Breakthrough in Personalized Cancer Therapies. Scientists have developed a new method to tailor cancer treatments based on individual genetic profiles, showing promising early results, it's quite a ray of hope.",
+      "aiGeneratedText": "A significant breakthrough in cancer therapy involves tailoring treatments to individual genetic profiles. This personalized approach holds immense promise for more effective and less toxic cancer management, offering new hope to patients worldwide.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/76979871",
+      "userUploadedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/76979871",
+      "similarSourceName": "Nature",
+      "similarSourceUrl": "https://twitter.com/nature/status/11223",
+      "user": "Meena",
+      "userMailId": "meena.p@example.com",
+      "reviewedBy": null,
+      "clientStatus": "Pending",
+      "categories": [
+        "Health",
+        "Biotech"
+      ],
+      "publishedAt": "2024-06-15T11:45:00Z",
+      "reviewedAt": null,
+      "submittedAt": "2024-06-15T11:45:00Z",
+      "aiStatus": "InProgress",
+      "summary": "Title: Breakthrough in Personalized Cancer Therapies. This report details advancements in oncology, specifically personalized medicine for cancer, offering new hope for patients. AI-generated summary placeholder.",
+      "keyIndividuals": "Prof. Li Wei - Lead Oncologist\nDirector - BioMed Institute",
+      "potentialImpact": "Could transform cancer treatment paradigms worldwide, significantly improving patient outcomes.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 10
+    },
+    {
+      "id": "5",
+      "title": "Rise of AI in Creative Industries Sparks Debate",
+      "originalText": "Title: Rise of AI in Creative Industries Sparks Debate. From music composition to graphic design, AI tools are increasingly being adopted, leading to discussions about copyright and human artistry, quite a hot topic nowadays, no?",
+      "aiGeneratedText": "The increasing integration of AI in creative industries, such as music and graphic design, has ignited debates concerning copyright, originality, and the role of human artistry. This raises important questions about the future of creative professions.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/32001208",
+      "userUploadedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/32001208",
+      "similarSourceName": "The Verge",
+      "similarSourceUrl": "https://twitter.com/verge/status/22334",
+      "user": "Vikram",
+      "userMailId": "vikram.s@example.com",
+      "reviewedBy": "David L.",
+      "clientStatus": "Rejected",
+      "categories": [
+        "Technology",
+        "Arts"
+      ],
+      "publishedAt": "2024-06-14T14:00:00Z",
+      "reviewedAt": "2024-06-14T14:30:00Z",
+      "submittedAt": "2024-06-14T14:00:00Z",
+      "aiStatus": "Completed",
+      "summary": "Title: Rise of AI in Creative Industries Sparks Debate. This article explores the growing influence of artificial intelligence in creative fields and the ensuing ethical and legal debates. AI-generated summary placeholder.",
+      "keyIndividuals": "Artist's Guild President - Helen Vance\nAI Ethicist - Dr. Alex Ray",
+      "potentialImpact": "Could reshape job markets in creative sectors and influence global intellectual property laws.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 500
+    },
+    {
+      "id": "6",
+      "title": "New Diplomatic Efforts to Resolve Global Conflicts",
+      "originalText": "Title: New Diplomatic Efforts to Resolve Global Conflicts. International leaders convene in Geneva to discuss pressing conflicts, aiming for new peace agreements, it's a big conference, you know.",
+      "aiGeneratedText": "International leaders are intensifying diplomatic efforts in Geneva to address ongoing global conflicts. The discussions aim to forge new peace agreements and de-escalate tensions, marking a critical moment for international relations.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/13693845",
+      "userUploadedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/13693845",
+      "similarSourceName": "Al Jazeera",
+      "similarSourceUrl": "https://twitter.com/aljazeera/status/33445",
+      "user": "Sophia",
+      "userMailId": "sophia.g@example.com",
+      "reviewedBy": null,
+      "clientStatus": "Pending",
+      "categories": [
+        "Politics",
+        "International Relations"
+      ],
+      "publishedAt": "2024-06-13T16:15:00Z",
+      "reviewedAt": null,
+      "submittedAt": "2024-06-13T16:15:00Z",
+      "aiStatus": "InProgress",
+      "summary": "Title: New Diplomatic Efforts to Resolve Global Conflicts. This report covers recent diplomatic initiatives aimed at de-escalating international tensions and fostering peace. AI-generated summary placeholder.",
+      "keyIndividuals": "UN Secretary-General - António G.\nForeign Minister - Dr. K. Singh",
+      "potentialImpact": "Successful negotiations could prevent widespread humanitarian crises and stabilize global regions.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 100
+    },
+    {
+      "id": "7",
+      "title": "Economic Slowdown Expected in Q3 Amidst Inflation Concerns",
+      "originalText": "Title: Economic Slowdown Expected in Q3 Amidst Inflation Concerns. Analysts predict a moderate economic contraction, fueled by persistent inflation and interest rate hikes, which is a bit of a worry, frankly speaking.",
+      "aiGeneratedText": "Economic analysts are forecasting a moderate slowdown in the third quarter, driven by persistent inflation and rising interest rates. This outlook suggests a period of caution for businesses and consumers alike.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/76979871",
+      "userUploadedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/76979871",
+      "similarSourceName": "Bloomberg",
+      "similarSourceUrl": "https://twitter.com/bloomberg/status/44556",
+      "user": "John",
+      "userMailId": "john.d@example.com",
+      "reviewedBy": "Emily T.",
+      "clientStatus": "Published",
+      "categories": [
+        "Economics",
+        "Finance"
+      ],
+      "publishedAt": "2024-06-12T08:00:00Z",
+      "reviewedAt": "2024-06-12T08:30:00Z",
+      "submittedAt": "2024-06-12T08:00:00Z",
+      "aiStatus": "Completed",
+      "summary": "Title: Economic Slowdown Expected in Q3 Amidst Inflation Concerns. This financial report analyzes forecasts for the upcoming quarter, highlighting concerns over economic growth and inflation. AI-generated summary placeholder.",
+      "keyIndividuals": "Chief Economist - Dr. Mark C.\nFederal Reserve Chair - Janet Y.",
+      "potentialImpact": "Could lead to job losses and reduced consumer spending globally, impacting various industries.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 500
+    },
+    {
+      "id": "8",
+      "title": "Space Tourism Takes Off: New Orbital Hotels Announced",
+      "originalText": "Title: Space Tourism Takes Off: New Orbital Hotels Announced. Several companies unveil plans for commercial space stations catering to tourists, promising luxury experiences beyond Earth, quite a novel idea, no?",
+      "aiGeneratedText": "The space tourism industry is rapidly expanding with the announcement of new orbital hotels by several private companies. These ventures promise unprecedented luxury experiences for tourists, marking a new era in space exploration.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/32001208",
+      "userUploadedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/32001208",
+      "similarSourceName": "Space.com",
+      "similarSourceUrl": "https://twitter.com/spacedotcom/status/55667",
+      "user": "Alice",
+      "userMailId": "alice.b@example.com",
+      "reviewedBy": null,
+      "clientStatus": "Pending",
+      "categories": [
+        "Space",
+        "Tourism"
+      ],
+      "publishedAt": "2024-06-11T13:30:00Z",
+      "reviewedAt": null,
+      "submittedAt": "2024-06-11T13:30:00Z",
+      "aiStatus": "InProgress",
+      "summary": "Title: Space Tourism Takes Off: New Orbital Hotels Announced. This news piece covers the burgeoning space tourism industry, and new ventures proposing orbital accommodations. AI-generated summary placeholder.",
+      "keyIndividuals": "SpaceX CEO - Elon Musk\nVirgin Galactic CEO - Michael Colglazier",
+      "potentialImpact": "Could create a new luxury travel market and push technological boundaries for space habitation.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 10
+    },
+    {
+      "id": "9",
+      "title": "New Dietary Guidelines Emphasize Plant-Based Nutrition",
+      "originalText": "Title: New Dietary Guidelines Emphasize Plant-Based Nutrition. Health organizations release updated recommendations urging greater consumption of plant-based foods for public health, which is a good move, don't you think?",
+      "aiGeneratedText": "New dietary guidelines from health organizations are emphasizing plant-based nutrition, advocating for increased consumption of plant-derived foods. This shift is aimed at improving public health outcomes and promoting sustainable eating habits.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/13693845",
+      "userUploadedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/13693845",
+      "similarSourceName": "WHO",
+      "similarSourceUrl": "https://twitter.com/who/status/66778",
+      "user": "Bob",
+      "userMailId": "bob.c@example.com",
+      "reviewedBy": "Chen W.",
+      "clientStatus": "Published",
+      "categories": [
+        "Health",
+        "Nutrition"
+      ],
+      "publishedAt": "2024-06-10T10:00:00Z",
+      "reviewedAt": "2024-06-10T10:30:00Z",
+      "submittedAt": "2024-06-10T10:00:00Z",
+      "aiStatus": "Completed",
+      "summary": "Title: New Dietary Guidelines Emphasize Plant-Based Nutrition. This report details revised nutritional advice promoting a shift towards plant-centric diets for improved health outcomes. AI-generated summary placeholder.",
+      "keyIndividuals": "Chief Medical Officer - Dr. Helen Q.\nNutritionist - Dr. Sam Lee",
+      "potentialImpact": "Could lead to widespread improvements in public health and a shift in global food production.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 100
+    },
+    {
+      "id": "10",
+      "title": "Cybersecurity Threats Escalate Globally",
+      "originalText": "Title: Cybersecurity Threats Escalate Globally. A new wave of sophisticated cyberattacks targets critical infrastructure, prompting urgent calls for enhanced security measures, it's quite serious, you see.",
+      "aiGeneratedText": "The world is witnessing a significant escalation in cybersecurity threats, with sophisticated attacks increasingly targeting critical infrastructure. This necessitates urgent action and enhanced security measures to protect vital systems globally.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/76979871",
+      "userUploadedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/76979871",
+      "similarSourceName": "Wired",
+      "similarSourceUrl": "https://twitter.com/wired/status/77889",
+      "user": "Charlie",
+      "userMailId": "charlie.d@example.com",
+      "reviewedBy": null,
+      "clientStatus": "Pending",
+      "categories": [
+        "Cybersecurity",
+        "Technology"
+      ],
+      "publishedAt": "2024-06-09T15:00:00Z",
+      "reviewedAt": null,
+      "submittedAt": "2024-06-09T15:00:00Z",
+      "aiStatus": "InProgress",
+      "summary": "Title: Cybersecurity Threats Escalate Globally. This report details a surge in global cyber threats, emphasizing the vulnerability of essential services and the need for stronger defenses. AI-generated summary placeholder.",
+      "keyIndividuals": "NSA Director - General R. Smith\nCybersecurity Expert - Dr. Ava Li",
+      "potentialImpact": "Could lead to significant economic disruption and compromise national security across borders.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 500
+    },
+    {
+      "id": "11",
+      "title": "Advances in AI-Powered Education Platforms",
+      "originalText": "Title: Advances in AI-Powered Education Platforms. New educational technologies leverage AI to offer personalized learning experiences and adaptive assessments, it's a game-changer for sure.",
+      "aiGeneratedText": "AI-powered education platforms are making significant strides, offering personalized learning experiences and adaptive assessments. These innovations promise to revolutionize how students learn and how educators teach.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/32001208",
+      "userUploadedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/32001208",
+      "similarSourceName": "EdTech Review",
+      "similarSourceUrl": "https://twitter.com/edtech/status/88990",
+      "user": "Diana",
+      "userMailId": "diana.e@example.com",
+      "reviewedBy": "Mark J.",
+      "clientStatus": "Published",
+      "categories": [
+        "Education",
+        "AI"
+      ],
+      "publishedAt": "2024-06-08T11:00:00Z",
+      "reviewedAt": "2024-06-08T11:30:00Z",
+      "submittedAt": "2024-06-08T11:00:00Z",
+      "aiStatus": "Completed",
+      "summary": "Title: Advances in AI-Powered Education Platforms. This piece explores how AI is transforming the education sector, providing customized learning paths and improved student engagement. AI-generated summary placeholder.",
+      "keyIndividuals": "Education Minister - Sarah K.\nLearning AI Specialist - Prof. Ben Z.",
+      "potentialImpact": "Could bridge educational inequalities and personalize learning for millions worldwide.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 10
+    },
+    {
+      "id": "12",
+      "title": "Global Water Scarcity Worsens, Urgent Action Needed",
+      "originalText": "Title: Global Water Scarcity Worsens, Urgent Action Needed. A new UN report highlights the increasing severity of water shortages across continents, driven by climate change and population growth, it's a worrying trend, isn't it?",
+      "aiGeneratedText": "A recent UN report underscores the escalating global water scarcity, driven by climate change and population growth. Urgent and coordinated international action is imperative to address this critical environmental challenge.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/13693845",
+      "userUploadedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/13693845",
+      "similarSourceName": "The Guardian",
+      "similarSourceUrl": "https://twitter.com/guardian/status/99001",
+      "user": "Evan",
+      "userMailId": "evan.f@example.com",
+      "reviewedBy": null,
+      "clientStatus": "Rejected",
+      "categories": [
+        "Environment",
+        "Water"
+      ],
+      "publishedAt": "2024-06-07T09:00:00Z",
+      "reviewedAt": null,
+      "submittedAt": "2024-06-07T09:00:00Z",
+      "aiStatus": "Failed",
+      "summary": "Title: Global Water Scarcity Worsens, Urgent Action Needed. This article discusses the accelerating global water crisis and calls for immediate international cooperation and sustainable water management solutions. AI-generated summary placeholder.",
+      "keyIndividuals": "UN Water Envoy - Carla M.\nEnvironmental Scientist - Dr. P. Patel",
+      "potentialImpact": "Could lead to mass migrations, food insecurity, and increased geopolitical tensions globally.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 100
+    },
+    {
+      "id": "13",
+      "title": "New Regulations Aim to Curb Social Media Misinformation",
+      "originalText": "Title: New Regulations Aim to Curb Social Media Misinformation. Governments worldwide are proposing stricter laws to combat the spread of false information on major social media platforms, quite necessary, I must say.",
+      "aiGeneratedText": "Governments globally are proposing new regulations to combat the proliferation of misinformation on social media platforms. These measures aim to hold platforms accountable and protect public discourse from false narratives.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/76979871",
+      "userUploadedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/76979871",
+      "similarSourceName": "New York Times",
+      "similarSourceUrl": "https://twitter.com/nytimes/status/11012",
+      "user": "Fiona",
+      "userMailId": "fiona.g@example.com",
+      "reviewedBy": "Liam B.",
+      "clientStatus": "Rejected",
+      "categories": [
+        "Politics",
+        "Technology"
+      ],
+      "publishedAt": "2024-06-06T12:00:00Z",
+      "reviewedAt": "2024-06-06T12:45:00Z",
+      "submittedAt": "2024-06-06T12:00:00Z",
+      "aiStatus": "InProgress",
+      "summary": "Title: New Regulations Aim to Curb Social Media Misinformation. This report covers legislative efforts globally to regulate social media content and mitigate the impact of disinformation. AI-generated summary placeholder.",
+      "keyIndividuals": "EU Commissioner - Ursula VdL\nDigital Rights Advocate - Emma R.",
+      "potentialImpact": "Could redefine online discourse and impact democratic processes worldwide.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 500
+    },
+    {
+      "id": "14",
+      "title": "Breakthrough in Battery Technology for EVs",
+      "originalText": "Title: Breakthrough in Battery Technology for EVs. Scientists announce a new solid-state battery design that promises faster charging and longer ranges for electric vehicles, which is really good news for the industry, boss.",
+      "aiGeneratedText": "A groundbreaking development in battery technology for electric vehicles (EVs) has been announced: a new solid-state battery design. This innovation promises significantly faster charging times and extended driving ranges, marking a major leap for the EV industry.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/32001208",
+      "userUploadedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/32001208",
+      "similarSourceName": "Electrek",
+      "similarSourceUrl": "https://twitter.com/electrek/status/22123",
+      "user": "George",
+      "userMailId": "george.h@example.com",
+      "reviewedBy": null,
+      "clientStatus": "Published",
+      "categories": [
+        "Automotive",
+        "Innovation"
+      ],
+      "publishedAt": "2024-06-05T10:30:00Z",
+      "reviewedAt": null,
+      "submittedAt": "2024-06-05T10:30:00Z",
+      "aiStatus": "Completed",
+      "summary": "Title: Breakthrough in Battery Technology for EVs. This article highlights a significant innovation in battery technology, set to accelerate the transition to electric vehicles. AI-generated summary placeholder.",
+      "keyIndividuals": "Lead Engineer - Dr. Kim P.\nCEO - EV Power Solutions",
+      "potentialImpact": "Could accelerate global decarbonization efforts and reshape the automotive industry.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 10
+    },
+    {
+      "id": "15",
+      "title": "Archaeologists Uncover Ancient Lost City",
+      "originalText": "Title: Archaeologists Uncover Ancient Lost City. A team of international archaeologists has discovered the ruins of a previously unknown ancient civilization deep in the Amazon rainforest, quite a find, isn't it?",
+      "aiGeneratedText": "An international team of archaeologists has made a remarkable discovery: the ruins of a previously unknown ancient city hidden deep within the Amazon rainforest. This find promises to offer unprecedented insights into ancient civilizations.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/13693845",
+      "userUploadedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/13693845",
+      "similarSourceName": "National Geographic",
+      "similarSourceUrl": "https://twitter.com/natgeo/status/33234",
+      "user": "Hannah",
+      "userMailId": "hannah.i@example.com",
+      "reviewedBy": "Oliver M.",
+      "clientStatus": "Published",
+      "categories": [
+        "Archaeology",
+        "History"
+      ],
+      "publishedAt": "2024-06-04T14:45:00Z",
+      "reviewedAt": "2024-06-04T15:00:00Z",
+      "submittedAt": "2024-06-04T14:45:00Z",
+      "aiStatus": "InProgress",
+      "summary": "Title: Archaeologists Uncover Ancient Lost City. This report details the groundbreaking discovery of a hidden ancient city, offering new insights into pre-Columbian cultures. AI-generated summary placeholder.",
+      "keyIndividuals": "Prof. Eduardo S. - Lead Archaeologist\nHistorian - Dr. Lena Z.",
+      "potentialImpact": "Could rewrite parts of human history, particularly regarding early South American civilizations.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 100
+    },
+    {
+      "id": "16",
+      "title": "Mental Health Support in Workplaces Becomes Priority",
+      "originalText": "Title: Mental Health Support in Workplaces Becomes Priority. Companies are increasingly investing in comprehensive mental health programs for employees, recognizing the link to productivity and well-being, it's a good step, no?",
+      "aiGeneratedText": "Workplaces are increasingly prioritizing mental health support for employees, with companies investing in comprehensive programs. This shift acknowledges the crucial link between employee well-being and overall productivity, fostering healthier work environments.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/76979871",
+      "userUploadedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/76979871",
+      "similarSourceName": "Forbes",
+      "similarSourceUrl": "https://twitter.com/forbes/status/44345",
+      "user": "Isaac",
+      "userMailId": "isaac.j@example.com",
+      "reviewedBy": null,
+      "clientStatus": "Published",
+      "categories": [
+        "Workplace",
+        "Health"
+      ],
+      "publishedAt": "2024-06-03T11:00:00Z",
+      "reviewedAt": null,
+      "submittedAt": "2024-06-03T11:00:00Z",
+      "aiStatus": "Completed",
+      "summary": "Title: Mental Health Support in Workplaces Becomes Priority. This article explores the growing trend of employers prioritizing mental health support, including therapy and mindfulness resources. AI-generated summary placeholder.",
+      "keyIndividuals": "HR Director - Susan P.\nWorkplace Psychologist - Dr. Tom K.",
+      "potentialImpact": "Could improve global workforce well-being and productivity, fostering more humane work environments.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 500
+    },
+    {
+      "id": "17",
+      "title": "Renewed Focus on Space Exploration Missions",
+      "originalText": "Title: Renewed Focus on Space Exploration Missions. NASA and private companies announce ambitious plans for new lunar missions and probes to outer planets, it's a big deal for space enthusiasts, I tell you.",
+      "aiGeneratedText": "There's a renewed global focus on space exploration, with both NASA and private companies announcing ambitious plans for new lunar missions and probes to distant planets. This signals an exciting period for scientific discovery and human endeavor beyond Earth.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/32001208",
+      "userUploadedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/32001208",
+      "similarSourceName": "NASA",
+      "similarSourceUrl": "https://twitter.com/nasa/status/55456",
+      "user": "Julia",
+      "userMailId": "julia.k@example.com",
+      "reviewedBy": "Peter R.",
+      "clientStatus": "Published",
+      "categories": [
+        "Space",
+        "Exploration"
+      ],
+      "publishedAt": "2024-06-02T13:00:00Z",
+      "reviewedAt": "2024-06-02T13:30:00Z",
+      "submittedAt": "2024-06-02T13:00:00Z",
+      "aiStatus": "InProgress",
+      "summary": "Title: Renewed Focus on Space Exploration Missions. This news highlights a resurgence in space exploration, with new initiatives aimed at extending humanity's reach beyond Earth. AI-generated summary placeholder.",
+      "keyIndividuals": "NASA Administrator - Bill Nelson\nSpaceX Lead Engineer - Gwynne Shotwell",
+      "potentialImpact": "Could advance scientific knowledge, inspire new technologies, and foster international collaboration.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 10
+    },
+    {
+      "id": "18",
+      "title": "New Agricultural Techniques Boost Food Security",
+      "originalText": "Title: New Agricultural Techniques Boost Food Security. Innovative farming methods, including vertical farms and precision agriculture, are showing promise in increasing crop yields, quite a breakthrough, don't you think?",
+      "aiGeneratedText": "Innovative agricultural techniques, such as vertical farming and precision agriculture, are demonstrating significant potential in boosting crop yields and enhancing global food security. These methods offer sustainable solutions to feed a growing population.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/13693845",
+      "userUploadedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/13693845",
+      "similarSourceName": "AgriNews",
+      "similarSourceUrl": "https://twitter.com/agrinews/status/66567",
+      "user": "Kevin",
+      "userMailId": "kevin.l@example.com",
+      "reviewedBy": null,
+      "clientStatus": "Pending",
+      "categories": [
+        "Agriculture",
+        "Food Security"
+      ],
+      "publishedAt": "2024-06-01T09:45:00Z",
+      "reviewedAt": null,
+      "submittedAt": "2024-06-01T09:45:00Z",
+      "aiStatus": "Completed",
+      "summary": "Title: New Agricultural Techniques Boost Food Security. This report details modern agricultural advancements designed to enhance global food production and address food security challenges. AI-generated summary placeholder.",
+      "keyIndividuals": "Agronomist - Dr. Sana R.\nFarm Tech CEO - David S.",
+      "potentialImpact": "Could significantly reduce global hunger and improve food access in urban and remote areas.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 100
+    },
+    {
+      "id": "19",
+      "title": "Ethical AI Development Gains Traction",
+      "originalText": "Title: Ethical AI Development Gains Traction. Leading tech companies and research institutions are prioritizing ethical guidelines and transparent AI models, which is truly important, you know.",
+      "aiGeneratedText": "The development of ethical AI is gaining significant traction, with leading technology companies and research institutions prioritizing ethical guidelines and transparent AI models. This focus aims to ensure AI systems are developed responsibly and for the benefit of all.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/76979871",
+      "userUploadedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/76979871",
+      "similarSourceName": "MIT Tech Review",
+      "similarSourceUrl": "https://twitter.com/techreview/status/77678",
+      "user": "Lena",
+      "userMailId": "lena.m@example.com",
+      "reviewedBy": "Chloe G.",
+      "clientStatus": "Published",
+      "categories": [
+        "AI",
+        "Ethics"
+      ],
+      "publishedAt": "2024-05-31T16:00:00Z",
+      "reviewedAt": "2024-05-31T16:30:00Z",
+      "submittedAt": "2024-05-31T16:00:00Z",
+      "aiStatus": "InProgress",
+      "summary": "Title: Ethical AI Development Gains Traction. This article covers the growing movement towards responsible AI development, focusing on fairness, accountability, and transparency. AI-generated summary placeholder.",
+      "keyIndividuals": "AI Ethicist - Dr. Joy B.\nGoogle AI VP - James L.",
+      "potentialImpact": "Could shape the future of technology, ensuring AI benefits humanity without exacerbating societal inequalities.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 500
+    },
+    {
+      "id": "20",
+      "title": "Urban Planning Focus Shifts to Green Infrastructure",
+      "originalText": "Title: Urban Planning Focus Shifts to Green Infrastructure. Cities worldwide are integrating more parks, green roofs, and permeable surfaces to improve climate resilience, a much-needed change, definitely.",
+      "aiGeneratedText": "Urban planning is increasingly shifting its focus towards green infrastructure, with cities globally incorporating more parks, green roofs, and permeable surfaces. This approach aims to enhance climate resilience, improve urban environments, and promote sustainability.",
+      "aiGeneratedImage": "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg",
+      "aiGeneratedVideo": "https://player.vimeo.com/video/32001208",
+      "userUploadedImage": "https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg",
+      "userUploadedVideo": "https://player.vimeo.com/video/32001208",
+      "similarSourceName": "CityLab",
+      "similarSourceUrl": "https://twitter.com/citylab/status/88789",
+      "user": "Mike",
+      "userMailId": "mike.n@example.com",
+      "reviewedBy": null,
+      "clientStatus": "Published",
+      "categories": [
+        "Urban Planning",
+        "Sustainability"
+      ],
+      "publishedAt": "2024-05-30T10:15:00Z",
+      "reviewedAt": null,
+      "submittedAt": "2024-05-30T10:15:00Z",
+      "aiStatus": "Completed",
+      "summary": "Title: Urban Planning Focus Shifts to Green Infrastructure. This report details the growing trend in urban development towards sustainable and environmentally friendly infrastructure. AI-generated summary placeholder.",
+      "keyIndividuals": "Urban Planner - Maria T.\nEnvironmental Architect - Alex V.",
+      "potentialImpact": "Could improve quality of life, mitigate climate change effects, and enhance biodiversity in cities globally.",
+      "badges": {
+        "GOLD": 2,
+        "SILVER": 1,
+        "BRONZE": 1
+      },
+      "rewardPoints": 10
+    }
+  ]
+}
