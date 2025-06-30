@@ -99,12 +99,12 @@ const Login: React.FC = () => {
             />
           </div>
 
-          <p
+          {/* <p
             className="text-[var(--color-text-placeholder)] text-sm font-normal leading-normal pb-3 pt-1 px-4 underline cursor-pointer hover:text-white transition-colors"
             onClick={handleForgotPassword}
           >
             Forgot password?
-          </p>
+          </p> */}
           <div className="px-4 py-3">
             <Button
               type="submit"
@@ -120,16 +120,16 @@ const Login: React.FC = () => {
             </Button>
           </div>
 
-          <p className="text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center">
+          <p className="text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center mt-8">
             New User?{" "}
             <span
-              className="underline cursor-pointer transition-colors hover:text-white"
+              className="underline cursor-pointer transition-colors hover:text-white mt-4"
               onClick={handleRegister}
             >
               <Button
                 type="button"
                 variant="secondary"
-                className="w-full bg-[var(--color-button-secondary)] hover:bg-[var(--color-button-secondary-hover)] text-white font-medium py-3 px-6 rounded-lg transition-colors"
+                className="w-full bg-[var(--color-button-secondary)] hover:bg-[var(--color-button-secondary-hover)] text-white font-medium py-3 px-6 rounded-lg transition-colors mt-4"
               >
                 Register here
               </Button>

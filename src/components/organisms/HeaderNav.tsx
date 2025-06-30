@@ -5,14 +5,64 @@ import styles from "./HeaderNav.module.scss";
 
 interface HeaderNavProps {
   hideSearch?: boolean;
+  showLoginButton?: boolean;
 }
-
-const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
+const HeaderAuthSection = ({
+  showLoginButton,
+  handleLogout,
+}: {
+  showLoginButton: boolean;
+  handleLogout: () => void;
+}) => {
+  if (showLoginButton) {
+    return (
+      <Link
+        to="/login"
+        className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md"
+        aria-label="Login"
+      >
+        <span>Login</span>
+      </Link>
+    );
+  } else {
+    return (
+      <button
+        onClick={handleLogout}
+        className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2"
+        aria-label="Sign out"
+      >
+        <span className="hidden md:inline">Sign out</span>
+        <svg
+          className="size-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+          />
+        </svg>
+      </button>
+    );
+  }
+};
+const HeaderNav: React.FC<HeaderNavProps> = ({
+  hideSearch = false,
+  showLoginButton = false,
+}) => {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   // const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  const isAuthPage = ["/login", "/logged-out"].includes(
+    window.location.pathname
+  );
 
   const handleLogout = async () => {
     try {
@@ -78,33 +128,48 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
           </button>
         )}
 
-        {/* Logout button */}
-        <button
-          onClick={handleLogout}
-          className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2"
-          aria-label="Sign out"
-        >
-          <span className="hidden md:inline">Sign out</span>
-          <svg
-            className="size-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+        {/* Login/Logout button */}
+        {!isAuthPage && (
+          <HeaderAuthSection
+            showLoginButton={showLoginButton}
+            handleLogout={handleLogout}
+          />
+        )}
+        {/* {showLoginButton ? (
+          <Link
+            to="/login"
+            className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md"
+            aria-label="Login"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-            />
-          </svg>
-        </button>
+            <span>Login</span>
+          </Link>
+        ) : (
+          <button
+            onClick={handleLogout}
+            className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2"
+            aria-label="Sign out"
+          >
+            <span className="hidden md:inline">Sign out</span>
+            <svg
+              className="size-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+          </button>
+        )} */}
       </div>
 
-
-        {/* User menu */}
-        {/* <div className="relative ml-4">
+      {/* User menu */}
+      {/* <div className="relative ml-4">
           <button
             type="button"
             onClick={() => setUserMenuOpen(!userMenuOpen)}

@@ -15,7 +15,7 @@ const Registration: React.FC = () => {
     email: "",
     phone: "",
     dob: "",
-    userType: "",
+    userType: "ADMIN",
     profilePhoto: null as File | null,
   });
 
@@ -122,8 +122,8 @@ const Registration: React.FC = () => {
   };
 
   return (
-    <PageContainer className="min-h-screen bg-[#14161f] text-white">
-      <HeaderNav hideSearch={true} />
+    <PageContainer className="min-h-screen bg-[#131520] text-white">
+      <HeaderNav showLoginButton hideSearch={true} />
 
       <div className="flex justify-center w-full px-4">
         <form
