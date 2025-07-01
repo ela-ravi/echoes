@@ -25,7 +25,11 @@ import { TRANSLATION_LANGUAGES } from "../../types/NewsItem";
 import { API_ENDPOINTS, getHeaders } from "../../config/api";
 import ClientHeaderNav from "../../components/organisms/ClientHeaderNav";
 import { NewsItemActions } from "../../components/molecules/NewsItemActions";
-import { getActionTooltip, handleAction, isActionAllowed } from "../../utils/newsUtils";
+import {
+  getActionTooltip,
+  handleAction,
+  isActionAllowed,
+} from "../../utils/newsUtils";
 
 // Language options for the translation dropdown
 const LANGUAGES = [
@@ -74,6 +78,10 @@ type FormDataState = {
   aiGeneratedText: string;
   keyIndividuals: string;
   potentialImpact: string;
+  translatedTitle: string;
+  translatedSummary: string;
+  translatedIndividual: string;
+  translatedRisk: string;
 };
 
 type SelectedImage = {
@@ -95,6 +103,11 @@ const ClientNewsDetailPage: React.FC = () => {
   const [showCommentOverlay, setShowCommentOverlay] = useState(false);
   const [showImageOverlay, setShowImageOverlay] = useState(false);
   const [selectedImage, setSelectedImage] = useState<SelectedImage>(null);
+  const [displayLanguage, setDisplayLanguage] =
+    useState<TRANSLATION_LANGUAGES>("eng_Latn");
+
+  const isEnglishSelected = displayLanguage === "eng_Latn";
+
   const userType = sessionStorage.getItem("userType");
   const isClient = userType === "CLIENT";
   const isAdmin = userType === "ADMIN";
@@ -106,12 +119,20 @@ const ClientNewsDetailPage: React.FC = () => {
     aiGeneratedText: "",
     keyIndividuals: "",
     potentialImpact: "",
+    translatedTitle: "",
+    translatedSummary: "",
+    translatedIndividual: "",
+    translatedRisk: "",
   });
   const [initialFormData, setInitialFormData] = useState<FormDataState>({
     originalText: "",
     aiGeneratedText: "",
     keyIndividuals: "",
     potentialImpact: "",
+    translatedTitle: "",
+    translatedSummary: "",
+    translatedIndividual: "",
+    translatedRisk: "",
   });
   const [hasChanges, setHasChanges] = useState(false);
 
@@ -197,6 +218,14 @@ const ClientNewsDetailPage: React.FC = () => {
         ...(data.aiGeneratedText && { aiGeneratedText: data.aiGeneratedText }),
         ...(data.keyIndividuals && { keyIndividuals: data.keyIndividuals }),
         ...(data.potentialImpact && { potentialImpact: data.potentialImpact }),
+        ...(data.translatedTitle && { translatedTitle: data.translatedTitle }),
+        ...(data.translatedSummary && {
+          translatedSummary: data.translatedSummary,
+        }),
+        ...(data.translatedIndividual && {
+          translatedIndividual: data.translatedIndividual,
+        }),
+        ...(data.translatedRisk && { translatedRisk: data.translatedRisk }),
       }));
 
       // Update form data with the new values, ensuring all fields are strings
@@ -206,6 +235,12 @@ const ClientNewsDetailPage: React.FC = () => {
         aiGeneratedText: data.aiGeneratedText || prev?.aiGeneratedText || "",
         keyIndividuals: data.keyIndividuals || prev?.keyIndividuals || "",
         potentialImpact: data.potentialImpact || prev?.potentialImpact || "",
+        translatedTitle: data.translatedTitle || prev?.translatedTitle || "",
+        translatedSummary:
+          data.translatedSummary || prev?.translatedSummary || "",
+        translatedIndividual:
+          data.translatedIndividual || prev?.translatedIndividual || "",
+        translatedRisk: data.translatedRisk || prev?.translatedRisk || "",
       }));
 
       // Show success message if this was a language change
@@ -329,6 +364,10 @@ const ClientNewsDetailPage: React.FC = () => {
             aiGeneratedText: newsItem?.aiGeneratedText || "",
             keyIndividuals: newsItem?.keyIndividuals || "",
             potentialImpact: newsItem?.potentialImpact || "",
+            translatedTitle: newsItem?.translatedTitle || "",
+            translatedSummary: newsItem?.translatedSummary || "",
+            translatedIndividual: newsItem?.translatedIndividual || "",
+            translatedRisk: newsItem?.translatedRisk || "",
           };
 
           // Only update form data if we don't have any data yet
@@ -445,98 +484,97 @@ const ClientNewsDetailPage: React.FC = () => {
             <div className="bg-[#3e181a] p-6 my-3 rounded-xl">
               <div className="flex flex-col space-y-4">
                 {/* Top Row: User Info */}
-                {isAdmin ? (
-                  <div className="flex items-center space-x-4">
-                    <div className="flex-shrink-0">
-                      <FaUserCircle size={48} color="#4f8ef7" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-medium text-white">
-                        {newsItem.user || "Unknown User"}
-                      </h3>
-                      <p className="text-gray-400">
-                        {newsItem.userMailId || "No email provided"}
-                      </p>
-                    </div>
-                    <div className="ml-auto">
-                      <TranslationSection
-                        onLanguageChange={async (languageCode) => {
-                          try {
-                            setLoading(true);
-                            await fetchNewsDetail(languageCode);
-                          } catch (error) {
-                            console.error("Error changing language:", error);
-                          } finally {
-                            setLoading(false);
+                <div className="flex items-center space-x-4 justify-between">
+                  {isAdmin ? (
+                    <>
+                      <div className="flex-shrink-0">
+                        <FaUserCircle size={48} color="#4f8ef7" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-lg font-medium text-white">
+                          {newsItem.user || "Unknown User"}
+                        </h3>
+                        <p className="text-gray-400">
+                          {newsItem.userMailId || "No email provided"}
+                        </p>
+                      </div>
+                    </>
+                  ) : (
+                    <NewsItemActions
+                      itemId={newsItem.id}
+                      status={newsItem.clientStatus}
+                      onAction={handleAction}
+                      onReject={(e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        setShowRejectModal(true);
+                      }}
+                      isActionAllowed={isActionAllowed}
+                      getActionTooltip={getActionTooltip}
+                    />
+                    // <></>
+                  )}
+                  <div className="ml-auto">
+                    <TranslationSection
+                      onLanguageChange={async (languageCode) => {
+                        try {
+                          setLoading(true);
+                          await fetchNewsDetail(languageCode);
+                        } catch (error) {
+                          console.error("Error changing language:", error);
+                        } finally {
+                          setLoading(false);
+                        }
+                      }}
+                      onRequestTranslation={async (languageCode) => {
+                        try {
+                          setLoading(true);
+                          const urlParams = new URLSearchParams(
+                            window.location.search
+                          );
+                          const newsId = urlParams.get("id");
+
+                          if (!newsId) {
+                            throw new Error("News ID not found");
                           }
-                        }}
-                        onRequestTranslation={async (languageCode) => {
-                          try {
-                            setLoading(true);
-                            const urlParams = new URLSearchParams(
-                              window.location.search
-                            );
-                            const newsId = urlParams.get("id");
 
-                            if (!newsId) {
-                              throw new Error("News ID not found");
+                          const response = await fetch(
+                            `${API_ENDPOINTS.CLIENT.TRANSLATE(newsId)}?languageCode=${languageCode}`,
+                            {
+                              method: "GET",
+                              headers: {
+                                ...getHeaders(),
+                                accept: "*/*",
+                              },
                             }
+                          );
 
-                            const response = await fetch(
-                              `${API_ENDPOINTS.CLIENT.TRANSLATE(newsId)}?languageCode=${languageCode}`,
-                              {
-                                method: "GET",
-                                headers: {
-                                  ...getHeaders(),
-                                  accept: "*/*",
-                                },
-                              }
+                          if (!response.ok) {
+                            const errorData = await response
+                              .json()
+                              .catch(() => ({}));
+                            throw new Error(
+                              errorData.message ||
+                                "Failed to request translation"
                             );
-
-                            if (!response.ok) {
-                              const errorData = await response
-                                .json()
-                                .catch(() => ({}));
-                              throw new Error(
-                                errorData.message ||
-                                  "Failed to request translation"
-                              );
-                            }
-
-                            toast.success(
-                              `Successfully requested translation to ${languageCode}`
-                            );
-                          } catch (error) {
-                            console.error(
-                              "Error requesting translation:",
-                              error
-                            );
-                            toast.error(
-                              error instanceof Error
-                                ? error.message
-                                : "Failed to request translation"
-                            );
-                          } finally {
-                            setLoading(false);
                           }
-                        }}
-                      />
-                    </div>
+
+                          toast.success(
+                            `Successfully requested translation to ${languageCode}`
+                          );
+                        } catch (error) {
+                          console.error("Error requesting translation:", error);
+                          toast.error(
+                            error instanceof Error
+                              ? error.message
+                              : "Failed to request translation"
+                          );
+                        } finally {
+                          setLoading(false);
+                        }
+                      }}
+                    />
                   </div>
-                ) : (
-                  <NewsItemActions
-                    itemId={newsItem.id}
-                    status={newsItem.clientStatus}
-                    onAction={handleAction}
-                    onReject={(e: React.MouseEvent) => {
-                      e.stopPropagation();
-                      setShowRejectModal(true);
-                    }}
-                    isActionAllowed={isActionAllowed}
-                    getActionTooltip={getActionTooltip}
-                  />
-                  // <></>
-                )}
+                </div>
 
                 {/* Bottom Row: Additional Info */}
                 <div className="space-y-4 pt-3 border-t border-[#2d3349]">
@@ -701,7 +739,11 @@ const ClientNewsDetailPage: React.FC = () => {
               name="aiGeneratedText"
               className="bg-[#3e181a]"
               borderColor={isClient ? "#603939" : "#394060"}
-              value={formData.aiGeneratedText}
+              value={
+                isEnglishSelected
+                  ? formData.aiGeneratedText
+                  : `${formData.translatedTitle} \n ${formData.translatedSummary}`
+              }
               onChange={handleInputChange}
               placeholder="AI-generated summary will appear here..."
               readOnly={isClient}
@@ -719,7 +761,11 @@ const ClientNewsDetailPage: React.FC = () => {
               name="keyIndividuals"
               className="bg-[#3e181a]"
               borderColor={isClient ? "#603939" : "#394060"}
-              value={formData.keyIndividuals}
+              value={
+                isEnglishSelected
+                  ? formData.keyIndividuals
+                  : formData.translatedIndividual
+              }
               onChange={handleInputChange}
               placeholder="List key individuals mentioned in the article..."
               readOnly={isClient}
@@ -742,7 +788,11 @@ const ClientNewsDetailPage: React.FC = () => {
             <TextArea
               name="potentialImpact"
               className="bg-[#3e181a]"
-              value={formData.potentialImpact}
+              value={
+                isEnglishSelected
+                  ? formData.potentialImpact
+                  : formData.translatedRisk
+              }
               onChange={handleInputChange}
               borderColor={isClient ? "#603939" : "#394060"}
               placeholder="Describe the potential impact of this news..."
@@ -815,12 +865,14 @@ const ClientNewsDetailPage: React.FC = () => {
             />
           )}
 
-          <CTASection
-            onSave={handleSave}
-            onDiscard={handleDiscard}
-            backLink="/news"
-            hasChanges={hasChanges}
-          />
+          {isAdmin && (
+            <CTASection
+              onSave={handleSave}
+              onDiscard={handleDiscard}
+              backLink="/news"
+              hasChanges={hasChanges}
+            />
+          )}
         </div>
       </main>
 

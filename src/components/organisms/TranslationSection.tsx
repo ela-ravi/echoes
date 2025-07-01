@@ -26,6 +26,8 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
   const [selectedLanguage, setSelectedLanguage] = useState("english");
   const [translationLanguage, setTranslationLanguage] = useState("tamil");
   const [showModal, setShowModal] = useState(false);
+  const userType = sessionStorage.getItem("userType");
+  const isClient = userType === "CLIENT";
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLanguage = e.target.value;
@@ -56,14 +58,16 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
             className="w-full"
           />
         </div>
-        <Button
-          onClick={() => setShowModal(true)}
-          variant="primary"
-          className="whitespace-nowrap"
-          type="button"
-        >
-          Request Translation
-        </Button>
+        {isClient && (
+          <Button
+            onClick={() => setShowModal(true)}
+            variant="primary"
+            className="whitespace-nowrap"
+            type="button"
+          >
+            Request Translation
+          </Button>
+        )}
       </div>
 
       {showModal && (

@@ -94,6 +94,8 @@ const NewsDetailPage: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<SelectedImage>(null);
   // Initialize form data with null values to track if data has been loaded
 
+  const userType = sessionStorage.getItem("userType");
+  const isClient = userType === "CLIENT";
   const [formData, setFormData] = useState<FormDataState>({
     originalText: "",
     aiGeneratedText: "",
@@ -445,67 +447,72 @@ const NewsDetailPage: React.FC = () => {
                       {newsItem.userMailId || "No email provided"}
                     </p>
                   </div>
-                  <div className="ml-auto">
-                    <TranslationSection
-                      onLanguageChange={async (languageCode) => {
-                        try {
-                          setLoading(true);
-                          await fetchNewsDetail(languageCode);
-                        } catch (error) {
-                          console.error("Error changing language:", error);
-                        } finally {
-                          setLoading(false);
-                        }
-                      }}
-                      onRequestTranslation={async (languageCode) => {
-                        try {
-                          setLoading(true);
-                          const urlParams = new URLSearchParams(
-                            window.location.search
-                          );
-                          const newsId = urlParams.get("id");
-
-                          if (!newsId) {
-                            throw new Error("News ID not found");
+                  {isClient && (
+                    <div className="ml-auto">
+                      <TranslationSection
+                        onLanguageChange={async (languageCode) => {
+                          try {
+                            setLoading(true);
+                            await fetchNewsDetail(languageCode);
+                          } catch (error) {
+                            console.error("Error changing language:", error);
+                          } finally {
+                            setLoading(false);
                           }
-
-                          const response = await fetch(
-                            `${API_ENDPOINTS.CLIENT.TRANSLATE(newsId)}?languageCode=${languageCode}`,
-                            {
-                              method: "GET",
-                              headers: {
-                                ...getHeaders(),
-                                accept: "*/*",
-                              },
-                            }
-                          );
-
-                          if (!response.ok) {
-                            const errorData = await response
-                              .json()
-                              .catch(() => ({}));
-                            throw new Error(
-                              errorData.message ||
-                                "Failed to request translation"
+                        }}
+                        onRequestTranslation={async (languageCode) => {
+                          try {
+                            setLoading(true);
+                            const urlParams = new URLSearchParams(
+                              window.location.search
                             );
-                          }
+                            const newsId = urlParams.get("id");
 
-                          toast.success(
-                            `Successfully requested translation to ${languageCode}`
-                          );
-                        } catch (error) {
-                          console.error("Error requesting translation:", error);
-                          toast.error(
-                            error instanceof Error
-                              ? error.message
-                              : "Failed to request translation"
-                          );
-                        } finally {
-                          setLoading(false);
-                        }
-                      }}
-                    />
-                  </div>
+                            if (!newsId) {
+                              throw new Error("News ID not found");
+                            }
+
+                            const response = await fetch(
+                              `${API_ENDPOINTS.CLIENT.TRANSLATE(newsId)}?languageCode=${languageCode}`,
+                              {
+                                method: "GET",
+                                headers: {
+                                  ...getHeaders(),
+                                  accept: "*/*",
+                                },
+                              }
+                            );
+
+                            if (!response.ok) {
+                              const errorData = await response
+                                .json()
+                                .catch(() => ({}));
+                              throw new Error(
+                                errorData.message ||
+                                  "Failed to request translation"
+                              );
+                            }
+
+                            toast.success(
+                              `Successfully requested translation to ${languageCode}`
+                            );
+                          } catch (error) {
+                            console.error(
+                              "Error requesting translation:",
+                              error
+                            );
+                            toast.error(
+                              error instanceof Error
+                                ? error.message
+                                : "Failed to request translation"
+                            );
+                          } finally {
+                            setLoading(false);
+                          }
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {/* Bottom Row: Additional Info */}
