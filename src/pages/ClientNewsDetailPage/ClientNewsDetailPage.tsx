@@ -78,6 +78,10 @@ type FormDataState = {
   aiGeneratedText: string;
   keyIndividuals: string;
   potentialImpact: string;
+  translatedTitle: string;
+  translatedSummary: string;
+  translatedIndividual: string;
+  translatedRisk: string;
 };
 
 type SelectedImage = {
@@ -99,6 +103,11 @@ const ClientNewsDetailPage: React.FC = () => {
   const [showCommentOverlay, setShowCommentOverlay] = useState(false);
   const [showImageOverlay, setShowImageOverlay] = useState(false);
   const [selectedImage, setSelectedImage] = useState<SelectedImage>(null);
+  const [displayLanguage, setDisplayLanguage] =
+    useState<TRANSLATION_LANGUAGES>("eng_Latn");
+
+  const isEnglishSelected = displayLanguage === "eng_Latn";
+
   const userType = sessionStorage.getItem("userType");
   const isClient = userType === "CLIENT";
   const isAdmin = userType === "ADMIN";
@@ -110,12 +119,20 @@ const ClientNewsDetailPage: React.FC = () => {
     aiGeneratedText: "",
     keyIndividuals: "",
     potentialImpact: "",
+    translatedTitle: "",
+    translatedSummary: "",
+    translatedIndividual: "",
+    translatedRisk: "",
   });
   const [initialFormData, setInitialFormData] = useState<FormDataState>({
     originalText: "",
     aiGeneratedText: "",
     keyIndividuals: "",
     potentialImpact: "",
+    translatedTitle: "",
+    translatedSummary: "",
+    translatedIndividual: "",
+    translatedRisk: "",
   });
   const [hasChanges, setHasChanges] = useState(false);
 
@@ -201,6 +218,14 @@ const ClientNewsDetailPage: React.FC = () => {
         ...(data.aiGeneratedText && { aiGeneratedText: data.aiGeneratedText }),
         ...(data.keyIndividuals && { keyIndividuals: data.keyIndividuals }),
         ...(data.potentialImpact && { potentialImpact: data.potentialImpact }),
+        ...(data.translatedTitle && { translatedTitle: data.translatedTitle }),
+        ...(data.translatedSummary && {
+          translatedSummary: data.translatedSummary,
+        }),
+        ...(data.translatedIndividual && {
+          translatedIndividual: data.translatedIndividual,
+        }),
+        ...(data.translatedRisk && { translatedRisk: data.translatedRisk }),
       }));
 
       // Update form data with the new values, ensuring all fields are strings
@@ -210,6 +235,12 @@ const ClientNewsDetailPage: React.FC = () => {
         aiGeneratedText: data.aiGeneratedText || prev?.aiGeneratedText || "",
         keyIndividuals: data.keyIndividuals || prev?.keyIndividuals || "",
         potentialImpact: data.potentialImpact || prev?.potentialImpact || "",
+        translatedTitle: data.translatedTitle || prev?.translatedTitle || "",
+        translatedSummary:
+          data.translatedSummary || prev?.translatedSummary || "",
+        translatedIndividual:
+          data.translatedIndividual || prev?.translatedIndividual || "",
+        translatedRisk: data.translatedRisk || prev?.translatedRisk || "",
       }));
 
       // Show success message if this was a language change
@@ -333,6 +364,10 @@ const ClientNewsDetailPage: React.FC = () => {
             aiGeneratedText: newsItem?.aiGeneratedText || "",
             keyIndividuals: newsItem?.keyIndividuals || "",
             potentialImpact: newsItem?.potentialImpact || "",
+            translatedTitle: newsItem?.translatedTitle || "",
+            translatedSummary: newsItem?.translatedSummary || "",
+            translatedIndividual: newsItem?.translatedIndividual || "",
+            translatedRisk: newsItem?.translatedRisk || "",
           };
 
           // Only update form data if we don't have any data yet
@@ -704,7 +739,11 @@ const ClientNewsDetailPage: React.FC = () => {
               name="aiGeneratedText"
               className="bg-[#3e181a]"
               borderColor={isClient ? "#603939" : "#394060"}
-              value={formData.aiGeneratedText}
+              value={
+                isEnglishSelected
+                  ? formData.aiGeneratedText
+                  : `${formData.translatedTitle} \n ${formData.translatedSummary}`
+              }
               onChange={handleInputChange}
               placeholder="AI-generated summary will appear here..."
               readOnly={isClient}
@@ -722,7 +761,11 @@ const ClientNewsDetailPage: React.FC = () => {
               name="keyIndividuals"
               className="bg-[#3e181a]"
               borderColor={isClient ? "#603939" : "#394060"}
-              value={formData.keyIndividuals}
+              value={
+                isEnglishSelected
+                  ? formData.keyIndividuals
+                  : formData.translatedIndividual
+              }
               onChange={handleInputChange}
               placeholder="List key individuals mentioned in the article..."
               readOnly={isClient}
@@ -745,7 +788,11 @@ const ClientNewsDetailPage: React.FC = () => {
             <TextArea
               name="potentialImpact"
               className="bg-[#3e181a]"
-              value={formData.potentialImpact}
+              value={
+                isEnglishSelected
+                  ? formData.potentialImpact
+                  : formData.translatedRisk
+              }
               onChange={handleInputChange}
               borderColor={isClient ? "#603939" : "#394060"}
               placeholder="Describe the potential impact of this news..."

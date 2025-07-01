@@ -21,6 +21,7 @@ const Registration: React.FC = () => {
 
   const [date, setDate] = useState<Date | null>(null);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [generatedPassword, setGeneratedPassword] = useState("");
 
   const userTypeOptions = [
     { value: "ADMIN", label: "ADMIN" },
@@ -97,6 +98,11 @@ const Registration: React.FC = () => {
       const data = await response.json();
       console.log("Registration successful:", data);
       setRegistrationSuccess(true);
+      // Extract password from the success message
+      const passwordMatch = data.message.match(/password\s+(\d+)/i);
+      if (passwordMatch && passwordMatch[1]) {
+        setGeneratedPassword(passwordMatch[1]);
+      }
 
       // Reset form after 3 seconds
       setTimeout(() => {
@@ -238,9 +244,17 @@ const Registration: React.FC = () => {
           </Button>
 
           {registrationSuccess && (
-            <p className="mt-4 text-center text-green-400">
-              Registration successful! Redirecting...
-            </p>
+            <div className="mb-4 p-4 bg-green-100 text-green-700 rounded">
+              <p className="font-bold">Registration successful!</p>
+              {generatedPassword && (
+                <p className="mt-2">
+                  Your password is:{" "}
+                  <span className="font-mono bg-green-50 px-2 py-1 rounded">
+                    {generatedPassword}
+                  </span>
+                </p>
+              )}
+            </div>
           )}
         </form>
       </div>

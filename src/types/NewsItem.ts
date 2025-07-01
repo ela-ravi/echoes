@@ -54,6 +54,10 @@ export interface INewsItem {
   /** List of clients who have pending the news item (when clientStatus is ONHOLD, this should be empty array) */
   pendingClients?: string[];
   languages: TRANSLATION_LANGUAGES[];
+  translatedTitle: string;
+  translatedSummary: string;
+  translatedIndividual: string;
+  translatedRisk: string;
 }
 export type AIStatus = "IN_PROGRESS" | "COMPLETED" | "FAILED";
 export type TRANSLATION_LANGUAGES =
@@ -61,7 +65,8 @@ export type TRANSLATION_LANGUAGES =
   | "tam_Taml" // Tamil
   | "tel_Telu" // Telugu
   | "kan_Knda" // Kannada
-  | "mal_Mlym"; // Malayalam
+  | "mal_Mlym" // Malayalam
+  | "eng_Latn"; // English
 
 export enum ClientStatus {
   SUBMITTED = "SUBMITTED",
