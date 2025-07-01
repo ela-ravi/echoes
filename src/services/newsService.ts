@@ -3,9 +3,10 @@ import { INewsItem, TRANSLATION_LANGUAGES } from "../types/NewsItem";
 import { UserInfo } from "../types/user";
 
 export enum NewsReviewAction {
-  APPROVE = "APPROVED",
+  PUBLISH = "PUBLISHED",
   REJECT = "REJECTED",
   PENDING = "PENDING",
+  REVIEWED = "REVIEWED",
 }
 
 interface FetchNewsDetailOptions {
@@ -83,8 +84,12 @@ export const newsService = {
     action: NewsReviewAction,
     comment?: string,
   ): Promise<void> => {
+    const reviewerId = (
+      JSON.parse(sessionStorage.getItem("userInfo") as string) as UserInfo
+    )?.id;
+
     const url = new URL(API_ENDPOINTS.NEWS.REVIEW(id));
-    url.searchParams.append("reviewerId", "2"); // TODO: Replace with actual reviewer ID from auth
+    url.searchParams.append("reviewerId", reviewerId.toString()); // TODO: Replace with actual reviewer ID from auth
     url.searchParams.append("status", action);
 
     // Add comment if it's a rejection and comment exists
@@ -128,7 +133,7 @@ export const newsService = {
       const errorData = await response.json().catch(() => ({}));
       throw new Error(
         errorData.message ||
-          `Failed to update news item: ${response.statusText}`,
+        `Failed to update news item: ${response.statusText}`,
       );
     }
 
