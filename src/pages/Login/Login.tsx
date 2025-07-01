@@ -39,7 +39,7 @@ const Login: React.FC = () => {
         navigate(userInfo.type === "CLIENT" ? "/client-news" : "/news");
       } else {
         // await authService.login(formData.email, formData.password);
-        sessionStorage.setItem("userType", "ADMIN");
+        sessionStorage.setItem("userType", "CLIENT");
         navigate("/");
       }
     } catch (err) {

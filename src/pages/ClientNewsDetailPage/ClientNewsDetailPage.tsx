@@ -25,7 +25,11 @@ import { TRANSLATION_LANGUAGES } from "../../types/NewsItem";
 import { API_ENDPOINTS, getHeaders } from "../../config/api";
 import ClientHeaderNav from "../../components/organisms/ClientHeaderNav";
 import { NewsItemActions } from "../../components/molecules/NewsItemActions";
-import { getActionTooltip, handleAction, isActionAllowed } from "../../utils/newsUtils";
+import {
+  getActionTooltip,
+  handleAction,
+  isActionAllowed,
+} from "../../utils/newsUtils";
 
 // Language options for the translation dropdown
 const LANGUAGES = [
@@ -445,98 +449,97 @@ const ClientNewsDetailPage: React.FC = () => {
             <div className="bg-[#3e181a] p-6 my-3 rounded-xl">
               <div className="flex flex-col space-y-4">
                 {/* Top Row: User Info */}
-                {isAdmin ? (
-                  <div className="flex items-center space-x-4">
-                    <div className="flex-shrink-0">
-                      <FaUserCircle size={48} color="#4f8ef7" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-medium text-white">
-                        {newsItem.user || "Unknown User"}
-                      </h3>
-                      <p className="text-gray-400">
-                        {newsItem.userMailId || "No email provided"}
-                      </p>
-                    </div>
-                    <div className="ml-auto">
-                      <TranslationSection
-                        onLanguageChange={async (languageCode) => {
-                          try {
-                            setLoading(true);
-                            await fetchNewsDetail(languageCode);
-                          } catch (error) {
-                            console.error("Error changing language:", error);
-                          } finally {
-                            setLoading(false);
+                <div className="flex items-center space-x-4 justify-between">
+                  {isAdmin ? (
+                    <>
+                      <div className="flex-shrink-0">
+                        <FaUserCircle size={48} color="#4f8ef7" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-lg font-medium text-white">
+                          {newsItem.user || "Unknown User"}
+                        </h3>
+                        <p className="text-gray-400">
+                          {newsItem.userMailId || "No email provided"}
+                        </p>
+                      </div>
+                    </>
+                  ) : (
+                    <NewsItemActions
+                      itemId={newsItem.id}
+                      status={newsItem.clientStatus}
+                      onAction={handleAction}
+                      onReject={(e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        setShowRejectModal(true);
+                      }}
+                      isActionAllowed={isActionAllowed}
+                      getActionTooltip={getActionTooltip}
+                    />
+                    // <></>
+                  )}
+                  <div className="ml-auto">
+                    <TranslationSection
+                      onLanguageChange={async (languageCode) => {
+                        try {
+                          setLoading(true);
+                          await fetchNewsDetail(languageCode);
+                        } catch (error) {
+                          console.error("Error changing language:", error);
+                        } finally {
+                          setLoading(false);
+                        }
+                      }}
+                      onRequestTranslation={async (languageCode) => {
+                        try {
+                          setLoading(true);
+                          const urlParams = new URLSearchParams(
+                            window.location.search
+                          );
+                          const newsId = urlParams.get("id");
+
+                          if (!newsId) {
+                            throw new Error("News ID not found");
                           }
-                        }}
-                        onRequestTranslation={async (languageCode) => {
-                          try {
-                            setLoading(true);
-                            const urlParams = new URLSearchParams(
-                              window.location.search
-                            );
-                            const newsId = urlParams.get("id");
 
-                            if (!newsId) {
-                              throw new Error("News ID not found");
+                          const response = await fetch(
+                            `${API_ENDPOINTS.CLIENT.TRANSLATE(newsId)}?languageCode=${languageCode}`,
+                            {
+                              method: "GET",
+                              headers: {
+                                ...getHeaders(),
+                                accept: "*/*",
+                              },
                             }
+                          );
 
-                            const response = await fetch(
-                              `${API_ENDPOINTS.CLIENT.TRANSLATE(newsId)}?languageCode=${languageCode}`,
-                              {
-                                method: "GET",
-                                headers: {
-                                  ...getHeaders(),
-                                  accept: "*/*",
-                                },
-                              }
+                          if (!response.ok) {
+                            const errorData = await response
+                              .json()
+                              .catch(() => ({}));
+                            throw new Error(
+                              errorData.message ||
+                                "Failed to request translation"
                             );
-
-                            if (!response.ok) {
-                              const errorData = await response
-                                .json()
-                                .catch(() => ({}));
-                              throw new Error(
-                                errorData.message ||
-                                  "Failed to request translation"
-                              );
-                            }
-
-                            toast.success(
-                              `Successfully requested translation to ${languageCode}`
-                            );
-                          } catch (error) {
-                            console.error(
-                              "Error requesting translation:",
-                              error
-                            );
-                            toast.error(
-                              error instanceof Error
-                                ? error.message
-                                : "Failed to request translation"
-                            );
-                          } finally {
-                            setLoading(false);
                           }
-                        }}
-                      />
-                    </div>
+
+                          toast.success(
+                            `Successfully requested translation to ${languageCode}`
+                          );
+                        } catch (error) {
+                          console.error("Error requesting translation:", error);
+                          toast.error(
+                            error instanceof Error
+                              ? error.message
+                              : "Failed to request translation"
+                          );
+                        } finally {
+                          setLoading(false);
+                        }
+                      }}
+                    />
                   </div>
-                ) : (
-                  <NewsItemActions
-                    itemId={newsItem.id}
-                    status={newsItem.clientStatus}
-                    onAction={handleAction}
-                    onReject={(e: React.MouseEvent) => {
-                      e.stopPropagation();
-                      setShowRejectModal(true);
-                    }}
-                    isActionAllowed={isActionAllowed}
-                    getActionTooltip={getActionTooltip}
-                  />
-                  // <></>
-                )}
+                </div>
 
                 {/* Bottom Row: Additional Info */}
                 <div className="space-y-4 pt-3 border-t border-[#2d3349]">
@@ -815,12 +818,14 @@ const ClientNewsDetailPage: React.FC = () => {
             />
           )}
 
-          <CTASection
-            onSave={handleSave}
-            onDiscard={handleDiscard}
-            backLink="/news"
-            hasChanges={hasChanges}
-          />
+          {isAdmin && (
+            <CTASection
+              onSave={handleSave}
+              onDiscard={handleDiscard}
+              backLink="/news"
+              hasChanges={hasChanges}
+            />
+          )}
         </div>
       </main>
 
