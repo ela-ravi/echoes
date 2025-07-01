@@ -97,26 +97,25 @@ const Registration: React.FC = () => {
 
       const data = await response.json();
       console.log("Registration successful:", data);
-      setRegistrationSuccess(true);
       // Extract password from the success message
       const passwordMatch = data.message.match(/password\s+(\d+)/i);
       if (passwordMatch && passwordMatch[1]) {
         setGeneratedPassword(passwordMatch[1]);
       }
 
-      // Reset form after 3 seconds
-      setTimeout(() => {
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          dob: "",
-          userType: "",
-          profilePhoto: null,
-        });
-        setDate(null);
-        setRegistrationSuccess(false);
-      }, 3000);
+      // Clear the form
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        dob: "",
+        userType: "ADMIN",
+        profilePhoto: null,
+      });
+      setDate(null);
+
+      // Show success message
+      setRegistrationSuccess(true);
     } catch (error) {
       console.error("Registration error:", error);
       alert(
