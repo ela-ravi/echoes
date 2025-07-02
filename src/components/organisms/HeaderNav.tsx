@@ -128,12 +128,25 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
           </button>
         )}
 
-        {/* Login/Logout button */}
+        {/* Navigation group at the end */}
+        <div className="flex items-center space-x-6">
+          {/* Tenants Link */}
+          <nav className="hidden md:block">
+            <Link
+              to="/tenants"
+              className="text-white hover:opacity-80 transition-opacity"
+              aria-label="Tenants"
+            >
+              Tenants
+            </Link>
+          </nav>
 
-        <HeaderAuthSection
-          showLoginButton={showLoginButton}
-          handleLogout={handleLogout}
-        />
+          {/* Login/Logout button */}
+          <HeaderAuthSection
+            showLoginButton={showLoginButton}
+            handleLogout={handleLogout}
+          />
+        </div>
 
         {/* {showLoginButton ? (
           <Link
