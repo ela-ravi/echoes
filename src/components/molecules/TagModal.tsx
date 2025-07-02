@@ -38,7 +38,7 @@ const TagModal: React.FC<TagModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="bg-[#1d2030] rounded-lg p-4 max-w-sm w-full mx-4 max-h-[80vh] overflow-y-auto"
+        className="bg-[var(--color-bg-card)] rounded-lg p-4 max-w-sm w-full mx-4 max-h-[80vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-3">
@@ -46,7 +46,7 @@ const TagModal: React.FC<TagModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-white"
+            className="text-gray-400 hover:text-[var(--color-text-primary)]"
           >
             <svg
               className="w-5 h-5"

@@ -49,16 +49,18 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const statusLower = status?.toLowerCase() || "pending";
   const statusText = status || "Pending";
 
-  const getStatusClasses = () => {
-    switch (statusLower) {
-      case "published":
+  const getStatusColor = (status: string) => {
+    switch (status?.toLowerCase()) {
+      case "approved":
         return "bg-green-900/30 text-green-400";
       case "rejected":
         return "bg-red-900/30 text-red-400";
       case "reviewed":
-        return "bg-[#3e181a] text-[#4f8ef7]";
+        return "bg-[var(--color-ui-client-border)]/30 text-[var(--color-ui-primary)]";
       case "submitted":
-        return "bg-[#282d43] text-white";
+        return "bg-[var(--color-ui-border)] text-[var(--color-text-primary)]";
+      case "published":
+        return "bg-[var(--color-ui-client-border)]/30 text-[var(--color-ui-primary)]";
       default:
         return "bg-yellow-900/30 text-yellow-400";
     }
@@ -66,7 +68,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
 
   return (
     <span
-      className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getStatusClasses()}`}
+      className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getStatusColor(statusLower)}`}
     >
       {statusText}
     </span>
@@ -453,11 +455,14 @@ const ClientNewsDetailPage: React.FC = () => {
 
   if (!newsItem) {
     return (
-      <div className="relative flex min-h-screen flex-col bg-[#221112] text-white">
+      <div className="relative flex min-h-screen flex-col bg-[var(--color-client-bg-dark)] text-[var(--color-text-primary)]">
         <HeaderNav hideSearch />
         <main className="flex flex-1 flex-col items-center justify-center p-6">
           <h1 className="text-2xl font-bold">News Item Not Found</h1>
-          <Link to="/news" className="mt-4 text-[#4f8ef7] hover:underline">
+          <Link
+            to="/news"
+            className="mt-4 text-[var(--color-ui-primary)] hover:underline"
+          >
             Back to News List
           </Link>
         </main>
@@ -466,7 +471,7 @@ const ClientNewsDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-[#221112] text-white">
+    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-[var(--color-client-bg-dark)] text-[var(--color-text-primary)]">
       {/* <HeaderNav hideSearch /> */}
       {isClient ? (
         <ClientHeaderNav hideSearch={true} />
@@ -476,22 +481,25 @@ const ClientNewsDetailPage: React.FC = () => {
       <main className="flex flex-1 justify-center px-3 md:px-10 pt-24 pb-5">
         <div className="w-full max-w-[95%] md:max-w-[90%]">
           <div className="flex justify-between items-center mb-4">
-            <h1 className="text-[32px] font-bold leading-tight tracking-tight text-white">
+            <h1 className="text-[32px] font-bold leading-tight tracking-tight text-[var(--color-text-primary)]">
               News Item ID: {newsItem.id}
             </h1>
           </div>
           <Section title={isAdmin ? "User Details" : "News Metadata"}>
-            <div className="bg-[#3e181a] p-6 my-3 rounded-xl">
+            <div className="bg-[var(--color-client-card-dark)] p-6 my-3 rounded-xl">
               <div className="flex flex-col space-y-4">
                 {/* Top Row: User Info */}
                 <div className="flex items-center space-x-4 justify-between">
                   {isAdmin ? (
                     <>
                       <div className="flex-shrink-0">
-                        <FaUserCircle size={48} color="#4f8ef7" />
+                        <FaUserCircle
+                          size={48}
+                          color="var(--color-ui-primary)"
+                        />
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-lg font-medium text-white">
+                        <h3 className="text-lg font-medium text-[var(--color-text-primary)]">
                           {newsItem.user || "Unknown User"}
                         </h3>
                         <p className="text-gray-400">
@@ -577,7 +585,7 @@ const ClientNewsDetailPage: React.FC = () => {
                 </div>
 
                 {/* Bottom Row: Additional Info */}
-                <div className="space-y-4 pt-3 border-t border-[#2d3349]">
+                <div className="space-y-4 pt-3 border-t border-[var(--color-bg-hover)]">
                   {/* First Row */}
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     {/* Similar Source */}
@@ -611,7 +619,7 @@ const ClientNewsDetailPage: React.FC = () => {
                   </div>
 
                   {/* Second Row */}
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-[#2d3349]">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-[var(--color-bg-hover)]">
                     {/* Submitted At */}
                     <UserInfoItem
                       userName={newsItem.user}
@@ -723,7 +731,11 @@ const ClientNewsDetailPage: React.FC = () => {
                 onChange={handleInputChange}
                 placeholder="Original Raw Submission"
                 readOnly={true}
-                borderColor={isClient ? "#603939" : "#394060"}
+                borderColor={
+                  isClient
+                    ? "var(--color-ui-client-border)"
+                    : "var(--color-ui-border-light)"
+                }
                 onViewFullContent={() => {
                   setOverlayContent({
                     title: "Original Raw Submission",
@@ -737,8 +749,12 @@ const ClientNewsDetailPage: React.FC = () => {
           <Section title="AI-Curated Summary">
             <TextArea
               name="aiGeneratedText"
-              className="bg-[#3e181a]"
-              borderColor={isClient ? "#603939" : "#394060"}
+              className="bg-[var(--color-client-card-dark)]"
+              borderColor={
+                isClient
+                  ? "var(--color-ui-client-border)"
+                  : "var(--color-ui-border-light)"
+              }
               value={
                 isEnglishSelected
                   ? formData.aiGeneratedText
@@ -759,8 +775,12 @@ const ClientNewsDetailPage: React.FC = () => {
           <Section title="Key Individuals Mentioned">
             <TextArea
               name="keyIndividuals"
-              className="bg-[#3e181a]"
-              borderColor={isClient ? "#603939" : "#394060"}
+              className="bg-[var(--color-client-card-dark)]"
+              borderColor={
+                isClient
+                  ? "var(--color-ui-client-border)"
+                  : "var(--color-ui-border-light)"
+              }
               value={
                 isEnglishSelected
                   ? formData.keyIndividuals
@@ -787,14 +807,18 @@ const ClientNewsDetailPage: React.FC = () => {
           >
             <TextArea
               name="potentialImpact"
-              className="bg-[#3e181a]"
+              className="bg-[var(--color-client-card-dark)]"
               value={
                 isEnglishSelected
                   ? formData.potentialImpact
                   : formData.translatedRisk
               }
               onChange={handleInputChange}
-              borderColor={isClient ? "#603939" : "#394060"}
+              borderColor={
+                isClient
+                  ? "var(--color-ui-client-border)"
+                  : "var(--color-ui-border-light)"
+              }
               placeholder="Describe the potential impact of this news..."
               readOnly={isClient}
               onViewFullContent={() => {

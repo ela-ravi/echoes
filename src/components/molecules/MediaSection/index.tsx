@@ -22,7 +22,6 @@ const MediaSection: React.FC<MediaSectionProps> = ({
   const userType = sessionStorage.getItem("userType");
   const isClient = userType === "CLIENT";
 
-  const borderColor = isClient ? "#603939" : "#394060";
   if (!url) {
     return null;
   }
@@ -33,24 +32,26 @@ const MediaSection: React.FC<MediaSectionProps> = ({
 
   return (
     <div
-      className={`border border-[${borderColor}] rounded-lg overflow-hidden mb-6 transition-all duration-300 hover:border-[${isClient ? "#f74f4f" : "#4f8ef7"}]`}
+      className={`border rounded-lg overflow-hidden mb-6 transition-all duration-300 ${isClient ? "border-[var(--color-ui-client-border)] hover:border-[var(--color-ui-client-border-hover)]" : "border-[var(--color-ui-border-light)] hover:border-[var(--color-ui-primary)]"}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`flex items-center gap-2 p-3 bg-[${isClient ? "#3e181a" : "#1d2030"}] border-b border-[${borderColor}]`}
+        className={`flex items-center gap-2 p-3 ${isClient ? "bg-[var(--color-client-card-dark)]" : "bg-[var(--color-bg-card)]"} border-b ${isClient ? "border-[var(--color-ui-client-border)]" : "border-[var(--color-ui-border-light)]"}`}
       >
         {isAI ? (
-          <SiOpenai className="text-[#4f8ef7]" />
+          <SiOpenai className="text-[var(--color-ui-primary)]" />
         ) : type === "image" ? (
-          <FaImage className="text-[#99a2c2]" />
+          <FaImage className="text-[var(--color-text-secondary)]" />
         ) : (
-          <FaVideo className="text-[#99a2c2]" />
+          <FaVideo className="text-[var(--color-text-secondary)]" />
         )}
-        <span className="text-sm font-medium text-white">{title}</span>
+        <span className="text-sm font-medium text-[var(--color-text-primary)]">
+          {title}
+        </span>
       </div>
       <div
-        className={`relative aspect-video bg-[${isClient ? "#201313" : "#131520"}] overflow-hidden`}
+        className={`relative aspect-video bg-[${isClient ? "#201313" : "var(--color-bg-header)"}] overflow-hidden`}
       >
         {type === "image" ? (
           <img
@@ -71,7 +72,7 @@ const MediaSection: React.FC<MediaSectionProps> = ({
             {!isVideoReady && !isHovered && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/30">
                 <div className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center">
-                  <FaPlay className="text-white ml-1" />
+                  <FaPlay className="text-[var(--color-text-primary)] ml-1" />
                 </div>
               </div>
             )}
@@ -79,7 +80,7 @@ const MediaSection: React.FC<MediaSectionProps> = ({
         )}
       </div>
       <div className="p-2 text-right">
-        <span className="text-xs text-[#99a2c2]">
+        <span className="text-xs text-[var(--color-text-secondary)]">
           {isAI ? "AI-Generated" : "User Uploaded"}
         </span>
       </div>

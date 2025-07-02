@@ -65,7 +65,7 @@ const TagCell: React.FC<TagCellProps> = ({
           <button
             type="button"
             onClick={handleShowAllTags}
-            className="text-xs text-gray-400 hover:text-white"
+            className="text-xs text-gray-400 hover:text-[var(--color-text-primary)]"
           >
             +{hiddenCount} more
           </button>

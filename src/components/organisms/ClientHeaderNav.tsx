@@ -46,7 +46,7 @@ const ClientHeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
       <div className="flex items-center justify-between w-full h-full">
         <Link
           to="/client-news"
-          className="flex items-center gap-4 text-white hover:opacity-80 transition-opacity"
+          className="flex items-center gap-4 text-[var(--color-text-primary)] hover:opacity-80 transition-opacity"
         >
           <div className="size-4">
             <svg
@@ -63,7 +63,7 @@ const ClientHeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
         {!hideSearch && (
           <button
             type="button"
-            className="text-white md:hidden mr-2"
+            className="text-[var(--color-text-primary)] md:hidden mr-2"
             onClick={() => setSearchOpen(true)}
             aria-label="Open search"
           >
@@ -91,7 +91,7 @@ const ClientHeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
         {/* Logout button */}
         <button
           onClick={handleLogout}
-          className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2"
+          className="ml-4 text-[var(--color-text-primary)] hover:opacity-80 transition-opacity flex items-center gap-2"
           aria-label="Sign out"
         >
           <span className="hidden md:inline">Sign out</span>
@@ -115,7 +115,7 @@ const ClientHeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
       {/* Mobile/Tablet search overlay */}
       {searchOpen && (
         <>
-          <div className="fixed inset-x-0 top-0 z-50 flex items-center bg-[#131520] p-4 h-16">
+          <div className="fixed inset-x-0 top-0 z-50 flex items-center bg-[var(--color-bg-header)] p-4 h-16">
             <form
               onSubmit={handleSearchSubmit}
               className="flex-1 flex items-center gap-3"
@@ -125,7 +125,7 @@ const ClientHeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Search..."
-                className="flex-1 rounded-lg bg-[#282d43] px-4 py-2 text-white placeholder:text-[#99a0c2] focus:outline-none"
+                className="flex-1 rounded-lg bg-[var(--color-ui-border)] px-4 py-2 text-[var(--color-text-primary)] placeholder:text-[#99a0c2] focus:outline-none"
                 autoFocus
               />
             </form>
@@ -133,7 +133,7 @@ const ClientHeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
               type="button"
               aria-label="Close search"
               onClick={closeSearch}
-              className="text-white ml-3"
+              className="text-[var(--color-text-primary)] ml-3"
             >
               <svg
                 className="size-6"
@@ -158,14 +158,16 @@ const ClientHeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
 
       {/* Mobile/Tablet overlay nav */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-[#131520]/95 backdrop-blur lg:hidden">
+        <div className="fixed inset-0 z-50 flex flex-col bg-[var(--color-bg-header)]/95 backdrop-blur lg:hidden">
           <div className="flex items-center justify-between p-4">
-            <span className="text-xl font-bold text-white">Menu</span>
+            <span className="text-xl font-bold text-[var(--color-text-primary)]">
+              Menu
+            </span>
             <button
               type="button"
               aria-label="Close menu"
               onClick={() => setMobileOpen(false)}
-              className="text-white"
+              className="text-[var(--color-text-primary)]"
             >
               <svg
                 className="size-6"

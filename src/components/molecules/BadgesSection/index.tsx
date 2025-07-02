@@ -13,7 +13,7 @@ const BadgesSection: React.FC<BadgesSectionProps> = ({ badges }) => {
         {Object.entries(badges).map(([badgeType, count]) => (
           <div
             key={badgeType}
-            className="flex items-center space-x-1 bg-[#2d3349] px-2 py-1 rounded-md"
+            className="flex items-center space-x-1 bg-[var(--color-bg-hover)] px-2 py-1 rounded-md"
           >
             <img
               src={`/assets/${badgeType.toLowerCase()}.png`}

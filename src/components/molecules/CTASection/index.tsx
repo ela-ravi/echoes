@@ -31,13 +31,13 @@ const CTASection: React.FC<CTASectionProps> = ({
 }) => {
   return (
     <div
-      className={`flex flex-col-reverse sm:flex-row justify-between gap-4 mt-6 p-4 border-t border-[#282d43] ${className}`}
+      className={`flex flex-col-reverse sm:flex-row justify-between gap-4 mt-6 p-4 border-t border-[var(--color-ui-border)] ${className}`}
     >
       <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
         {showBackButton && (
           <Link
             to={backLink}
-            className="flex items-center justify-center gap-2 px-6 py-2 bg-transparent hover:bg-[#282d43] text-[#99a0c2] border border-[#394060] rounded-lg transition-colors lg:hidden"
+            className="flex items-center justify-center gap-2 px-6 py-2 bg-transparent hover:bg-[var(--color-ui-border)] text-[#99a0c2] border border-[var(--color-ui-border-light)] rounded-lg transition-colors lg:hidden"
           >
             <BackArrow />
             {backText}
@@ -49,8 +49,8 @@ const CTASection: React.FC<CTASectionProps> = ({
             disabled={!hasChanges}
             className={`px-6 py-2 bg-transparent ${
               hasChanges
-                ? "hover:bg-[#282d43] text-[#99a0c2] border-[#f87171] cursor-pointer"
-                : "text-[#4a4f6b] border-[#2a2f45] cursor-not-allowed"
+                ? "hover:bg-[var(--color-ui-border)] text-[#99a0c2] border-[#f87171] cursor-pointer"
+                : "text-[var(--color-button-disabled)] border-[#2a2f45] cursor-not-allowed"
             } border rounded-lg transition-colors`}
           >
             {discardText}
@@ -63,8 +63,8 @@ const CTASection: React.FC<CTASectionProps> = ({
           disabled={!hasChanges}
           className={`px-6 py-2 rounded-lg transition-colors ${
             hasChanges
-              ? "bg-[#4f8ef7] hover:bg-[#3b7af5] text-white cursor-pointer"
-              : "bg-[#2a2f45] text-[#4a4f6b] cursor-not-allowed"
+              ? "bg-[var(--color-ui-primary)] hover:bg-[var(--color-ui-primary-hover)] text-[var(--color-text-primary)] cursor-pointer"
+              : "bg-[#2a2f45] text-[var(--color-button-disabled)] cursor-not-allowed"
           }`}
         >
           {saveText}

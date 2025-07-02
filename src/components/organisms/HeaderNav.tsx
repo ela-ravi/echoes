@@ -18,7 +18,7 @@ const HeaderAuthSection = ({
     return (
       <Link
         to="/login"
-        className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md"
+        className="ml-4 text-[var(--color-text-primary)] hover:opacity-80 transition-opacity flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md"
         aria-label="Login"
       >
         <span>Login</span>
@@ -28,7 +28,7 @@ const HeaderAuthSection = ({
     return (
       <button
         onClick={handleLogout}
-        className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2"
+        className="ml-4 text-[var(--color-text-primary)] hover:opacity-80 transition-opacity flex items-center gap-2"
         aria-label="Sign out"
       >
         <span className="hidden md:inline">Sign out</span>
@@ -89,7 +89,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
         {!isRegisterPage && (
           <Link
             to="/news"
-            className="flex items-center gap-3 text-white hover:opacity-80 transition-opacity"
+            className="flex items-center gap-3 text-[var(--color-text-primary)] hover:opacity-80 transition-opacity"
           >
             <img
               src="/assets/echoes-logo.png"
@@ -103,7 +103,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
         {!hideSearch && (
           <button
             type="button"
-            className="text-white md:hidden mr-2"
+            className="text-[var(--color-text-primary)] md:hidden mr-2"
             onClick={() => setSearchOpen(true)}
             aria-label="Open search"
           >
@@ -138,7 +138,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
         {/* {showLoginButton ? (
           <Link
             to="/login"
-            className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md"
+            className="ml-4 text-[var(--color-text-primary)] hover:opacity-80 transition-opacity flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md"
             aria-label="Login"
           >
             <span>Login</span>
@@ -146,7 +146,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
         ) : (
           <button
             onClick={handleLogout}
-            className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2"
+            className="ml-4 text-[var(--color-text-primary)] hover:opacity-80 transition-opacity flex items-center gap-2"
             aria-label="Sign out"
           >
             <span className="hidden md:inline">Sign out</span>
@@ -173,11 +173,11 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
           <button
             type="button"
             onClick={() => setUserMenuOpen(!userMenuOpen)}
-            className="flex items-center gap-2 text-white hover:opacity-80 transition-opacity"
+            className="flex items-center gap-2 text-[var(--color-text-primary)] hover:opacity-80 transition-opacity"
             aria-label="User menu"
             aria-expanded={userMenuOpen}
           >
-            <div className="size-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-medium">
+            <div className="size-8 rounded-full bg-indigo-600 flex items-center justify-center text-[var(--color-text-primary)] font-medium">
               U
             </div>
             <span className="hidden md:inline">User</span>
@@ -222,7 +222,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-status-error)]"
+                  className="w-full text-left px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-ui-danger)]"
                 >
                   Sign out
                 </button>
@@ -235,7 +235,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
       {/* Mobile/Tablet search overlay */}
       {searchOpen && (
         <>
-          <div className="fixed inset-x-0 top-0 z-50 flex items-center bg-[#131520] p-4 h-16">
+          <div className="fixed inset-x-0 top-0 z-50 flex items-center bg-[var(--color-bg-header)] p-4 h-16">
             <form
               onSubmit={handleSearchSubmit}
               className="flex-1 flex items-center gap-3"
@@ -245,7 +245,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Search..."
-                className="flex-1 rounded-lg bg-[#282d43] px-4 py-2 text-white placeholder:text-[#99a0c2] focus:outline-none"
+                className="flex-1 rounded-lg bg-[var(--color-ui-border)] px-4 py-2 text-[var(--color-text-primary)] placeholder:text-[#99a0c2] focus:outline-none"
                 autoFocus
               />
             </form>
@@ -253,7 +253,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
               type="button"
               aria-label="Close search"
               onClick={closeSearch}
-              className="text-white ml-3"
+              className="text-[var(--color-text-primary)] ml-3"
             >
               <svg
                 className="size-6"
@@ -278,14 +278,16 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
 
       {/* Mobile/Tablet overlay nav */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-[#131520]/95 backdrop-blur lg:hidden">
+        <div className="fixed inset-0 z-50 flex flex-col bg-[var(--color-bg-header)]/95 backdrop-blur lg:hidden">
           <div className="flex items-center justify-between p-4">
-            <span className="text-xl font-bold text-white">Menu</span>
+            <span className="text-xl font-bold text-[var(--color-text-primary)]">
+              Menu
+            </span>
             <button
               type="button"
               aria-label="Close menu"
               onClick={() => setMobileOpen(false)}
-              className="text-white"
+              className="text-[var(--color-text-primary)]"
             >
               <svg
                 className="size-6"

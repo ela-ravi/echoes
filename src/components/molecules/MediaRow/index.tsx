@@ -17,7 +17,7 @@ const MediaRow: React.FC<MediaRowProps> = ({
   onImageClick,
 }) => (
   <div className="space-y-2">
-    <h3 className="text-lg font-semibold text-white border-b border-[#394060] pb-2">
+    <h3 className="text-lg font-semibold text-[var(--color-text-primary)] border-b border-[var(--color-ui-border-light)] pb-2">
       {title}
     </h3>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">

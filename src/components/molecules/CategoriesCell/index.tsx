@@ -26,7 +26,7 @@ const CategoriesCell: React.FC<CategoriesCellProps> = ({ categories = [] }) => {
         {categories.slice(0, 2).map((cat) => (
           <span
             key={cat}
-            className="inline-flex items-center rounded-full bg-[#282d43] px-4 py-1 text-xs font-medium text-white"
+            className="inline-flex items-center rounded-full bg-[var(--color-ui-border)] px-4 py-1 text-xs font-medium text-[var(--color-text-primary)]"
           >
             {cat}
           </span>

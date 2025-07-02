@@ -16,15 +16,20 @@ const Modal: React.FC<ModalProps> = ({
   children,
   bgColor,
 }) => {
-  const bgColorClass = bgColor || "bg-[#1d2030]";
+  const bgColorClass = bgColor || "bg-[var(--color-bg-card)]";
   if (!isOpen) return null;
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className={`${bgColorClass} rounded-lg p-6 w-full max-w-md`}>
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-white">{title}</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-white">
+          <h2 className="text-xl font-semibold text-[var(--color-text-primary)]">
+            {title}
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-[var(--color-text-primary)]"
+          >
             <svg
               className="h-6 w-6"
               fill="none"

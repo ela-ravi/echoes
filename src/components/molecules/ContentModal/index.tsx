@@ -15,15 +15,19 @@ const ContentModal: React.FC<ContentModalProps> = ({
 }) => {
   const userType = sessionStorage.getItem("userType");
   const isClient = userType === "CLIENT";
-  const bgColor = isClient ? "bg-[#301d1d]" : "bg-[#1d2030]";
-  const borderColor = isClient ? "border-[#603939]" : "border-[#394060]";
+  const bgColor = isClient
+    ? "bg-[var(--color-client-card)]"
+    : "bg-[var(--color-bg-card)]";
+  const borderColor = isClient
+    ? "border-[var(--color-ui-client-border)]"
+    : "border-[var(--color-ui-border-light)]";
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
       onClick={onClose}
     >
       <div
-        className={`bg-[${bgColor}] rounded-xl w-full max-w-4xl max-h-[90vh] flex flex-col`}
+        className={`${bgColor} rounded-xl w-full max-w-4xl max-h-[90vh] flex flex-col`}
         onClick={(e) => e.stopPropagation()}
       >
         <div
@@ -33,7 +37,7 @@ const ContentModal: React.FC<ContentModalProps> = ({
           {showCloseButton && (
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-white"
+              className="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]"
               aria-label="Close modal"
             >
               <svg
@@ -55,7 +59,7 @@ const ContentModal: React.FC<ContentModalProps> = ({
         </div>
         <div className="p-6 overflow-y-auto flex-grow">
           <div
-            className={`bg-[${isClient ? "#301d1d" : "#1d2030"}] p-4 rounded-lg`}
+            className={`bg-[${isClient ? "#301d1d" : "var(--color-bg-card)"}] p-4 rounded-lg`}
           >
             {typeof content === "string" ? (
               <div className="whitespace-pre-wrap">{content}</div>

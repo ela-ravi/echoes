@@ -19,16 +19,17 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
     } else if (statusLower === "rejected") {
       badgeClass = "bg-red-900/30 text-red-400";
     } else if (statusLower === "submitted") {
-      badgeClass = "bg-[#282d43] text-white";
+      badgeClass =
+        "bg-[var(--color-ui-border)] text-[var(--color-text-primary)]";
     } else if (statusLower === "reviewed") {
-      badgeClass = "bg-[#1d2030] text-[#4f8ef7]";
+      badgeClass = "bg-[var(--color-bg-card)] text-[var(--color-ui-primary)]";
     } else {
       // Default for Pending or any other status
       badgeClass = "bg-yellow-900/30 text-yellow-400";
     }
   } else {
     // For AI status, use a simpler badge
-    badgeClass = "bg-transparent text-white";
+    badgeClass = "bg-transparent text-[var(--color-text-primary)]";
   }
 
   return (

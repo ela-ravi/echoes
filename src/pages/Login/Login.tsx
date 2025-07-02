@@ -47,7 +47,7 @@ const Login: React.FC = () => {
       setError(
         err instanceof Error
           ? err.message
-          : "An error occurred during login. Please try again.",
+          : "An error occurred during login. Please try again."
       );
     } finally {
       setIsLoading(false);
@@ -100,7 +100,7 @@ const Login: React.FC = () => {
           </div>
 
           {/* <p
-            className="text-[var(--color-text-placeholder)] text-sm font-normal leading-normal pb-3 pt-1 px-4 underline cursor-pointer hover:text-white transition-colors"
+            className="text-[var(--color-text-placeholder)] text-sm font-normal leading-normal pb-3 pt-1 px-4 underline cursor-pointer hover:text-[var(--color-text-primary)] transition-colors"
             onClick={handleForgotPassword}
           >
             Forgot password?
@@ -113,7 +113,7 @@ const Login: React.FC = () => {
               className={`w-full h-10 rounded-full text-sm font-bold tracking-[0.015em] ${
                 isLoading
                   ? "bg-[var(--color-button-disabled)] cursor-not-allowed"
-                  : "bg-[var(--color-button-primary)] hover:bg-[var(--color-button-primary-hover)]"
+                  : "bg-[var(--color-button-primary)] hover:bg-[var(--color-ui-primary-hover)]"
               }`}
             >
               {isLoading ? "Logging in..." : "Submit"}
@@ -123,13 +123,13 @@ const Login: React.FC = () => {
           <p className="text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center mt-8">
             New User?{" "}
             <span
-              className="underline cursor-pointer transition-colors hover:text-white mt-4"
+              className="underline cursor-pointer transition-colors hover:text-[var(--color-text-primary)] mt-4"
               onClick={handleRegister}
             >
               <Button
                 type="button"
                 variant="secondary"
-                className="w-full bg-[var(--color-button-secondary)] hover:bg-[var(--color-button-secondary-hover)] text-white font-medium py-3 px-6 rounded-lg transition-colors mt-4"
+                className="w-full bg-[var(--color-button-secondary)] hover:bg-[var(--color-button-secondary-hover)] text-[var(--color-text-primary)] font-medium py-3 px-6 rounded-lg transition-colors mt-4"
               >
                 Register here
               </Button>

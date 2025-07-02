@@ -17,7 +17,7 @@ const TextArea: React.FC<TextAreaProps> = ({
   onChange,
   placeholder,
   className = "",
-  borderColor = "#394060",
+  borderColor = "var(--color-ui-border-light)",
   readOnly = false,
   onViewFullContent,
 }) => (
@@ -28,19 +28,19 @@ const TextArea: React.FC<TextAreaProps> = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl ${readOnly ? "text-gray-400" : "text-white"} focus:outline-0 focus:ring-0 border border-[${borderColor}] bg-[#1d2030] focus:border-[#4f8ef7] min-h-36 placeholder:text-[#99a2c2] p-4 text-base font-normal leading-normal ${className}`}
+        className={`form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl ${readOnly ? "text-gray-400" : "text-[var(--color-text-primary)]"} focus:outline-0 focus:ring-0 border border-[${borderColor}] bg-[var(--color-bg-card)] focus:border-[var(--color-ui-primary)] min-h-36 placeholder:text-[var(--color-text-secondary)] p-4 text-base font-normal leading-normal ${className}`}
         readOnly={readOnly}
         disabled={readOnly}
       />
     </div>
     {value && (
       <div className="flex justify-between items-center">
-        <span className="text-sm text-[#99a2c2]">
+        <span className="text-sm text-[var(--color-text-secondary)]">
           {value.length} characters
         </span>
         <button
           type="button"
-          className="text-sm text-[#4f8ef7] hover:underline flex items-center gap-1"
+          className="text-sm text-[var(--color-ui-primary)] hover:underline flex items-center gap-1"
           onClick={onViewFullContent}
           disabled={!onViewFullContent}
         >

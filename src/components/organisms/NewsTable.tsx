@@ -115,11 +115,13 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
 
   return (
     <div
-      className={`overflow-x-auto rounded-xl border border-[${isAdmin ? "#394060" : "#603939"}] bg-[${isAdmin ? "#131520" : "#201313"}] my-4`}
+      className={`overflow-x-auto rounded-xl border ${isAdmin ? "border-[var(--color-ui-border-light)] bg-[var(--color-bg-header)]" : "border-[var(--color-ui-client-border)] bg-[var(--color-client-bg)]"} my-4`}
     >
-      <table className="w-full text-sm text-white">
+      <table className="w-full text-sm text-[var(--color-text-primary)]">
         <thead>
-          <tr className={`bg-[${isAdmin ? "#1d2030" : "#301d1d"}] text-left`}>
+          <tr
+            className={`${isAdmin ? "bg-[var(--color-bg-card)]" : "bg-[var(--color-client-card)]"} text-left`}
+          >
             <th className="px-4 py-3 w-[160px]">News ID</th>
             <th className="px-4 py-3">Title</th>
             {isAdmin && <th className="px-4 py-3">User</th>}
@@ -137,7 +139,7 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
           {items.map((item) => (
             <tr
               key={item.id}
-              className={`border-t border-[${isAdmin ? "#394060" : "#603939"}] ${isAdmin ? "hover:bg-[#1d2030]/50" : "hover:bg-[#301d1d]/50"}`}
+              className={`border-t ${isAdmin ? "border-[var(--color-ui-border-light)] hover:bg-[var(--color-bg-card)]/50" : "border-[var(--color-ui-client-border)] hover:bg-[var(--color-client-card)]/50"}`}
             >
               <td className="px-4 py-2 font-medium tracking-wide w-[160px]">
                 <Link
@@ -150,7 +152,7 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
                       window.location.href = newsDetailRoute(item.id);
                     }, 100);
                   }}
-                  className="text-[#4f8ef7] hover:underline"
+                  className="text-[var(--color-ui-primary)] hover:underline"
                 >
                   {item.id}
                 </Link>
@@ -170,7 +172,7 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
                     href={item.similarSourceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#4f8ef7] hover:underline"
+                    className="text-[var(--color-ui-primary)] hover:underline"
                   >
                     {item.similarSourceName || "View Source"}
                   </a>

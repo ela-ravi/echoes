@@ -17,7 +17,7 @@ const Badge: React.FC<BadgeProps> = ({
 
   return (
     <span
-      className={`inline-flex items-center bg-[#282d43] text-white text-xs font-medium px-2.5 py-0.5 rounded-full whitespace-nowrap ${className}`}
+      className={`inline-flex items-center bg-[var(--color-ui-border)] text-[var(--color-text-primary)] text-xs font-medium px-2.5 py-0.5 rounded-full whitespace-nowrap ${className}`}
       title={!fullText && text !== displayText ? text : undefined}
     >
       {displayText}
