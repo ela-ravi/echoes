@@ -14,7 +14,7 @@ const Section: React.FC<SectionProps> = ({
 }) => (
   <div className="mb-6">
     <div className="flex items-center mb-2">
-      <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+      <h2 className="text-[var(--color-text-primary)] text-[22px] font-bold leading-tight tracking-[-0.015em]">
         {title}
       </h2>
       {title === "Potential Risks" && (

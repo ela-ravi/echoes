@@ -1,0 +1,109 @@
+:root {
+
+  --color-black: black;
+  --color-white: white;
+  --color-yellow: yellow;
+  --color-red: red;
+  --color-gray: gray;
+  --color-orange: orange;
+  --color-green: green;
+
+  /* Background colors */
+  --color-bg-dark: #0a0e17;
+  --color-bg-card: #f8f9fc;
+  --color-bg-header: #f8f9fc;
+  --color-bg-input: #2b2f40;
+  --color-bg-hover: #2d3349;
+  --color-bg-modal-overlay: rgba(0, 0, 0, 0.5);
+
+  /* UI Colors */
+  --color-ui-primary: #4f8ef7;
+  --color-ui-primary-hover: #3b7af5;
+  --color-ui-danger: #ef4444;
+  --color-ui-border: #6e7074;
+  --color-ui-border-light: #363636;
+  --color-ui-client-border: #603939;
+  --color-ui-client-border-hover: #f74f4f;
+
+  /* Text colors */
+  --color-text-primary: #0d0f1c;
+  --color-text-secondary: var(--color-white);
+  --color-text-placeholder: #9da3be;
+  --color-text-muted: #9ca3af;
+  --color-text-secondary-dark: #888;
+  --color-text-tertiary: #47579e;
+
+  /* Background colors */
+  --color-bg-light: #1e1f2b;
+  --color-bg-lighter: #262a3a;
+  --color-bg-secondary: #212431;
+  --color-bg-tertiary: rgba(0,0,0,0.3);
+  --color-bg-quaternary: #2d2f3a;
+  --color-bg-quinary: #3a3f5a;
+  
+  /* Button states */
+  --color-button-primary: #304dce;
+  --color-button-primary-hover: #2a44bb;
+  
+  /* Client-specific colors */
+  --color-client-bg: #201313;
+  --color-client-bg-dark: #221112;
+  --color-client-card: #301d1d;
+  --color-client-card-dark: #3e181a;
+  --color-client-border: #432828;
+  
+  /* Status colors */
+  --color-status-success: #10b981;
+  --color-status-warning: #f59e0b;
+  --color-status-info: #3b82f6;
+  --color-status-info-dark: #2563eb;
+  --color-status-info-darker: #1e40af;
+  --color-status-info-darkest: #1e3a8a;
+  --color-status-info-soft: rgba(59, 130, 246, 0.25);
+  --color-status-error: #ef4444;
+  --color-status-error-soft: rgba(239, 68, 68, 0.25);
+  
+  /* UI colors */
+  --color-ui-gray: #374151;
+  --color-ui-gray-light: #d1d5db;
+  --color-ui-gray-lighter: #e5e7eb;
+  --color-ui-gray-lightest: #f3f4f6;
+  
+  /* Border colors */
+  --color-border-light: #2d2f3a;
+  --color-border: #444;
+  --color-border-dark: #666;
+  --color-button-primary: #4f8ef7;
+  --color-button-secondary: rgb(0 0 0 / 10%);
+  --color-button-secondary-hover: #c0d5f5;
+  --color-button-disabled: var(--color-white);
+  --color-button-danger: #ef4444;
+  --color-button-danger-hover: #dc2626;
+
+  /* Status colors */
+  --color-status-success: #10b981;
+  --color-status-warning: #f59e0b;
+  --color-status-error: #ef4444;
+  --color-status-info: #3b82f6;
+
+  --color-badge-bg: var(--color-ui-primary);
+  --color-badge-text: var(--color-text-secondary);
+
+
+  --color-status-bg-pending: var(--color-yellow);
+  --color-status-bg-rejected: var(--color-red);
+  --color-status-bg-submitted: var(--color-gray);
+  --color-status-bg-reviewed: var(--color-orange);
+  --color-status-bg-published: var(--color-green);
+
+
+  --color-status-text-pending: var(--color-black);
+  --color-status-text-rejected: var(--color-text-secondary);
+  --color-status-text-submitted: var(--color-text-secondary);
+  --color-status-text-reviewed: var(--color-text-secondary);
+  --color-status-text-published: var(--color-text-secondary);
+
+  --color-reward-text: #640101;
+
+}
+

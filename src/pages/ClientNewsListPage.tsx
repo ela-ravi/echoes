@@ -326,7 +326,7 @@ const ClientNewsListPage: React.FC = () => {
 
       <PageContainer>
         <div className="w-full max-w-[95%] md:max-w-[90%]">
-          <h1 className="mb-4 text-[32px] font-bold leading-tight tracking-tight text-white">
+          <h1 className="mb-4 text-[32px] font-bold leading-tight tracking-tight text-[var(--color-text-primary)]">
             All News Items
           </h1>
 
@@ -390,7 +390,7 @@ const ClientNewsListPage: React.FC = () => {
             <>
               <NewsTable items={newsItems} />
               {loadingMore && (
-                <div className="mt-4 text-center text-white">
+                <div className="mt-4 text-center text-[var(--color-text-primary)]">
                   Loading more items...
                 </div>
               )}

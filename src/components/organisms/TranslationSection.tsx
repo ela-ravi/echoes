@@ -44,11 +44,11 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
   };
 
   const filteredLanguages = LANGUAGES.filter(
-    (lang) => lang.value !== "english",
+    (lang) => lang.value !== "english"
   );
 
   return (
-    <div className={`bg-[#1d2030] p-4 rounded-lg ${className}`}>
+    <div className={`bg-[var(--color-bg-card)] p-4 rounded-lg ${className}`}>
       <div className="flex items-center space-x-4">
         <div className="flex-1">
           <Select

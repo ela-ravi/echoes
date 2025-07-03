@@ -23,7 +23,7 @@ const RejectModal: React.FC<RejectModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="bg-[#1d2030] rounded-lg p-4 max-w-sm w-full mx-4 max-h-[80vh] overflow-y-auto"
+        className="bg-[var(--color-bg-card)] rounded-lg p-4 max-w-sm w-full mx-4 max-h-[80vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-3">
@@ -31,7 +31,7 @@ const RejectModal: React.FC<RejectModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-white"
+            className="text-gray-400 hover:text-[var(--color-text-primary)]"
           >
             <svg
               className="w-5 h-5"
@@ -56,7 +56,7 @@ const RejectModal: React.FC<RejectModalProps> = ({
             rows={4}
             value={comment}
             onChange={onCommentChange}
-            className="w-full p-2 bg-[#2a2f45] text-white rounded border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full p-2 bg-[var(--color-bg-card)] text-[var(--color-text-primary)] rounded border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="Please provide a reason for rejection..."
           />
           {!comment.trim() && (
@@ -69,7 +69,7 @@ const RejectModal: React.FC<RejectModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white"
+            className="px-4 py-2 text-sm font-medium text-[var(--color-gray)]-500 hover:text-[var(--color-text-primary)]"
           >
             Cancel
           </button>
@@ -79,8 +79,8 @@ const RejectModal: React.FC<RejectModalProps> = ({
             disabled={!comment.trim()}
             className={`px-4 py-2 text-sm font-medium rounded-md ${
               comment.trim()
-                ? "bg-red-600 text-white hover:bg-red-700"
-                : "bg-gray-600 text-gray-400 cursor-not-allowed"
+                ? "bg-red-600 text-[var(--color-text-secondary)] hover:bg-red-700"
+                : "bg-[var(--color-bg-tertiary)] text-[var(--color-button-disabled)] cursor-not-allowed"
             }`}
           >
             Confirm Reject

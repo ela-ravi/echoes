@@ -45,15 +45,15 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const getStatusClasses = () => {
     switch (statusLower) {
       case "published":
-        return "bg-green-900/30 text-green-400";
+        return "bg-[var(--color-status-bg-published)] text-[var(--color-status-text-published)]";
       case "rejected":
-        return "bg-red-900/30 text-red-400";
+        return "bg-[var(--color-status-bg-rejected)] text-[var(--color-status-text-rejected)]";
       case "reviewed":
-        return "bg-[#1d2030] text-[#4f8ef7]";
+        return "bg-[var(--color-status-bg-reviewed)] text-[var(--color-status-text-reviewed)]";
       case "submitted":
-        return "bg-[#282d43] text-white";
+        return "bg-[var(--color-status-bg-submitted)] text-[var(--color-status-text-submitted)]";
       default:
-        return "bg-yellow-900/30 text-yellow-400";
+        return "bg-[var(--color-status-bg-pending)] text-[var(--color-status-text-pending)]";
     }
   };
 
@@ -183,7 +183,7 @@ const NewsDetailPage: React.FC = () => {
         signal: controller.signal,
         languageCode: languageCode as TRANSLATION_LANGUAGES,
       });
-
+      console.log("==>> API data:", data);
       setNewsItem((prev) => ({
         ...prev,
         ...data,
@@ -193,7 +193,13 @@ const NewsDetailPage: React.FC = () => {
         ...(data.keyIndividuals && { keyIndividuals: data.keyIndividuals }),
         ...(data.potentialImpact && { potentialImpact: data.potentialImpact }),
       }));
-
+      setInitialFormData((prev) => ({
+        ...(prev || {}),
+        originalText: data.originalText || prev?.originalText || "",
+        aiGeneratedText: data.aiGeneratedText || prev?.aiGeneratedText || "",
+        keyIndividuals: data.keyIndividuals || prev?.keyIndividuals || "",
+        potentialImpact: data.potentialImpact || prev?.potentialImpact || "",
+      }));
       // Update form data with the new values, ensuring all fields are strings
       setFormData((prev) => ({
         ...(prev || {}),
@@ -316,7 +322,7 @@ const NewsDetailPage: React.FC = () => {
         await fetchNewsDetail();
 
         if (!isMounted) return;
-
+        console.log("==>> newsItem:", newsItem);
         // Update form data when newsItem changes
         if (newsItem) {
           const newFormData = {
@@ -339,7 +345,9 @@ const NewsDetailPage: React.FC = () => {
             console.log("Fetch aborted");
           } else {
             setError(
-              err instanceof Error ? err.message : "Failed to load news details"
+              err instanceof Error
+                ? err.message
+                : "Failed to load news details",
             );
           }
         }
@@ -379,12 +387,17 @@ const NewsDetailPage: React.FC = () => {
       };
 
       // Check if any field has changed from its initial value
-      if (initialFormData) {
-        const hasChanges = Object.entries(newData).some(
-          ([key, val]) => initialFormData[key as keyof FormDataState] !== val
-        );
-        setHasChanges(hasChanges);
-      }
+      // if (initialFormData) {
+      //   const hasChanges = Object.entries(newData).some(
+      //     ([key, val]) => initialFormData[key as keyof FormDataState] !== val
+      //   );
+      //   setHasChanges(hasChanges);
+      // }
+      console.log("==>> prev, new:", prev, newData);
+      const hasChanges = Object.entries(newData).some(
+        ([key, val]) => prev[key as keyof FormDataState] !== val
+      );
+      setHasChanges(hasChanges);
 
       return newData;
     });
@@ -392,6 +405,7 @@ const NewsDetailPage: React.FC = () => {
 
   // Update hasChanges when initial data is loaded
   useEffect(() => {
+    console.log("==> Data:", formData, initialFormData);
     if (formData && initialFormData) {
       const changes = Object.entries(formData).some(
         ([key, val]) => initialFormData[key as keyof FormDataState] !== val
@@ -409,11 +423,14 @@ const NewsDetailPage: React.FC = () => {
 
   if (!newsItem) {
     return (
-      <div className="relative flex min-h-screen flex-col bg-[#131520] text-white">
+      <div className="relative flex min-h-screen flex-col bg-[var(--color-bg-header)] text-[var(--color-text-primary)]">
         <HeaderNav hideSearch />
         <main className="flex flex-1 flex-col items-center justify-center p-6">
           <h1 className="text-2xl font-bold">News Item Not Found</h1>
-          <Link to="/news" className="mt-4 text-[#4f8ef7] hover:underline">
+          <Link
+            to="/news"
+            className="mt-4 text-[var(--color-ui-primary)] hover:underline"
+          >
             Back to News List
           </Link>
         </main>
@@ -422,25 +439,25 @@ const NewsDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-[#131520] text-white">
+    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-[var(--color-bg-header)] text-[var(--color-text-primary)]">
       <HeaderNav hideSearch />
       <main className="flex flex-1 justify-center px-3 md:px-10 pt-24 pb-5">
         <div className="w-full max-w-[95%] md:max-w-[90%]">
           <div className="flex justify-between items-center mb-4">
-            <h1 className="text-[32px] font-bold leading-tight tracking-tight text-white">
+            <h1 className="text-[32px] font-bold leading-tight tracking-tight text-[var(--color-text-primary)]">
               News Item ID: {newsItem.id}
             </h1>
           </div>
           <Section title="User Details">
-            <div className="bg-[#1d2030] p-6 my-3 rounded-xl">
+            <div className="bg-[var(--color-bg-card)] p-6 my-3 rounded-xl">
               <div className="flex flex-col space-y-4">
                 {/* Top Row: User Info */}
                 <div className="flex items-center space-x-4">
                   <div className="flex-shrink-0">
-                    <FaUserCircle size={48} color="#4f8ef7" />
+                    <FaUserCircle size={48} color="var(--color-ui-primary)" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-medium text-white">
+                    <h3 className="text-lg font-medium text-[var(--color-text-primary)]">
                       {newsItem.user || "Unknown User"}
                     </h3>
                     <p className="text-gray-400">
@@ -516,7 +533,7 @@ const NewsDetailPage: React.FC = () => {
                 </div>
 
                 {/* Bottom Row: Additional Info */}
-                <div className="space-y-4 pt-3 border-t border-[#2d3349]">
+                <div className="space-y-4 pt-3 border-t border-[var(--color-bg-hover)]">
                   {/* First Row */}
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     {/* Similar Source */}
@@ -550,7 +567,7 @@ const NewsDetailPage: React.FC = () => {
                   </div>
 
                   {/* Second Row */}
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-[#2d3349]">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-[var(--color-bg-hover)]">
                     {/* Submitted At */}
                     <UserInfoItem
                       userName={newsItem.user}
@@ -641,7 +658,7 @@ const NewsDetailPage: React.FC = () => {
             <TextArea
               name="originalText"
               value={formData.originalText}
-              className="border-none"
+              // className="border-none"
               onChange={handleInputChange}
               placeholder="Original Raw Submission"
               readOnly={true}

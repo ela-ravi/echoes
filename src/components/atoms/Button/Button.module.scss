@@ -40,7 +40,7 @@
     height: 1rem;
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
-    border-top-color: #fff;
+    border-top-color: var(--color-text-primary);
     animation: spin 1s ease-in-out infinite;
   }
 
@@ -52,37 +52,37 @@
 }
 
 .primary {
-  color: #fff;
-  background-color: #3b82f6;
-  border-color: #3b82f6;
+  color: var(--color-text-primary);
+  background-color: var(--color-status-info);
+  border-color: var(--color-status-info);
 
   &:hover:not(:disabled) {
-    background-color: #2563eb;
-    border-color: #1d4ed8;
+    background-color: var(--color-status-info-dark);
+    border-color: var(--color-status-info-darker);
   }
 
   .spinner {
-    border-top-color: #fff;
+    border-top-color: var(--color-text-primary);
   }
 }
 
 .secondary {
-  color: #374151;
-  background-color: #f3f4f6;
-  border-color: #d1d5db;
+  color: var(--color-ui-gray);
+  background-color: var(--color-ui-gray-lightest);
+  border-color: var(--color-ui-gray-light);
 
   &:hover:not(:disabled) {
-    background-color: #e5e7eb;
-    border-color: #9ca3af;
+    background-color: var(--color-ui-gray-lighter);
+    border-color: var(--color-text-muted);
   }
 
   .spinner {
-    border-top-color: #374151;
+    border-top-color: var(--color-ui-gray);
   }
 }
 
 .outline {
-  color: #3b82f6;
+  color: var(--color-status-info);
   background-color: transparent;
   border: 1px solid currentColor;
 
@@ -91,12 +91,12 @@
   }
 
   .spinner {
-    border-top-color: #3b82f6;
+    border-top-color: var(--color-status-info);
   }
 }
 
 .text {
-  color: #3b82f6;
+  color: var(--color-status-info);
   background-color: transparent;
   border: none;
   padding: 0.25rem 0.5rem;
@@ -107,7 +107,7 @@
   }
 
   .spinner {
-    border-top-color: #3b82f6;
+    border-top-color: var(--color-status-info);
   }
 }
 

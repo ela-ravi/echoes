@@ -22,7 +22,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
-    const buttonClass = `${styles.button} ${styles[variant]} ${
+    const buttonClass = `${styles.button} ${
       isLoading ? styles.loading : ""
     } ${fullWidth ? styles.fullWidth : ""} ${className}`.trim();
 

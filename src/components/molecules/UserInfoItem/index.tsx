@@ -86,7 +86,7 @@ const UserInfoItem: React.FC<UserInfoItemProps> = ({
     if (rewardPoints !== undefined) {
       return (
         <div className="flex items-center space-x-2">
-          <span className="text-sm font-medium text-yellow-400">
+          <span className="text-sm font-medium text-[var(--color-reward-text)]">
             {rewardPoints}
           </span>
           <span className="text-xs text-gray-400">points</span>

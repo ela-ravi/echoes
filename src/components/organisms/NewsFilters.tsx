@@ -98,7 +98,9 @@ const NewsFilters: React.FC<NewsFiltersProps> = ({
           onClick={onResetFilters}
           disabled={isResetDisabled}
           className={`w-full ${
-            isResetDisabled ? "opacity-50 cursor-not-allowed" : ""
+            isResetDisabled
+              ? "!bg-[var(--color-bg-tertiary)] !text-[var(--color-button-disabled)] cursor-not-allowed"
+              : ""
           }`}
         >
           Reset Filters

@@ -54,7 +54,7 @@ const Registration: React.FC = () => {
   };
 
   const handleDateChange = (
-    value: Date | null | [Date | null, Date | null]
+    value: Date | null | [Date | null, Date | null],
   ) => {
     // Handle both single date and range selection (we only care about single date here)
     const selectedDate = Array.isArray(value) ? value[0] : value;
@@ -121,13 +121,13 @@ const Registration: React.FC = () => {
       alert(
         error instanceof Error
           ? error.message
-          : "Registration failed. Please try again."
+          : "Registration failed. Please try again.",
       );
     }
   };
 
   return (
-    <PageContainer className="min-h-screen bg-[#131520] text-white">
+    <PageContainer className="min-h-screen bg-[var(--color-bg-header)] text-[var(--color-text-primary)]">
       <HeaderNav showLoginButton hideSearch={true} />
 
       <div className="flex justify-center w-full px-4">
@@ -145,7 +145,7 @@ const Registration: React.FC = () => {
               placeholder="Name"
               value={formData.name}
               onChange={handleInputChange}
-              containerClass="w-full bg-[#2b2f40] border-none rounded-xl h-14 px-2 text-white placeholder-[#9da3be] focus:ring-0 content-center"
+              containerClass="w-full bg-[var(--color-bg-card)] border-none rounded-xl h-14 px-2 text-[var(--color-text-primary)] placeholder-[var(--color-text-placeholder)] focus:ring-0 content-center"
               required
             />
           </div>
@@ -158,7 +158,7 @@ const Registration: React.FC = () => {
               placeholder="Email"
               value={formData.email}
               onChange={handleInputChange}
-              containerClass="w-full bg-[#2b2f40] border-none rounded-xl h-14 px-2 text-white placeholder-[#9da3be] focus:ring-0 content-center"
+              containerClass="w-full bg-[var(--color-bg-card)] border-none rounded-xl h-14 px-2 text-[var(--color-text-primary)] placeholder-[var(--color-text-placeholder)] focus:ring-0 content-center"
               required
             />
           </div>
@@ -171,13 +171,13 @@ const Registration: React.FC = () => {
               placeholder="Phone"
               value={formData.phone}
               onChange={handleInputChange}
-              containerClass="w-full bg-[#2b2f40] border-none rounded-xl h-14 px-2 text-white placeholder-[#9da3be] focus:ring-0 content-center"
+              containerClass="w-full bg-[var(--color-bg-card)] border-none rounded-xl h-14 px-2 text-[var(--color-text-primary)] placeholder-[var(--color-text-placeholder)] focus:ring-0 content-center"
               required
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-white mb-2">
+            <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
               Date of Birth
             </label>
             <div className="date-picker-container">
@@ -190,7 +190,7 @@ const Registration: React.FC = () => {
                 monthPlaceholder="MM"
                 yearPlaceholder="YYYY"
                 maxDate={new Date()}
-                className="w-full bg-[#2b2f40] border-none rounded-xl h-14 px-2 text-white placeholder-[#9da3be] focus:ring-0 content-center"
+                className="w-full bg-[var(--color-bg-card)] border-none rounded-xl h-14 px-2 text-[var(--color-text-primary)] placeholder-[var(--color-text-placeholder)] focus:ring-0 content-center"
               />
             </div>
           </div>
@@ -201,17 +201,17 @@ const Registration: React.FC = () => {
               value={formData.userType}
               onChange={handleSelectChange}
               options={userTypeOptions}
-              containerClass="w-full bg-[#2b2f40] border-none rounded-xl h-14 px-2 py-2 text-white focus:ring-0"
+              containerClass="w-full bg-[var(--color-bg-card)] border-none rounded-xl h-14 px-2 py-2 text-[var(--color-text-primary)] focus:ring-0"
               className="border-transparent w-full"
               required
             />
           </div>
 
           <div className="mb-6">
-            <label className="block text-sm font-medium text-white mb-2">
+            <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
               Upload Photo (PNG, JPEG)
             </label>
-            <div className="border-2 border-dashed border-[#3d435c] rounded-xl p-8 text-center">
+            <div className="border border-dashed border-[var(--color-ui-border-light)] rounded-xl p-8 text-center">
               <input
                 type="file"
                 id="profilePhoto"
@@ -224,7 +224,9 @@ const Registration: React.FC = () => {
                 <p className="text-lg font-bold mb-2">
                   Click or drag to upload
                 </p>
-                <p className="text-sm text-[#9da3be]">PNG, JPEG up to 5MB</p>
+                <p className="text-sm text-[var(--color-text-placeholder)]">
+                  PNG, JPEG up to 5MB
+                </p>
               </label>
               {formData.profilePhoto && (
                 <p className="mt-2 text-sm text-green-400">
@@ -237,7 +239,7 @@ const Registration: React.FC = () => {
           <Button
             type="submit"
             variant="primary"
-            className="w-full h-12 rounded-full text-sm font-bold tracking-[0.015em] bg-[#304dce] hover:bg-[#2a44bb]"
+            className="w-full h-12 rounded-full text-sm font-bold tracking-[0.015em] bg-[var(--color-button-primary)] hover:bg-[var(--color-button-primary-hover)] !text-[var(--color-text-secondary)]"
           >
             Register
           </Button>

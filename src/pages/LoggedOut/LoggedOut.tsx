@@ -20,7 +20,7 @@ const LoggedOut = () => {
         Thank you for using our service. You have been successfully logged out.
       </p>
       <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+        className="bg-blue-500 hover:bg-blue-700 text-[var(--color-text-primary)] font-bold py-2 px-4 rounded mt-4"
         onClick={handleLoginAgain}
       >
         Log in again

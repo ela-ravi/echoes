@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "../../services/authService";
+import { useTheme } from "../../context/ThemeContext";
 import styles from "./HeaderNav.module.scss";
 
 interface HeaderNavProps {
@@ -18,7 +19,7 @@ const HeaderAuthSection = ({
     return (
       <Link
         to="/login"
-        className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md"
+        className="ml-4 text-[var(--color-text-secondary)] hover:opacity-80 transition-opacity flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md"
         aria-label="Login"
       >
         <span>Login</span>
@@ -28,7 +29,7 @@ const HeaderAuthSection = ({
     return (
       <button
         onClick={handleLogout}
-        className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2"
+        className="ml-4 text-[var(--color-text-primary)] hover:opacity-80 transition-opacity flex items-center gap-2"
         aria-label="Sign out"
       >
         <span className="hidden md:inline">Sign out</span>
@@ -61,6 +62,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
   // const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const isRegisterPage = ["/register"].includes(window.location.pathname);
+  const isLoginPage = ["/login"].includes(window.location.pathname);
 
   const handleLogout = async () => {
     try {
@@ -83,27 +85,68 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
     setSearchOpen(false);
   };
 
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <header className={styles.header}>
       <div className="flex items-center justify-between w-full h-full">
-        {!isRegisterPage && (
-          <Link
-            to="/news"
-            className="flex items-center gap-3 text-white hover:opacity-80 transition-opacity"
-          >
-            <img
-              src="/assets/echoes-logo.png"
-              alt="Echoes Logo"
-              className="h-16 w-auto"
-            />
-            <h2 className="text-lg font-bold tracking-tight">Echoes</h2>
-          </Link>
-        )}
+        {
+          <div className="flex items-center gap-6">
+            <Link
+              to={!isRegisterPage && !isLoginPage ? "/news" : "/login"}
+              className="flex items-center gap-3 text-[var(--color-text-primary)] hover:opacity-80 transition-opacity"
+            >
+              <img
+                src="/assets/echoes-logo.png"
+                alt="Echoes Logo"
+                className="h-16 w-auto"
+              />
+              <h2 className="text-lg font-bold tracking-tight">Echoes</h2>
+            </Link>
+            <button
+              onClick={toggleTheme}
+              className={`p-2 rounded-full ${theme === "light" ? "hover:bg-[var(--color-black)]" : "hover:bg-gray-600"} transition-colors`}
+              aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+            >
+              {theme === "light" ? (
+                <svg
+                  className="w-5 h-5"
+                  fill="white"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
+        }
 
         {!hideSearch && (
           <button
             type="button"
-            className="text-white md:hidden mr-2"
+            className="text-[var(--color-text-primary)] md:hidden mr-2"
             onClick={() => setSearchOpen(true)}
             aria-label="Open search"
           >
@@ -130,112 +173,18 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
 
         {/* Login/Logout button */}
 
-        <HeaderAuthSection
-          showLoginButton={showLoginButton}
-          handleLogout={handleLogout}
-        />
-
-        {/* {showLoginButton ? (
-          <Link
-            to="/login"
-            className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md"
-            aria-label="Login"
-          >
-            <span>Login</span>
-          </Link>
-        ) : (
-          <button
-            onClick={handleLogout}
-            className="ml-4 text-white hover:opacity-80 transition-opacity flex items-center gap-2"
-            aria-label="Sign out"
-          >
-            <span className="hidden md:inline">Sign out</span>
-            <svg
-              className="size-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-              />
-            </svg>
-          </button>
-        )} */}
+        {!isLoginPage && (
+          <HeaderAuthSection
+            showLoginButton={showLoginButton}
+            handleLogout={handleLogout}
+          />
+        )}
       </div>
-
-      {/* User menu */}
-      {/* <div className="relative ml-4">
-          <button
-            type="button"
-            onClick={() => setUserMenuOpen(!userMenuOpen)}
-            className="flex items-center gap-2 text-white hover:opacity-80 transition-opacity"
-            aria-label="User menu"
-            aria-expanded={userMenuOpen}
-          >
-            <div className="size-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-medium">
-              U
-            </div>
-            <span className="hidden md:inline">User</span>
-            <svg
-              className={`size-4 transition-transform ${userMenuOpen ? "rotate-180" : ""}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </button>
-
-          
-          {userMenuOpen && (
-            <>
-              <div
-                className="fixed inset-0 z-10"
-                onClick={() => setUserMenuOpen(false)}
-                aria-hidden="true"
-              />
-              <div className="absolute right-0 mt-2 w-48 bg-[var(--color-bg-card)] rounded-md shadow-lg py-1 z-20">
-                <Link
-                  to="/profile"
-                  className="block px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]"
-                  onClick={() => setUserMenuOpen(false)}
-                >
-                  Profile
-                </Link>
-                <Link
-                  to="/settings"
-                  className="block px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]"
-                  onClick={() => setUserMenuOpen(false)}
-                >
-                  Settings
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-status-error)]"
-                >
-                  Sign out
-                </button>
-              </div>
-            </>
-          )}
-        </div> */}
-      {/* </div> */}
 
       {/* Mobile/Tablet search overlay */}
       {searchOpen && (
         <>
-          <div className="fixed inset-x-0 top-0 z-50 flex items-center bg-[#131520] p-4 h-16">
+          <div className="fixed inset-x-0 top-0 z-50 flex items-center bg-[var(--color-bg-header)] p-4 h-16">
             <form
               onSubmit={handleSearchSubmit}
               className="flex-1 flex items-center gap-3"
@@ -245,7 +194,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Search..."
-                className="flex-1 rounded-lg bg-[#282d43] px-4 py-2 text-white placeholder:text-[#99a0c2] focus:outline-none"
+                className="flex-1 rounded-lg bg-[var(--color-ui-border)] px-4 py-2 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none"
                 autoFocus
               />
             </form>
@@ -253,7 +202,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
               type="button"
               aria-label="Close search"
               onClick={closeSearch}
-              className="text-white ml-3"
+              className="text-[var(--color-text-primary)] ml-3"
             >
               <svg
                 className="size-6"
@@ -278,14 +227,16 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
 
       {/* Mobile/Tablet overlay nav */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-[#131520]/95 backdrop-blur lg:hidden">
+        <div className="fixed inset-0 z-50 flex flex-col bg-[var(--color-bg-header)]/95 backdrop-blur lg:hidden">
           <div className="flex items-center justify-between p-4">
-            <span className="text-xl font-bold text-white">Menu</span>
+            <span className="text-xl font-bold text-[var(--color-text-primary)]">
+              Menu
+            </span>
             <button
               type="button"
               aria-label="Close menu"
               onClick={() => setMobileOpen(false)}
-              className="text-white"
+              className="text-[var(--color-text-primary)]"
             >
               <svg
                 className="size-6"

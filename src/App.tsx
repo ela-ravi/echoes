@@ -7,11 +7,11 @@ import ClientNewsDetailPage from "./pages/ClientNewsDetailPage/ClientNewsDetailP
 import TestNavigationPage from "./pages/TestNavigationPage";
 import Registration from "./pages/Registration/Registration";
 import Login from "./pages/Login/Login";
-import LoggedOut from "./pages/LoggedOut/LoggedOut";
+// import LoggedOut from "./pages/LoggedOut/LoggedOut";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./theme/global.css";
+// import "./theme/global.css";
 import ClientNewsListPage from "./pages/ClientNewsListPage";
 
 const App: React.FC = () => {
