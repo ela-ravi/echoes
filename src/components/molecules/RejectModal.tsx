@@ -56,7 +56,7 @@ const RejectModal: React.FC<RejectModalProps> = ({
             rows={4}
             value={comment}
             onChange={onCommentChange}
-            className="w-full p-2 bg-[#2a2f45] text-[var(--color-text-primary)] rounded border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full p-2 bg-[var(--color-bg-card)] text-[var(--color-text-primary)] rounded border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="Please provide a reason for rejection..."
           />
           {!comment.trim() && (
@@ -69,7 +69,7 @@ const RejectModal: React.FC<RejectModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-[var(--color-text-primary)]"
+            className="px-4 py-2 text-sm font-medium text-[var(--color-gray)]-500 hover:text-[var(--color-text-primary)]"
           >
             Cancel
           </button>
@@ -79,8 +79,8 @@ const RejectModal: React.FC<RejectModalProps> = ({
             disabled={!comment.trim()}
             className={`px-4 py-2 text-sm font-medium rounded-md ${
               comment.trim()
-                ? "bg-red-600 text-[var(--color-text-primary)] hover:bg-red-700"
-                : "bg-gray-600 text-gray-400 cursor-not-allowed"
+                ? "bg-red-600 text-[var(--color-text-secondary)] hover:bg-red-700"
+                : "bg-[var(--color-bg-tertiary)] text-[var(--color-button-disabled)] cursor-not-allowed"
             }`}
           >
             Confirm Reject

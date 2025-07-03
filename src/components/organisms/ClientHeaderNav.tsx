@@ -125,7 +125,7 @@ const ClientHeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Search..."
-                className="flex-1 rounded-lg bg-[var(--color-ui-border)] px-4 py-2 text-[var(--color-text-primary)] placeholder:text-[#99a0c2] focus:outline-none"
+                className="flex-1 rounded-lg bg-[var(--color-ui-border)] px-4 py-2 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none"
                 autoFocus
               />
             </form>

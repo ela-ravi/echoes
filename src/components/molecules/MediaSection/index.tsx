@@ -42,9 +42,9 @@ const MediaSection: React.FC<MediaSectionProps> = ({
         {isAI ? (
           <SiOpenai className="text-[var(--color-ui-primary)]" />
         ) : type === "image" ? (
-          <FaImage className="text-[var(--color-text-secondary)]" />
+          <FaImage className="text-[var(--color-ui-primary)]" />
         ) : (
-          <FaVideo className="text-[var(--color-text-secondary)]" />
+          <FaVideo className="text-[var(--color-ui-primary)]" />
         )}
         <span className="text-sm font-medium text-[var(--color-text-primary)]">
           {title}
@@ -80,7 +80,7 @@ const MediaSection: React.FC<MediaSectionProps> = ({
         )}
       </div>
       <div className="p-2 text-right">
-        <span className="text-xs text-[var(--color-text-secondary)]">
+        <span className="text-xs text-[var(--color-text-placeholder)]">
           {isAI ? "AI-Generated" : "User Uploaded"}
         </span>
       </div>

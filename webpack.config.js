@@ -75,6 +75,11 @@ module.exports = {
           to: ".",
           noErrorOnMissing: true,
         },
+        {
+          from: path.resolve(__dirname, "public/theme"),
+          to: "theme",
+          noErrorOnMissing: true,
+        },
       ],
     }),
   ],

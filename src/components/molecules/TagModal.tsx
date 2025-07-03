@@ -3,7 +3,7 @@ import Badge from "../atoms/Badge";
 
 interface TagModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (e: React.MouseEvent) => void;
   tags: string[];
   title?: string;
   type?: "publishedBy" | "rejectedBy" | "categories";

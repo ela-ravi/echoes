@@ -52,7 +52,7 @@ const CategoriesCell: React.FC<CategoriesCellProps> = ({ categories = [] }) => {
             type="button"
             aria-label={`Show all ${hiddenCount} more categories`}
             onClick={handleShowAllCategories}
-            className="flex items-center justify-center h-5 w-6 text-xs text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)] rounded mb-1"
+            className="flex items-center justify-center h-5 w-6 text-xs text-gray-400 hover:text-[var(--color-text-primary)] rounded mb-1"
           >
             +{hiddenCount}
           </button>

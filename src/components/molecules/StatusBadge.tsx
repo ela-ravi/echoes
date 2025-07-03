@@ -15,18 +15,23 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
 
   if (type === "client") {
     if (statusLower === "published") {
-      badgeClass = "bg-green-900/30 text-green-400";
+      badgeClass =
+        "bg-[var(--color-status-bg-published)] text-[var(--color-status-text-published)]";
     } else if (statusLower === "rejected") {
-      badgeClass = "bg-red-900/30 text-red-400";
+      badgeClass =
+        "bg-[var(--color-status-bg-rejected)] text-[var(--color-status-text-rejected)]";
     } else if (statusLower === "submitted") {
       badgeClass =
-        "bg-[var(--color-ui-border)] text-[var(--color-text-primary)]";
+        "bg-[var(--color-status-bg-submitted)] text-[var(--color-status-text-submitted)]";
     } else if (statusLower === "reviewed") {
-      badgeClass = "bg-[var(--color-bg-card)] text-[var(--color-ui-primary)]";
+      badgeClass =
+        "bg-[var(--color-status-bg-reviewed)] text-[var(--color-status-text-reviewed)]";
     } else {
       // Default for Pending or any other status
-      badgeClass = "bg-yellow-900/30 text-yellow-400";
+      badgeClass =
+        "bg-[var(--color-status-bg-pending)] text-[var(--color-status-text-pending)]";
     }
+    badgeClass += " border border-[var(--color-ui-border)]";
   } else {
     // For AI status, use a simpler badge
     badgeClass = "bg-transparent text-[var(--color-text-primary)]";
@@ -34,7 +39,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
 
   return (
     <span
-      className={`px-3 py-1 rounded-full text-xs font-medium ${badgeClass} whitespace-nowrap`}
+      className={`px-3 py-1 rounded-full text-xs font-medium font-bold ${badgeClass} whitespace-nowrap`}
     >
       {status}
     </span>

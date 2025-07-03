@@ -45,15 +45,15 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const getStatusClasses = () => {
     switch (statusLower) {
       case "published":
-        return "bg-green-900/30 text-green-400";
+        return "bg-[var(--color-status-bg-published)] text-[var(--color-status-text-published)]";
       case "rejected":
-        return "bg-red-900/30 text-red-400";
+        return "bg-[var(--color-status-bg-rejected)] text-[var(--color-status-text-rejected)]";
       case "reviewed":
-        return "bg-[var(--color-bg-card)] text-[var(--color-ui-primary)]";
+        return "bg-[var(--color-status-bg-reviewed)] text-[var(--color-status-text-reviewed)]";
       case "submitted":
-        return "bg-[var(--color-ui-border)] text-[var(--color-text-primary)]";
+        return "bg-[var(--color-status-bg-submitted)] text-[var(--color-status-text-submitted)]";
       default:
-        return "bg-yellow-900/30 text-yellow-400";
+        return "bg-[var(--color-status-bg-pending)] text-[var(--color-status-text-pending)]";
     }
   };
 
@@ -183,7 +183,7 @@ const NewsDetailPage: React.FC = () => {
         signal: controller.signal,
         languageCode: languageCode as TRANSLATION_LANGUAGES,
       });
-
+      console.log("==>> API data:", data);
       setNewsItem((prev) => ({
         ...prev,
         ...data,
@@ -193,7 +193,13 @@ const NewsDetailPage: React.FC = () => {
         ...(data.keyIndividuals && { keyIndividuals: data.keyIndividuals }),
         ...(data.potentialImpact && { potentialImpact: data.potentialImpact }),
       }));
-
+      setInitialFormData((prev) => ({
+        ...(prev || {}),
+        originalText: data.originalText || prev?.originalText || "",
+        aiGeneratedText: data.aiGeneratedText || prev?.aiGeneratedText || "",
+        keyIndividuals: data.keyIndividuals || prev?.keyIndividuals || "",
+        potentialImpact: data.potentialImpact || prev?.potentialImpact || "",
+      }));
       // Update form data with the new values, ensuring all fields are strings
       setFormData((prev) => ({
         ...(prev || {}),
@@ -316,7 +322,7 @@ const NewsDetailPage: React.FC = () => {
         await fetchNewsDetail();
 
         if (!isMounted) return;
-
+        console.log("==>> newsItem:", newsItem);
         // Update form data when newsItem changes
         if (newsItem) {
           const newFormData = {
@@ -339,7 +345,9 @@ const NewsDetailPage: React.FC = () => {
             console.log("Fetch aborted");
           } else {
             setError(
-              err instanceof Error ? err.message : "Failed to load news details"
+              err instanceof Error
+                ? err.message
+                : "Failed to load news details",
             );
           }
         }
@@ -379,12 +387,17 @@ const NewsDetailPage: React.FC = () => {
       };
 
       // Check if any field has changed from its initial value
-      if (initialFormData) {
-        const hasChanges = Object.entries(newData).some(
-          ([key, val]) => initialFormData[key as keyof FormDataState] !== val
-        );
-        setHasChanges(hasChanges);
-      }
+      // if (initialFormData) {
+      //   const hasChanges = Object.entries(newData).some(
+      //     ([key, val]) => initialFormData[key as keyof FormDataState] !== val
+      //   );
+      //   setHasChanges(hasChanges);
+      // }
+      console.log("==>> prev, new:", prev, newData);
+      const hasChanges = Object.entries(newData).some(
+        ([key, val]) => prev[key as keyof FormDataState] !== val
+      );
+      setHasChanges(hasChanges);
 
       return newData;
     });
@@ -392,6 +405,7 @@ const NewsDetailPage: React.FC = () => {
 
   // Update hasChanges when initial data is loaded
   useEffect(() => {
+    console.log("==> Data:", formData, initialFormData);
     if (formData && initialFormData) {
       const changes = Object.entries(formData).some(
         ([key, val]) => initialFormData[key as keyof FormDataState] !== val
@@ -644,7 +658,7 @@ const NewsDetailPage: React.FC = () => {
             <TextArea
               name="originalText"
               value={formData.originalText}
-              className="border-none"
+              // className="border-none"
               onChange={handleInputChange}
               placeholder="Original Raw Submission"
               readOnly={true}

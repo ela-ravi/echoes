@@ -145,7 +145,7 @@ const Registration: React.FC = () => {
               placeholder="Name"
               value={formData.name}
               onChange={handleInputChange}
-              containerClass="w-full bg-[var(--color-bg-input)] border-none rounded-xl h-14 px-2 text-[var(--color-text-primary)] placeholder-[var(--color-text-placeholder)] focus:ring-0 content-center"
+              containerClass="w-full bg-[var(--color-bg-card)] border-none rounded-xl h-14 px-2 text-[var(--color-text-primary)] placeholder-[var(--color-text-placeholder)] focus:ring-0 content-center"
               required
             />
           </div>
@@ -158,7 +158,7 @@ const Registration: React.FC = () => {
               placeholder="Email"
               value={formData.email}
               onChange={handleInputChange}
-              containerClass="w-full bg-[var(--color-bg-input)] border-none rounded-xl h-14 px-2 text-[var(--color-text-primary)] placeholder-[var(--color-text-placeholder)] focus:ring-0 content-center"
+              containerClass="w-full bg-[var(--color-bg-card)] border-none rounded-xl h-14 px-2 text-[var(--color-text-primary)] placeholder-[var(--color-text-placeholder)] focus:ring-0 content-center"
               required
             />
           </div>
@@ -171,7 +171,7 @@ const Registration: React.FC = () => {
               placeholder="Phone"
               value={formData.phone}
               onChange={handleInputChange}
-              containerClass="w-full bg-[var(--color-bg-input)] border-none rounded-xl h-14 px-2 text-[var(--color-text-primary)] placeholder-[var(--color-text-placeholder)] focus:ring-0 content-center"
+              containerClass="w-full bg-[var(--color-bg-card)] border-none rounded-xl h-14 px-2 text-[var(--color-text-primary)] placeholder-[var(--color-text-placeholder)] focus:ring-0 content-center"
               required
             />
           </div>
@@ -190,7 +190,7 @@ const Registration: React.FC = () => {
                 monthPlaceholder="MM"
                 yearPlaceholder="YYYY"
                 maxDate={new Date()}
-                className="w-full bg-[var(--color-bg-input)] border-none rounded-xl h-14 px-2 text-[var(--color-text-primary)] placeholder-[var(--color-text-placeholder)] focus:ring-0 content-center"
+                className="w-full bg-[var(--color-bg-card)] border-none rounded-xl h-14 px-2 text-[var(--color-text-primary)] placeholder-[var(--color-text-placeholder)] focus:ring-0 content-center"
               />
             </div>
           </div>
@@ -201,7 +201,7 @@ const Registration: React.FC = () => {
               value={formData.userType}
               onChange={handleSelectChange}
               options={userTypeOptions}
-              containerClass="w-full bg-[var(--color-bg-input)] border-none rounded-xl h-14 px-2 py-2 text-[var(--color-text-primary)] focus:ring-0"
+              containerClass="w-full bg-[var(--color-bg-card)] border-none rounded-xl h-14 px-2 py-2 text-[var(--color-text-primary)] focus:ring-0"
               className="border-transparent w-full"
               required
             />
@@ -211,7 +211,7 @@ const Registration: React.FC = () => {
             <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
               Upload Photo (PNG, JPEG)
             </label>
-            <div className="border-2 border-dashed border-[var(--color-ui-border-light)] rounded-xl p-8 text-center">
+            <div className="border border-dashed border-[var(--color-ui-border-light)] rounded-xl p-8 text-center">
               <input
                 type="file"
                 id="profilePhoto"
@@ -239,7 +239,7 @@ const Registration: React.FC = () => {
           <Button
             type="submit"
             variant="primary"
-            className="w-full h-12 rounded-full text-sm font-bold tracking-[0.015em] bg-[var(--color-button-primary)] hover:bg-[var(--color-button-primary-hover)]"
+            className="w-full h-12 rounded-full text-sm font-bold tracking-[0.015em] bg-[var(--color-button-primary)] hover:bg-[var(--color-button-primary-hover)] !text-[var(--color-text-secondary)]"
           >
             Register
           </Button>
