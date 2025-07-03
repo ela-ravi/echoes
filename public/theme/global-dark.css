@@ -1,97 +1,96 @@
 :root {
-    /* Background colors */
-      --color-bg-dark: #0a0e17;
-      --color-bg-card: #1d2030;
-      --color-bg-header: #131520;
-      --color-bg-input: #2b2f40;
-      --color-bg-hover: #2d3349;
-      --color-bg-modal-overlay: rgba(0, 0, 0, 0.5);
-    
-      /* UI Colors */
-      --color-ui-primary: #4f8ef7;
-      --color-ui-primary-hover: #3b7af5;
-      --color-ui-danger: #ef4444;
-      --color-ui-border: #282d43;
-      --color-ui-border-light: #394060;
-      --color-ui-client-border: #603939;
-      --color-ui-client-border-hover: #f74f4f;
-    
-      /* Text colors */
-      --color-text-primary: #ffffff;
-      --color-text-secondary: #ffffff;
-      --color-text-placeholder: #9da3be;
-      --color-text-muted: #9ca3af;
-      --color-text-secondary-dark: #888;
-      --color-text-tertiary: #99a0c2;
-    
-      /* Background colors */
-      --color-bg-light: #1e1f2b;
-      --color-bg-lighter: #262a3a;
-      --color-bg-secondary: #212431;
-      --color-bg-tertiary: #2a2f45;
-      --color-bg-quaternary: #2d2f3a;
-      --color-bg-quinary: #3a3f5a;
-      
-      /* Button states */
-      --color-button-primary: #304dce;
-      --color-button-primary-hover: #2a44bb;
-      
-      /* Client-specific colors */
-      --color-client-bg: #201313;
-      --color-client-bg-dark: #221112;
-      --color-client-card: #301d1d;
-      --color-client-card-dark: #3e181a;
-      --color-client-border: #432828;
-      
-      /* Status colors */
-      --color-status-success: #10b981;
-      --color-status-warning: #f59e0b;
-      --color-status-info: #3b82f6;
-      --color-status-info-dark: #2563eb;
-      --color-status-info-darker: #1e40af;
-      --color-status-info-darkest: #1e3a8a;
-      --color-status-info-soft: rgba(59, 130, 246, 0.25);
-      --color-status-error: #ef4444;
-      --color-status-error-soft: rgba(239, 68, 68, 0.25);
-      
-      /* UI colors */
-      --color-ui-gray: #374151;
-      --color-ui-gray-light: #d1d5db;
-      --color-ui-gray-lighter: #e5e7eb;
-      --color-ui-gray-lightest: #f3f4f6;
-      
-      /* Border colors */
-      --color-border-light: #2d2f3a;
-      --color-border: #444;
-      --color-border-dark: #666;
-      --color-button-primary: #4f8ef7;
-      --color-button-secondary: #2a2f45;
-      --color-button-secondary-hover: #394060;
-      --color-button-disabled: #4a4f6b;
-      --color-button-danger: #ef4444;
-      --color-button-danger-hover: #dc2626;
-    
-      /* Status colors */
-      --color-status-success: #10b981;
-      --color-status-warning: #f59e0b;
-      --color-status-error: #ef4444;
-      --color-status-info: #3b82f6;
-    
-      --color-badge-bg: var(--color-bg-hover);
-      --color-badge-text: var(--color-text-primary);
-    
-      --color-status-bg-pending: rgb(113 63 18 / 30%);
-      --color-status-bg-rejected: rgb(127 29 29 / 0.3);
-      --color-status-bg-submitted: --color-ui-border;
-      --color-status-bg-reviewed: var(--color-bg-card);
-      --color-status-bg-published: rgb(20 83 45 / 0.3);
-    
-    
-      --color-status-text-pending: #facc15;
-      --color-status-text-rejected: #f87171;
-      --color-status-text-submitted: --color-text-primary;
-      --color-status-text-reviewed: --color-ui-primary;
-      --color-status-text-published: #4ade80;
-    
-      --color-reward-text: #facc15;
-    }
+  /* Background colors */
+  --color-bg-dark: #0a0e17;
+  --color-bg-card: #1d2030;
+  --color-bg-header: #131520;
+  --color-bg-input: #2b2f40;
+  --color-bg-hover: #2d3349;
+  --color-bg-modal-overlay: rgba(0, 0, 0, 0.5);
+
+  /* UI Colors */
+  --color-ui-primary: #4f8ef7;
+  --color-ui-primary-hover: #3b7af5;
+  --color-ui-danger: #ef4444;
+  --color-ui-border: #282d43;
+  --color-ui-border-light: #394060;
+  --color-ui-client-border: #603939;
+  --color-ui-client-border-hover: #f74f4f;
+
+  /* Text colors */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #ffffff;
+  --color-text-placeholder: #9da3be;
+  --color-text-muted: #9ca3af;
+  --color-text-secondary-dark: #888;
+  --color-text-tertiary: #99a0c2;
+
+  /* Background colors */
+  --color-bg-light: #1e1f2b;
+  --color-bg-lighter: #262a3a;
+  --color-bg-secondary: #212431;
+  --color-bg-tertiary: #2a2f45;
+  --color-bg-quaternary: #2d2f3a;
+  --color-bg-quinary: #3a3f5a;
+
+  /* Button states */
+  --color-button-primary: #304dce;
+  --color-button-primary-hover: #2a44bb;
+
+  /* Client-specific colors */
+  --color-client-bg: #201313;
+  --color-client-bg-dark: #221112;
+  --color-client-card: #301d1d;
+  --color-client-card-dark: #3e181a;
+  --color-client-border: #432828;
+
+  /* Status colors */
+  --color-status-success: #10b981;
+  --color-status-warning: #f59e0b;
+  --color-status-info: #3b82f6;
+  --color-status-info-dark: #2563eb;
+  --color-status-info-darker: #1e40af;
+  --color-status-info-darkest: #1e3a8a;
+  --color-status-info-soft: rgba(59, 130, 246, 0.25);
+  --color-status-error: #ef4444;
+  --color-status-error-soft: rgba(239, 68, 68, 0.25);
+
+  /* UI colors */
+  --color-ui-gray: #374151;
+  --color-ui-gray-light: #d1d5db;
+  --color-ui-gray-lighter: #e5e7eb;
+  --color-ui-gray-lightest: #f3f4f6;
+
+  /* Border colors */
+  --color-border-light: #2d2f3a;
+  --color-border: #444;
+  --color-border-dark: #666;
+  --color-button-primary: #4f8ef7;
+  --color-button-secondary: #2a2f45;
+  --color-button-secondary-hover: #394060;
+  --color-button-disabled: #4a4f6b;
+  --color-button-danger: #ef4444;
+  --color-button-danger-hover: #dc2626;
+
+  /* Status colors */
+  --color-status-success: #10b981;
+  --color-status-warning: #f59e0b;
+  --color-status-error: #ef4444;
+  --color-status-info: #3b82f6;
+
+  --color-badge-bg: var(--color-bg-hover);
+  --color-badge-text: var(--color-text-primary);
+
+  --color-status-bg-pending: rgb(113 63 18 / 30%);
+  --color-status-bg-rejected: rgb(127 29 29 / 0.3);
+  --color-status-bg-submitted: --color-ui-border;
+  --color-status-bg-reviewed: var(--color-bg-card);
+  --color-status-bg-published: rgb(20 83 45 / 0.3);
+
+  --color-status-text-pending: #facc15;
+  --color-status-text-rejected: #f87171;
+  --color-status-text-submitted: --color-text-primary;
+  --color-status-text-reviewed: --color-ui-primary;
+  --color-status-text-published: #4ade80;
+
+  --color-reward-text: #facc15;
+}

@@ -42,6 +42,8 @@ const NewsListPage: React.FC = () => {
   const navigate = useNavigate();
   // Keep userInfo state in case it's needed later
   const [, setUserInfo] = useState<UserInfo | null>(null);
+  const userType = sessionStorage.getItem("userType");
+  const isClient = userType === "CLIENT";
 
   // Handle filter changes
   const handleFilterChange = (key: NewsFilterKey, value: string) => {
@@ -121,7 +123,7 @@ const NewsListPage: React.FC = () => {
         if (!response.ok) {
           const errorText = await response.text();
           throw new Error(
-            `Failed to fetch news: ${response.status} ${errorText}`
+            `Failed to fetch news: ${response.status} ${errorText}`,
           );
         }
 
@@ -140,7 +142,7 @@ const NewsListPage: React.FC = () => {
         // Only update state if component is still mounted and not aborted
         if (isMounted.current && !isAborted.current) {
           setNewsItems((prevItems) =>
-            append ? [...prevItems, ...paginatedItems] : paginatedItems
+            append ? [...prevItems, ...paginatedItems] : paginatedItems,
           );
           setHasMore(paginatedItems.length === PAGE_SIZE);
           // setPage(pageNum);
@@ -167,7 +169,7 @@ const NewsListPage: React.FC = () => {
         abortController.abort();
       };
     },
-    [PAGE_SIZE, filters, isMounted, loading, loadingMore, hasMore]
+    [PAGE_SIZE, filters, isMounted, loading, loadingMore, hasMore],
   );
 
   // Fetch user info on initial load only

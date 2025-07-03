@@ -13,14 +13,18 @@ const ContentModal: React.FC<ContentModalProps> = ({
   onClose,
   showCloseButton = true,
 }) => {
-  const userType = sessionStorage.getItem("userType");
-  const isClient = userType === "CLIENT";
-  const bgColor = isClient
-    ? "bg-[var(--color-client-card)]"
-    : "bg-[var(--color-bg-card)]";
-  const borderColor = isClient
-    ? "border-[var(--color-ui-client-border)]"
-    : "border-[var(--color-ui-border-light)]";
+  // const userType = sessionStorage.getItem("userType");
+  // const isClient = userType === "CLIENT";
+  const bgColor =
+    // isClient
+    //   ? "bg-[var(--color-client-card)]"
+    //   :
+    "bg-[var(--color-bg-card)]";
+  const borderColor =
+    // isClient
+    //   ? "border-[var(--color-ui-client-border)]"
+    // :
+    "border-[var(--color-ui-border-light)]";
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
@@ -58,9 +62,7 @@ const ContentModal: React.FC<ContentModalProps> = ({
           )}
         </div>
         <div className="p-6 overflow-y-auto flex-grow">
-          <div
-            className={`bg-[${isClient ? "#301d1d" : "var(--color-bg-card)"}] p-4 rounded-lg`}
-          >
+          <div className={`bg-[var(--color-bg-card)] p-4 rounded-lg`}>
             {typeof content === "string" ? (
               <div className="whitespace-pre-wrap">{content}</div>
             ) : (
