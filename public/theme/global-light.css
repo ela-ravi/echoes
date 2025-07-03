@@ -1,5 +1,4 @@
 :root {
-
   --color-black: black;
   --color-white: white;
   --color-yellow: yellow;
@@ -37,21 +36,21 @@
   --color-bg-light: #1e1f2b;
   --color-bg-lighter: #262a3a;
   --color-bg-secondary: #212431;
-  --color-bg-tertiary: rgba(0,0,0,0.3);
+  --color-bg-tertiary: rgba(0, 0, 0, 0.3);
   --color-bg-quaternary: #2d2f3a;
   --color-bg-quinary: #3a3f5a;
-  
+
   /* Button states */
   --color-button-primary: #304dce;
   --color-button-primary-hover: #2a44bb;
-  
+
   /* Client-specific colors */
   --color-client-bg: #201313;
   --color-client-bg-dark: #221112;
   --color-client-card: #301d1d;
   --color-client-card-dark: #3e181a;
   --color-client-border: #432828;
-  
+
   /* Status colors */
   --color-status-success: #10b981;
   --color-status-warning: #f59e0b;
@@ -62,13 +61,13 @@
   --color-status-info-soft: rgba(59, 130, 246, 0.25);
   --color-status-error: #ef4444;
   --color-status-error-soft: rgba(239, 68, 68, 0.25);
-  
+
   /* UI colors */
   --color-ui-gray: #374151;
   --color-ui-gray-light: #d1d5db;
   --color-ui-gray-lighter: #e5e7eb;
   --color-ui-gray-lightest: #f3f4f6;
-  
+
   /* Border colors */
   --color-border-light: #2d2f3a;
   --color-border: #444;
@@ -89,13 +88,11 @@
   --color-badge-bg: var(--color-ui-primary);
   --color-badge-text: var(--color-text-secondary);
 
-
   --color-status-bg-pending: var(--color-yellow);
   --color-status-bg-rejected: var(--color-red);
   --color-status-bg-submitted: var(--color-gray);
   --color-status-bg-reviewed: var(--color-orange);
   --color-status-bg-published: var(--color-green);
-
 
   --color-status-text-pending: var(--color-black);
   --color-status-text-rejected: var(--color-text-secondary);
@@ -104,6 +101,4 @@
   --color-status-text-published: var(--color-text-secondary);
 
   --color-reward-text: #640101;
-
 }
-

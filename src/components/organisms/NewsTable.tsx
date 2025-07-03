@@ -92,13 +92,11 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
 
   return (
     <div
-      className={`overflow-x-auto rounded-xl border ${isAdmin ? "border-[var(--color-ui-border-light)] bg-[var(--color-bg-header)]" : "border-[var(--color-ui-client-border)] bg-[var(--color-client-bg)]"} my-4`}
+      className={`overflow-x-auto rounded-xl border border-[var(--color-ui-border-light)] bg-[var(--color-bg-header)] my-4`}
     >
       <table className="w-full text-sm text-[var(--color-text-primary)]">
         <thead>
-          <tr
-            className={`${isAdmin ? "bg-[var(--color-bg-card)]" : "bg-[var(--color-client-card)]"} text-left`}
-          >
+          <tr className={`bg-[var(--color-bg-card)] text-left`}>
             <th className="px-4 py-3 w-[160px]">News ID</th>
             <th className="px-4 py-3">Title</th>
             {isAdmin && <th className="px-4 py-3">User</th>}
@@ -116,7 +114,7 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
           {items.map((item) => (
             <tr
               key={item.id}
-              className={`border-t ${isAdmin ? "border-[var(--color-ui-border-light)] hover:bg-[var(--color-bg-card)]/50" : "border-[var(--color-ui-client-border)] hover:bg-[var(--color-client-card)]/50"}`}
+              className={`border-t border-[var(--color-ui-border-light)] hover:bg-[var(--color-bg-card)]/50`}
             >
               <td className="px-4 py-2 font-medium tracking-wide w-[160px]">
                 <Link

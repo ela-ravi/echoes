@@ -235,7 +235,8 @@
         "CNN",
         "BBC",
         "Al Jazeera"
-      ]
+      ],
+      "languages": ["hin-Deva", "tam_Taml"]
     },
     {
       "id": 31,

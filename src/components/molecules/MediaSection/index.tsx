@@ -19,8 +19,8 @@ const MediaSection: React.FC<MediaSectionProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isVideoReady, setIsVideoReady] = useState(false);
-  const userType = sessionStorage.getItem("userType");
-  const isClient = userType === "CLIENT";
+  // const userType = sessionStorage.getItem("userType");
+  // const isClient = userType === "CLIENT";
 
   if (!url) {
     return null;
@@ -32,12 +32,14 @@ const MediaSection: React.FC<MediaSectionProps> = ({
 
   return (
     <div
-      className={`border rounded-lg overflow-hidden mb-6 transition-all duration-300 ${isClient ? "border-[var(--color-ui-client-border)] hover:border-[var(--color-ui-client-border-hover)]" : "border-[var(--color-ui-border-light)] hover:border-[var(--color-ui-primary)]"}`}
+      className={`border rounded-lg overflow-hidden mb-6 transition-all duration-300 border-[var(--color-ui-border-light)] hover:border-[var(--color-ui-primary)]`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`flex items-center gap-2 p-3 ${isClient ? "bg-[var(--color-client-card-dark)]" : "bg-[var(--color-bg-card)]"} border-b ${isClient ? "border-[var(--color-ui-client-border)]" : "border-[var(--color-ui-border-light)]"}`}
+        className={`flex items-center gap-2 p-3 
+          bg-[var(--color-bg-card)]
+          border-b border-[var(--color-ui-border-light)]`}
       >
         {isAI ? (
           <SiOpenai className="text-[var(--color-ui-primary)]" />
@@ -51,7 +53,7 @@ const MediaSection: React.FC<MediaSectionProps> = ({
         </span>
       </div>
       <div
-        className={`relative aspect-video bg-[${isClient ? "#201313" : "var(--color-bg-header)"}] overflow-hidden`}
+        className={`relative aspect-video bg-[var(--color-bg-header)] overflow-hidden`}
       >
         {type === "image" ? (
           <img

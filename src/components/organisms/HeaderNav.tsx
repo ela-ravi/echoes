@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "../../services/authService";
 import { useTheme } from "../../context/ThemeContext";
 import styles from "./HeaderNav.module.scss";
+import { UserInfo } from "types/user";
 
 interface HeaderNavProps {
   hideSearch?: boolean;
@@ -64,6 +65,12 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
   const isRegisterPage = ["/register"].includes(window.location.pathname);
   const isLoginPage = ["/login"].includes(window.location.pathname);
 
+  const userType = sessionStorage.getItem("userType");
+  const isClient = userType === "CLIENT";
+  const userInfo: UserInfo | null = JSON.parse(
+    sessionStorage.getItem("userInfo") || "{}",
+  );
+
   const handleLogout = async () => {
     try {
       await authService.logout();
@@ -85,6 +92,22 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
     setSearchOpen(false);
   };
 
+  const homeHref = useMemo(() => {
+    if (isRegisterPage || isLoginPage) {
+      return "/login";
+    } else if (isClient) {
+      return "/client-news";
+    }
+    return "/news";
+  }, [isRegisterPage, isLoginPage, isClient]);
+
+  const homeText = useMemo(() => {
+    if (isClient) {
+      return userInfo?.name || "Home";
+    }
+    return "ECHOES";
+  }, [isClient, userInfo]);
+
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -93,7 +116,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
         {
           <div className="flex items-center gap-6">
             <Link
-              to={!isRegisterPage && !isLoginPage ? "/news" : "/login"}
+              to={homeHref}
               className="flex items-center gap-3 text-[var(--color-text-primary)] hover:opacity-80 transition-opacity"
             >
               <img
@@ -101,7 +124,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
                 alt="Echoes Logo"
                 className="h-16 w-auto"
               />
-              <h2 className="text-lg font-bold tracking-tight">Echoes</h2>
+              <h2 className="text-lg font-bold tracking-tight">{homeText}</h2>
             </Link>
             <button
               onClick={toggleTheme}
