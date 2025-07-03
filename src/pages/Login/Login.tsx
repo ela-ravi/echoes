@@ -47,37 +47,24 @@ const Login: React.FC = () => {
       setError(
         err instanceof Error
           ? err.message
-          : "An error occurred during login. Please try again."
+          : "An error occurred during login. Please try again.",
       );
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleForgotPassword = () => {
-    // TODO: Implement forgot password navigation
-    console.log("Forgot password clicked");
-  };
+  // const handleForgotPassword = () => {
+  //   // TODO: Implement forgot password navigation
+  //   console.log("Forgot password clicked");
+  // };
 
   const handleRegister = () => {
     navigate("/register");
   };
 
   return (
-    // <div className="min-h-screen bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] flex flex-col">
-    // <HeaderNav hideSearch={true} />
-
     <PageContainer className="flex-1 flex flex-col  items-center justify-center py-12">
-      {/* <div className="flex flex-col items-center gap-3">
-        <img
-          src="/assets/echoes-logo.png"
-          alt="Echoes Logo"
-          className="h-16 w-auto"
-        />
-        <h1 className="text-[var(--color-text-primary)] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">
-          Echoes
-        </h1>
-      </div> */}
       <HeaderNav hideSearch={true} />
       <form onSubmit={handleSubmit} className="w-full max-w-[512px] py-5">
         <h2 className="text-[var(--color-text-primary)] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">

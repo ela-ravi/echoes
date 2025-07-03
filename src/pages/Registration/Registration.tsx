@@ -54,7 +54,7 @@ const Registration: React.FC = () => {
   };
 
   const handleDateChange = (
-    value: Date | null | [Date | null, Date | null]
+    value: Date | null | [Date | null, Date | null],
   ) => {
     // Handle both single date and range selection (we only care about single date here)
     const selectedDate = Array.isArray(value) ? value[0] : value;
@@ -121,7 +121,7 @@ const Registration: React.FC = () => {
       alert(
         error instanceof Error
           ? error.message
-          : "Registration failed. Please try again."
+          : "Registration failed. Please try again.",
       );
     }
   };

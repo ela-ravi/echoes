@@ -8,7 +8,7 @@ import type { INewsList } from "../../types/NewsItem";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
 import { useAIRefresh } from "../../hooks/useAIRefresh";
-import { newsService } from "../../services/newsService";
+// import { newsService } from "../../services/newsService";
 import {
   isActionAllowed,
   getActionTooltip,
@@ -80,7 +80,7 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
                 await onUpdate();
               }
             }
-          : undefined
+          : undefined,
       );
     } catch (error) {
       console.error("Error refreshing AI status:", error);
@@ -89,29 +89,6 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
       setRefreshingItems((prev) => ({ ...prev, [id]: false }));
     }
   };
-
-  // const handleAction = async (
-  //   id: string,
-  //   action: NEWSACTION,
-  //   comment?: string
-  // ) => {
-  //   try {
-  //     await handleNewsAction(
-  //       id,
-  //       action as "REVIEWED" | "PUBLISHED" | "REJECTED",
-  //       newsService,
-  //       comment
-  //     );
-  //     toast.success(`News item ${action.toLowerCase()} successfully`);
-  //   } catch (error) {
-  //     console.error(`Error ${action.toLowerCase()}ing news item:`, error);
-  //     toast.error(
-  //       `Failed to ${action.toLowerCase()} news item: ${
-  //         error instanceof Error ? error.message : "Unknown error"
-  //       }`
-  //     );
-  //   }
-  // };
 
   return (
     <div

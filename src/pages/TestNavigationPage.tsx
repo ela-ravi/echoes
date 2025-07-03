@@ -79,7 +79,7 @@ const TestNavigationPage: React.FC = () => {
                 const idToNavigate = newsId.trim() || "test-news-1";
                 navigate(
                   `/news-detail?id=${encodeURIComponent(idToNavigate)}`,
-                  { replace: true }
+                  { replace: true },
                 );
               }}
               className="bg-blue-600 hover:bg-blue-700 text-[var(--color-text-primary)] px-4 py-2 rounded text-center transition-colors"
