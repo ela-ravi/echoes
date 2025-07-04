@@ -77,20 +77,21 @@ export const handleAction = async (
   comment?: string,
 ) => {
   try {
-    const reviewAction =
-      action === "REVIEWED"
-        ? NewsReviewAction.APPROVE
-        : action === "REJECTED"
-          ? NewsReviewAction.REJECT
-          : NewsReviewAction.PENDING;
+    // const reviewAction =
+    //   action === "REVIEWED"
+    //     ? NewsReviewAction.REVIEW
+    //     : action === "REJECTED"
+    //       ? NewsReviewAction.REJECT
+    //       : action === "PUBLISHED"
+    //         ? NewsReviewAction.PUBLISH
+    //         : NewsReviewAction.PENDING;
 
-    await newsService.reviewNewsItem(id, reviewAction, comment);
+    await newsService.reviewNewsItem(id, action, comment);
     toast.success(`News item ${action.toLowerCase()} successfully`);
   } catch (error) {
     console.error(`Error ${action.toLowerCase()}ing news item:`, error);
     toast.error(
-      `Failed to ${action.toLowerCase()} news item: ${
-        error instanceof Error ? error.message : "Unknown error"
+      `Failed to ${action.toLowerCase()} news item: ${error instanceof Error ? error.message : "Unknown error"
       }`,
     );
   }

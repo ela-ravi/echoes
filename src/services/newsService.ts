@@ -1,11 +1,13 @@
+import { NEWSACTION } from "utils/newsUtils";
 import { API_ENDPOINTS, getHeaders } from "../config/api";
 import { INewsItem, TRANSLATION_LANGUAGES } from "../types/NewsItem";
 import { UserInfo } from "../types/user";
 
 export enum NewsReviewAction {
-  APPROVE = "APPROVED",
+  REVIEW = "REVIEWED",
   REJECT = "REJECTED",
   PENDING = "PENDING",
+  PUBLISH = "PUBLISHED",
 }
 
 interface FetchNewsDetailOptions {
@@ -103,15 +105,14 @@ export const newsService = {
    */
   reviewNewsItem: async (
     id: string,
-    action: NewsReviewAction,
+    action: NEWSACTION,
     comment?: string,
   ): Promise<void> => {
     const url = new URL(API_ENDPOINTS.NEWS.REVIEW(id));
-    url.searchParams.append("reviewerId", "2"); // TODO: Replace with actual reviewer ID from auth
     url.searchParams.append("status", action);
 
     // Add comment if it's a rejection and comment exists
-    if (action === NewsReviewAction.REJECT && comment?.trim()) {
+    if (action === NEWSACTION.REJECTED && comment?.trim()) {
       url.searchParams.append("comment", comment.trim());
     }
 
