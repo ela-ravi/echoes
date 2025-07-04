@@ -27,7 +27,7 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
   availableLanguages,
 }) => {
   const [selectedLanguage, setSelectedLanguage] = useState("eng_Latn");
-  const [translationLanguage, setTranslationLanguage] = useState("tamil");
+  const [translationLanguage, setTranslationLanguage] = useState("tam_Taml");
   const [showModal, setShowModal] = useState(false);
   const userType = sessionStorage.getItem("userType");
   const isClient = userType === "CLIENT";
