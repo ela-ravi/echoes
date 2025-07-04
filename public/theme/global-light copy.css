@@ -14,14 +14,13 @@
   --color-bg-input: #2b2f40;
   --color-bg-hover: #2d3349;
   --color-bg-modal-overlay: rgba(0, 0, 0, 0.5);
-  --color-bg-interactive: var(--color-bg-card);
 
   /* UI Colors */
   --color-ui-primary: #4f8ef7;
   --color-ui-primary-hover: #3b7af5;
   --color-ui-danger: #ef4444;
   --color-ui-border: #6e7074;
-  --color-ui-border-light: var(--color-bg-header);
+  --color-ui-border-light: #363636;
   --color-ui-client-border: #603939;
   --color-ui-client-border-hover: #f74f4f;
 
@@ -102,8 +101,4 @@
   --color-status-text-published: var(--color-text-secondary);
 
   --color-reward-text: #640101;
-
-  --color-table-border: var(--color-bg-card);
-  --color-table-header: #c9c9c9;
-  --color-gray: #c9c9c9;
 }

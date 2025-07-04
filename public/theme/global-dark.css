@@ -6,6 +6,7 @@
   --color-bg-input: #2b2f40;
   --color-bg-hover: #2d3349;
   --color-bg-modal-overlay: rgba(0, 0, 0, 0.5);
+  --color-bg-interactive: transparent;
 
   /* UI Colors */
   --color-ui-primary: #4f8ef7;
@@ -93,4 +94,8 @@
   --color-status-text-published: #4ade80;
 
   --color-reward-text: #facc15;
+
+  --color-table-border: var(--color-ui-border-light);
+  --color-table-header: var(--color-bg-card);
+  --color-gray: gray;
 }
