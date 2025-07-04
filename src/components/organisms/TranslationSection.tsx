@@ -49,14 +49,19 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
   const filteredAvailableLanguages = availableLanguages?.length
     ? LANGUAGES.filter(
         (lang) =>
-          lang.value === "eng_Latn" || availableLanguages.includes(lang.value),
+          lang.value === "eng_Latn" || availableLanguages.includes(lang.value)
       )
     : LANGUAGES.filter((lang) => lang.value === "eng_Latn");
   const filteredUnavailableLanguages = LANGUAGES.filter(
     (lang) =>
-      lang.value !== "eng_Latn" && !availableLanguages?.includes(lang.value),
+      lang.value !== "eng_Latn" && !availableLanguages?.includes(lang.value)
   );
-
+  console.log(
+    "Languages:",
+    availableLanguages,
+    filteredAvailableLanguages,
+    filteredUnavailableLanguages
+  );
   return (
     <div className={`bg-[var(--color-bg-card)] p-4 rounded-lg ${className}`}>
       <div className="flex items-center space-x-4">
@@ -86,7 +91,7 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
           onClose={() => setShowModal(false)}
           content={
             <div className="space-y-4">
-              <p className="text-gray-300">
+              <p className="text-[var(--color-text-primary)]">
                 Select the language you want to translate to:
               </p>
               <Select

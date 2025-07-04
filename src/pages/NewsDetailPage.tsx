@@ -20,9 +20,10 @@ import MediaRow from "../components/molecules/MediaRow";
 // Hooks
 import { INewsItem } from "../types/NewsItem";
 import { useAIRefresh } from "../hooks/useAIRefresh";
-import { NewsReviewAction, newsService } from "../services/newsService";
+import { newsService } from "../services/newsService";
 import { TRANSLATION_LANGUAGES } from "../types/NewsItem";
 import { API_ENDPOINTS, getHeaders } from "../config/api";
+import { NEWSACTION } from "../utils/newsUtils";
 
 // Language options for the translation dropdown
 const LANGUAGES = [
@@ -59,7 +60,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
 
   return (
     <span
-      className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getStatusClasses()}`}
+      className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap border border-[var(--color-ui-border)] ${getStatusClasses()}`}
     >
       {statusText}
     </span>
@@ -275,7 +276,7 @@ const NewsDetailPage: React.FC = () => {
     try {
       await newsService.reviewNewsItem(
         newsItem.id.toString(),
-        NewsReviewAction.REJECT,
+        NEWSACTION.REJECTED,
         rejectComment,
       );
 
@@ -464,76 +465,74 @@ const NewsDetailPage: React.FC = () => {
                       {newsItem.userMailId || "No email provided"}
                     </p>
                   </div>
-                  {isClient && (
-                    <div className="ml-auto">
-                      <TranslationSection
-                        onLanguageChange={async (languageCode) => {
-                          try {
-                            setLoading(true);
-                            await fetchNewsDetail(languageCode);
-                          } catch (error) {
-                            console.error("Error changing language:", error);
-                          } finally {
-                            setLoading(false);
+                  {/* {isClient && ( */}
+                  <div className="ml-auto">
+                    <TranslationSection
+                      onLanguageChange={async (languageCode) => {
+                        try {
+                          setLoading(true);
+                          await fetchNewsDetail(languageCode);
+                        } catch (error) {
+                          console.error("Error changing language:", error);
+                        } finally {
+                          setLoading(false);
+                        }
+                      }}
+                      onRequestTranslation={async (languageCode) => {
+                        try {
+                          setLoading(true);
+                          const urlParams = new URLSearchParams(
+                            window.location.search,
+                          );
+                          const newsId = urlParams.get("id");
+
+                          if (!newsId) {
+                            throw new Error("News ID not found");
                           }
-                        }}
-                        onRequestTranslation={async (languageCode) => {
-                          try {
-                            setLoading(true);
-                            const urlParams = new URLSearchParams(
-                              window.location.search,
-                            );
-                            const newsId = urlParams.get("id");
 
-                            if (!newsId) {
-                              throw new Error("News ID not found");
-                            }
-
-                            const response = await fetch(
-                              `${API_ENDPOINTS.CLIENT.TRANSLATE(newsId)}?languageCode=${languageCode}`,
-                              {
-                                method: "GET",
-                                headers: {
-                                  ...getHeaders(),
-                                  accept: "*/*",
-                                },
+                          const response = await fetch(
+                            `${API_ENDPOINTS.CLIENT.TRANSLATE(newsId)}?languageCode=${languageCode}`,
+                            {
+                              method: "GET",
+                              headers: {
+                                ...getHeaders(),
+                                accept: "*/*",
                               },
-                            );
+                            },
+                          );
 
-                            if (!response.ok) {
-                              const errorData = await response
-                                .json()
-                                .catch(() => ({}));
-                              throw new Error(
-                                errorData.message ||
-                                  "Failed to request translation",
-                              );
-                            }
-
-                            toast.success(
-                              `Successfully requested translation to ${languageCode}`,
+                          if (!response.ok) {
+                            const errorData = await response
+                              .json()
+                              .catch(() => ({}));
+                            throw new Error(
+                              errorData.message ||
+                                "Failed to request translation",
                             );
-                          } catch (error) {
-                            console.error(
-                              "Error requesting translation:",
-                              error,
-                            );
-                            toast.error(
-                              error instanceof Error
-                                ? error.message
-                                : "Failed to request translation",
-                            );
-                          } finally {
-                            setLoading(false);
                           }
-                        }}
-                      />
-                    </div>
-                  )}
+
+                          toast.success(
+                            `Successfully requested translation to ${languageCode}`,
+                          );
+                        } catch (error) {
+                          console.error("Error requesting translation:", error);
+                          toast.error(
+                            error instanceof Error
+                              ? error.message
+                              : "Failed to request translation",
+                          );
+                        } finally {
+                          setLoading(false);
+                        }
+                      }}
+                      availableLanguages={newsItem?.languages}
+                    />
+                  </div>
+                  {/* // )} */}
                 </div>
 
                 {/* Bottom Row: Additional Info */}
-                <div className="space-y-4 pt-3 border-t border-[var(--color-bg-hover)]">
+                <div className="space-y-4 pt-3 border-t border-[var(--color-ui-boder)]">
                   {/* First Row */}
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     {/* Similar Source */}
@@ -567,7 +566,7 @@ const NewsDetailPage: React.FC = () => {
                   </div>
 
                   {/* Second Row */}
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-[var(--color-bg-hover)]">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-[var(--color-ui-border)]">
                     {/* Submitted At */}
                     <UserInfoItem
                       userName={newsItem.user}

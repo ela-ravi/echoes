@@ -30,7 +30,7 @@ const HeaderAuthSection = ({
     return (
       <button
         onClick={handleLogout}
-        className="ml-4 text-[var(--color-text-primary)] hover:opacity-80 transition-opacity flex items-center gap-2"
+        className="ml-4 text-[var(--color-text-primary)] flex items-center gap-2 underline-offset-8 hover:underline transition-all ease-in-out"
         aria-label="Sign out"
       >
         <span className="hidden md:inline">Sign out</span>
@@ -117,12 +117,12 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
           <div className="flex items-center gap-6">
             <Link
               to={homeHref}
-              className="flex items-center gap-3 text-[var(--color-text-primary)] hover:opacity-80 transition-opacity"
+              className="flex items-center gap-3 text-[var(--color-text-primary)] underline-offset-8 hover:underline"
             >
               <img
                 src="/assets/echoes-logo.png"
                 alt="Echoes Logo"
-                className="h-16 w-auto"
+                className="h-20 w-auto"
               />
               <h2 className="text-lg font-bold tracking-tight">{homeText}</h2>
             </Link>
@@ -162,15 +162,17 @@ const HeaderNav: React.FC<HeaderNavProps> = ({
         <div className="flex items-center space-x-6">
           {!isLoginPage && (
             <>
-              <nav className="hidden md:block">
-                <Link
-                  to="/tenants"
-                  className="text-[var(--color-text-primary)] transition-opacity"
-                  aria-label="Tenants"
-                >
-                  Tenants
-                </Link>
-              </nav>
+              {!isClient && (
+                <nav className="hidden md:block">
+                  <Link
+                    to="/tenants"
+                    className="text-[var(--color-text-primary)] underline-offset-8 hover:underline"
+                    aria-label="Tenants"
+                  >
+                    Tenants
+                  </Link>
+                </nav>
+              )}
               <HeaderAuthSection
                 showLoginButton={showLoginButton}
                 handleLogout={handleLogout}

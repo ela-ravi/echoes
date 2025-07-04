@@ -21,7 +21,7 @@
   --color-ui-primary-hover: #3b7af5;
   --color-ui-danger: #ef4444;
   --color-ui-border: #6e7074;
-  --color-ui-border-light: var(--color-bg-header);
+  --color-ui-border-light: #6e7074;
   --color-ui-client-border: #603939;
   --color-ui-client-border-hover: #f74f4f;
 
@@ -103,7 +103,21 @@
 
   --color-reward-text: #640101;
 
-  --color-table-border: var(--color-bg-card);
-  --color-table-header: #c9c9c9;
+  /* --color-table-border: #b2b2b2; */
+  --color-table-border: var(--color-bg-header);
+  /* --color-table-header: #c9c9c9; */
+  --color-table-header: var(--color-bg-card);
   --color-gray: #c9c9c9;
+}
+/* React Date picker Customization css */
+.react-date-picker__wrapper {
+  border: 1px solid var(--color-ui-border-light) !important;
+  border-radius: 5px !important;
+  height: 40px !important;
+
+  &:hover {
+    border-color: var(--color-status-info) !important;
+    outline: 0;
+    box-shadow: 0 0 0 3px var(--color-status-info-soft);
+  }
 }

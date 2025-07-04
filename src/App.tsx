@@ -19,7 +19,15 @@ const App: React.FC = () => {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/news" element={<NewsListPage />} />
+
+        <Route
+          path="/news"
+          element={
+            <ProtectedRoute requiredRole="ADMIN">
+              <NewsListPage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/news-detail"
           element={

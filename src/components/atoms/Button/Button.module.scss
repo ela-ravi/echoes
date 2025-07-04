@@ -73,7 +73,9 @@
 
   &:hover:not(:disabled) {
     background-color: var(--color-ui-gray-lighter);
-    border-color: var(--color-text-muted);
+    border-color: var(--color-status-info);
+    outline: 0;
+    box-shadow: 0 0 0 3px var(--color-status-info-soft);
   }
 
   .spinner {

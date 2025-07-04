@@ -180,7 +180,7 @@ const Registration: React.FC = () => {
             <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
               Date of Birth
             </label>
-            <div className="date-picker-container">
+            <div className="date-picker-container h-14 bg-[var(--color-bg-card)] border-none rounded-xl px-2 text-[var(--color-text-primary)] placeholder-[var(--color-text-placeholder)] focus:ring-0 content-center">
               <DatePicker
                 onChange={handleDateChange}
                 value={date}
@@ -190,7 +190,7 @@ const Registration: React.FC = () => {
                 monthPlaceholder="MM"
                 yearPlaceholder="YYYY"
                 maxDate={new Date()}
-                className="w-full bg-[var(--color-bg-card)] border-none rounded-xl h-14 px-2 text-[var(--color-text-primary)] placeholder-[var(--color-text-placeholder)] focus:ring-0 content-center"
+                className="w-full text-sm/6"
               />
             </div>
           </div>
@@ -211,7 +211,7 @@ const Registration: React.FC = () => {
             <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
               Upload Photo (PNG, JPEG)
             </label>
-            <div className="border border-dashed border-[var(--color-ui-border-light)] rounded-xl p-8 text-center">
+            <div className="border border-dashed border-[var(--color-ui-border-light)] rounded-xl text-center">
               <input
                 type="file"
                 id="profilePhoto"
@@ -220,7 +220,10 @@ const Registration: React.FC = () => {
                 onChange={handleFileChange}
                 className="hidden"
               />
-              <label htmlFor="profilePhoto" className="cursor-pointer block">
+              <label
+                htmlFor="profilePhoto"
+                className="cursor-pointer block p-8"
+              >
                 <p className="text-lg font-bold mb-2">
                   Click or drag to upload
                 </p>

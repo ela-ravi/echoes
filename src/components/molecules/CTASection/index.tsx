@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { BackArrow } from "../../atoms/icons";
+import { Button } from "../../atoms/Button";
 
 interface CTASectionProps {
   onSave: () => void;
@@ -37,24 +38,25 @@ const CTASection: React.FC<CTASectionProps> = ({
         {showBackButton && (
           <Link
             to={backLink}
-            className="flex items-center justify-center gap-2 px-6 py-2 bg-transparent hover:bg-[var(--color-ui-border)] text-[var(--color-text-tertiary)] border border-[var(--color-ui-border-light)] rounded-lg transition-colors lg:hidden"
+            className="flex items-center justify-center gap-2 px-6 py-2 
+            bg-transparent hover:underline underline-offset-4 hover:text-[var(--color-ui-primary)]
+            text-[var(--color-text-tertiary)] 
+            rounded-lg transition-colors lg:hidden"
           >
             <BackArrow />
             {backText}
           </Link>
         )}
         {showDiscardButton && (
-          <button
+          <Button
             onClick={onDiscard}
+            variant="secondary"
+            className="px-4"
+            type="button"
             disabled={!hasChanges}
-            className={`px-6 py-2 ${
-              hasChanges
-                ? "hover:bg-[var(--color-ui-border)] text-[var(--color-text-tertiary)] border border-[#f87171] cursor-pointer"
-                : "bg-[var(--color-bg-tertiary)] text-[var(--color-button-disabled)] cursor-not-allowed"
-            } rounded-lg transition-colors`}
           >
             {discardText}
-          </button>
+          </Button>
         )}
       </div>
       {showSaveButton && (

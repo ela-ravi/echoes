@@ -20,7 +20,7 @@ import MediaRow from "../../components/molecules/MediaRow";
 // Hooks
 import { INewsItem } from "../../types/NewsItem";
 // import { useAIRefresh } from "../../hooks/useAIRefresh";
-import { NewsReviewAction, newsService } from "../../services/newsService";
+import { newsService } from "../../services/newsService";
 import { TRANSLATION_LANGUAGES } from "../../types/NewsItem";
 import { API_ENDPOINTS, getHeaders } from "../../config/api";
 import { NewsItemActions } from "../../components/molecules/NewsItemActions";
@@ -28,6 +28,7 @@ import {
   getActionTooltip,
   handleAction,
   isActionAllowed,
+  NEWSACTION,
 } from "../../utils/newsUtils";
 
 // Language options for the translation dropdown
@@ -288,7 +289,7 @@ const ClientNewsDetailPage: React.FC = () => {
     try {
       await newsService.reviewNewsItem(
         newsItem.id.toString(),
-        NewsReviewAction.REJECT,
+        NEWSACTION.REJECTED,
         rejectComment,
       );
 
@@ -565,7 +566,7 @@ const ClientNewsDetailPage: React.FC = () => {
                 </div>
 
                 {/* Bottom Row: Additional Info */}
-                <div className="space-y-4 pt-3 border-t border-[var(--color-bg-hover)]">
+                <div className="space-y-4 pt-3 border-t border-[var(--color-ui-border)]">
                   {/* First Row */}
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     {/* Similar Source */}
@@ -599,7 +600,7 @@ const ClientNewsDetailPage: React.FC = () => {
                   </div>
 
                   {/* Second Row */}
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-[var(--color-bg-hover)]">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-[var(--color-ui-border)]">
                     {/* Submitted At */}
                     <UserInfoItem
                       userName={newsItem.user}

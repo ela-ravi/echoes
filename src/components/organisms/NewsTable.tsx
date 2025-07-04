@@ -4,7 +4,7 @@ import StatusBadge from "../molecules/StatusBadge";
 import CategoriesCell from "../molecules/CategoriesCell";
 import RejectModal from "../molecules/RejectModal";
 import { NewsItemActions } from "../molecules/NewsItemActions";
-import type { INewsList } from "../../types/NewsItem";
+import { ClientStatus, type INewsList } from "../../types/NewsItem";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
 import { useAIRefresh } from "../../hooks/useAIRefresh";
@@ -94,11 +94,11 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
 
   return (
     <div
-      className={`overflow-x-auto rounded-xl border-${theme === "light" ? 4 : 2} border-[var(--color-table-border)] bg-[var(--color-bg-header)] my-4`}
+      className={`overflow-x-auto rounded-xl border-2 border-[var(--color-table-border)] bg-[var(--color-bg-card)] my-4`}
     >
       <table className="w-full text-sm text-[var(--color-text-primary)]">
         <thead className="border-[var(--color-bg-header)]">
-          <tr className={`bg-[var(--color-table-header)] text-left`}>
+          <tr className={`bg-[var(--color-table-header)] text-left h-[70px]`}>
             <th className="px-4 py-3 w-[160px]">News ID</th>
             <th className="px-4 py-3">Title</th>
             {isAdmin && <th className="px-4 py-3">User</th>}
@@ -113,103 +113,108 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
           </tr>
         </thead>
         <tbody>
-          {items.map((item) => (
-            <tr
-              key={item.id}
-              className={`border-t-2 border-[var(--color-table-border)] hover:bg-[var(--color-bg-card)]`}
-            >
-              <td className="px-4 py-2 font-medium tracking-wide w-[160px]">
-                <Link
-                  to={newsDetailRoute(item.id)}
-                  onClick={(e) => {
-                    // Prevent default to handle navigation programmatically
-                    e.preventDefault();
-                    // Add a small delay to ensure the click is processed
-                    setTimeout(() => {
-                      window.location.href = newsDetailRoute(item.id);
-                    }, 100);
-                  }}
-                  className="text-[var(--color-ui-primary)] hover:underline"
-                >
-                  {item.id}
-                </Link>
-              </td>
-              <td className="px-4 py-2 truncate max-w-xs">{item.title}</td>
-              {isAdmin && (
-                <td className="px-4 py-2 whitespace-nowrap">
-                  {item.submittedBy || "N/A"}
-                </td>
-              )}
-              <td className="px-4 py-2 max-w-[220px]">
-                <CategoriesCell categories={item.categories || []} />
-              </td>
-              <td className="px-4 py-2 truncate max-w-[200px]">
-                {item.similarSourceUrl ? (
-                  <a
-                    href={item.similarSourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+          {items.map((item) => {
+            if (isClient && item.clientStatus === ClientStatus.SUBMITTED) {
+              return null;
+            }
+            return (
+              <tr
+                key={item.id}
+                className={`border-t-2 border-[var(--color-table-border)] hover:bg-[var(--color-bg-card)] h-[70px]`}
+              >
+                <td className="px-4 py-2 font-medium tracking-wide w-[160px]">
+                  <Link
+                    to={newsDetailRoute(item.id)}
+                    onClick={(e) => {
+                      // Prevent default to handle navigation programmatically
+                      e.preventDefault();
+                      // Add a small delay to ensure the click is processed
+                      setTimeout(() => {
+                        window.location.href = newsDetailRoute(item.id);
+                      }, 100);
+                    }}
                     className="text-[var(--color-ui-primary)] hover:underline"
                   >
-                    {item.similarSourceName || "View Source"}
-                  </a>
-                ) : (
-                  <span className="text-gray-400">No similar source</span>
+                    {item.id}
+                  </Link>
+                </td>
+                <td className="px-4 py-2 truncate max-w-xs">{item.title}</td>
+                {isAdmin && (
+                  <td className="px-4 py-2 whitespace-nowrap">
+                    {item.submittedBy || "N/A"}
+                  </td>
                 )}
-              </td>
-              <td className="px-4 py-2 whitespace-nowrap">
-                {item.publishedAt}
-              </td>
-              {isAdmin && (
-                <td className="px-4 py-2">
-                  <div className="flex items-center gap-2">
-                    <StatusBadge status={item.aiStatus} type="ai" />
-                    {(item.aiStatus === "IN_PROGRESS" ||
-                      item.aiStatus === "FAILED") && (
-                      <button
-                        type="button"
-                        onClick={() => handleRefreshClick(item.id.toString())}
-                        disabled={
-                          refreshingItems[item.id] || isGlobalRefreshing
-                        }
-                        className={`text-gray-400 hover:text-blue-400 transition-colors ${
-                          refreshingItems[item.id] || isGlobalRefreshing
-                            ? "opacity-50 cursor-not-allowed"
-                            : ""
-                        }`}
-                        title={
-                          refreshingItems[item.id] || isGlobalRefreshing
-                            ? "Refreshing..."
-                            : "Refresh AI status"
-                        }
-                      >
-                        <ArrowPathIcon
-                          className={`w-4 h-4 ${
-                            refreshingItems[item.id] ? "animate-spin" : ""
+                <td className="px-4 py-2 max-w-[220px]">
+                  <CategoriesCell categories={item.categories || []} />
+                </td>
+                <td className="px-4 py-2 truncate max-w-[200px]">
+                  {item.similarSourceUrl ? (
+                    <a
+                      href={item.similarSourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[var(--color-ui-primary)] hover:underline"
+                    >
+                      {item.similarSourceName || "View Source"}
+                    </a>
+                  ) : (
+                    <span className="text-gray-400">No similar source</span>
+                  )}
+                </td>
+                <td className="px-4 py-2 whitespace-nowrap">
+                  {item.publishedAt}
+                </td>
+                {isAdmin && (
+                  <td className="px-4 py-2">
+                    <div className="flex items-center gap-2">
+                      <StatusBadge status={item.aiStatus} type="ai" />
+                      {(item.aiStatus === "IN_PROGRESS" ||
+                        item.aiStatus === "FAILED") && (
+                        <button
+                          type="button"
+                          onClick={() => handleRefreshClick(item.id.toString())}
+                          disabled={
+                            refreshingItems[item.id] || isGlobalRefreshing
+                          }
+                          className={`text-gray-400 hover:text-blue-400 transition-colors ${
+                            refreshingItems[item.id] || isGlobalRefreshing
+                              ? "opacity-50 cursor-not-allowed"
+                              : ""
                           }`}
-                        />
-                      </button>
-                    )}
-                  </div>
-                </td>
-              )}
-              <td className="px-4 py-2">
-                <StatusBadge status={item.clientStatus} />
-              </td>
-              {isClient && (
+                          title={
+                            refreshingItems[item.id] || isGlobalRefreshing
+                              ? "Refreshing..."
+                              : "Refresh AI status"
+                          }
+                        >
+                          <ArrowPathIcon
+                            className={`w-4 h-4 ${
+                              refreshingItems[item.id] ? "animate-spin" : ""
+                            }`}
+                          />
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                )}
                 <td className="px-4 py-2">
-                  <NewsItemActions
-                    itemId={item.id}
-                    status={item.clientStatus}
-                    onAction={handleAction}
-                    onReject={handleRejectClick}
-                    isActionAllowed={isActionAllowed}
-                    getActionTooltip={getActionTooltip}
-                  />
+                  <StatusBadge status={item.clientStatus} />
                 </td>
-              )}
-            </tr>
-          ))}
+                {isClient && (
+                  <td className="px-4 py-2">
+                    <NewsItemActions
+                      itemId={item.id}
+                      status={item.clientStatus}
+                      onAction={handleAction}
+                      onReject={handleRejectClick}
+                      isActionAllowed={isActionAllowed}
+                      getActionTooltip={getActionTooltip}
+                    />
+                  </td>
+                )}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
 

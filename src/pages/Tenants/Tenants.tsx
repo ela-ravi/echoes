@@ -64,10 +64,7 @@ const Tenants: React.FC = () => {
                     </thead>
                     <tbody className="bg-[var(--color-bg-card)] divide-y-2 divide-[var(--color-ui-border)]">
                       {clientStats.map((client, index) => (
-                        <tr
-                          key={index}
-                          // className="hover:bg-[var(--color-bg-hover)]"
-                        >
+                        <tr key={index}>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[var(--color-text-primary)]">
                             {client.name}
                           </td>

@@ -41,7 +41,7 @@ export const NewsItemActions: React.FC<NewsItemActionsProps> = ({
         className={`p-1.5 rounded transition-colors ${
           !isActionAllowed(status, "review")
             ? "opacity-50 cursor-not-allowed"
-            : "text-blue-400 hover:bg-blue-900/50 hover:text-blue-300"
+            : "text-blue-400 hover:bg-[#272ca6] hover:text-blue-300"
         }`}
         title={getActionTooltip(status, "review")}
       >
@@ -57,7 +57,7 @@ export const NewsItemActions: React.FC<NewsItemActionsProps> = ({
         className={`p-1.5 rounded transition-colors ${
           !isActionAllowed(status, "publish")
             ? "text-gray-500 cursor-not-allowed"
-            : "text-green-400 hover:bg-green-900/50 hover:text-green-300"
+            : "text-green-400 hover:bg-[#196645] hover:text-green-300"
         }`}
         title={getActionTooltip(status, "publish")}
       >
@@ -70,7 +70,7 @@ export const NewsItemActions: React.FC<NewsItemActionsProps> = ({
         className={`p-1.5 rounded transition-colors ${
           !isActionAllowed(status, "reject")
             ? "text-gray-500 cursor-not-allowed"
-            : "text-red-400 hover:bg-red-900/50 hover:text-red-300"
+            : "text-red-400 hover:bg-[#7f1d1d] hover:text-red-300"
         }`}
         title={getActionTooltip(status, "reject")}
       >

@@ -61,7 +61,7 @@ export const getActionTooltip = (
 };
 
 import { toast } from "react-toastify";
-import newsService, { NewsReviewAction } from "../services/newsService";
+import newsService from "../services/newsService";
 
 /**
  * Handles news item actions (review, publish, reject)

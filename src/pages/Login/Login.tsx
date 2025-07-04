@@ -128,7 +128,7 @@ const Login: React.FC = () => {
               type="button"
               variant="secondary"
               // className="w-full bg-[var(--color-button-secondary)] hover:bg-[var(--color-button-secondary-hover)] text-[var(--color-text-primary)] font-medium py-3 px-6 rounded-lg transition-colors mt-4"
-              className="w-full !text-[var(--color-text-tertiary)] !border !border-[#f87171] !hover:border-[2px]  cursor-pointer  mt-4"
+              className="w-full !text-[var(--color-text-tertiary)] !bg-[var(--color-bg-interactive)] !border !border-[var(--color-button-primary)] !hover:border-[2px]  cursor-pointer  mt-4"
             >
               Register here
             </Button>
