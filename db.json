@@ -236,7 +236,10 @@
         "BBC",
         "Al Jazeera"
       ],
-      "languages": ["hin-Deva", "tam_Taml"]
+      "languages": [
+        "hin-Deva",
+        "tam_Taml"
+      ]
     },
     {
       "id": 31,
@@ -532,7 +535,15 @@
     "rewardPoint": 0,
     "badges": [],
     "doj": "2025-06-15",
-    "type": "CLIENT"
+    "type": "ADMIN"
   },
-  "login": {}
+  "login": {},
+  "admin-top-client-stats": [
+    {
+      "name": "Client2",
+      "publishedNewsCount": 2,
+      "totalRejectedNewsCount": 1,
+      "totalReviewedNewsCount": 0
+    }
+  ]
 }
