@@ -1,4 +1,4 @@
-import { NEWSACTION } from "utils/newsUtils";
+import { NEWSACTION } from "../utils/newsUtils";
 import { API_ENDPOINTS, getHeaders } from "../config/api";
 import { INewsItem, TRANSLATION_LANGUAGES } from "../types/NewsItem";
 import { UserInfo } from "../types/user";
