@@ -22,6 +22,8 @@ const API_ENDPOINT_USER_INFO =
   process.env.API_ENDPOINT_USER_INFO || "user-info";
 const API_ENDPOINT_CLIENT_NEWS_LIST =
   process.env.API_ENDPOINT_CLIENT_NEWS_LIST || "list-client-news";
+const API_ENDPOINT_CLIENT_STATS =
+  process.env.API_ENDPOINT_CLIENT_STATS || "admin-top-client-stats";
 interface NewsListQueryParams {
   category?: string;
   keyword?: string;
@@ -87,6 +89,7 @@ export const API_ENDPOINTS = {
     REVIEW: (id: string) => `${API_BASE_URL}/${API_ENDPOINT_NEWS_REVIEW}/${id}`,
     AI_RETRY: (id: string) =>
       `${API_BASE_URL}/${API_ENDPOINT_NEWS_AI_RETRY}/${id}`,
+    CLIENT_STATS: () => `${API_BASE_URL}/${API_ENDPOINT_CLIENT_STATS}`,
   },
   USER: {
     REGISTER: () => `${API_BASE_URL}/${API_ENDPOINT_USER_REGISTRATION}`,

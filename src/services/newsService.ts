@@ -45,7 +45,30 @@ export const fetchUserInfo = async (
   return userInfo;
 };
 
+export interface ClientStat {
+  name: string;
+  publishedNewsCount: number;
+  totalRejectedNewsCount: number;
+  totalReviewedNewsCount: number;
+}
+
 export const newsService = {
+  /**
+   * Fetches client statistics
+   * @returns Promise that resolves with client statistics
+   */
+  fetchClientStats: async (): Promise<ClientStat[]> => {
+    const response = await fetch(API_ENDPOINTS.NEWS.CLIENT_STATS(), {
+      headers: getHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch client stats: ${response.status}`);
+    }
+
+    return response.json();
+  },
+
   /**
    * Retry AI processing for a news item
    * @param id News item ID

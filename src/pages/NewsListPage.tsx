@@ -42,8 +42,8 @@ const NewsListPage: React.FC = () => {
   const navigate = useNavigate();
   // Keep userInfo state in case it's needed later
   const [, setUserInfo] = useState<UserInfo | null>(null);
-  const userType = sessionStorage.getItem("userType");
-  const isClient = userType === "CLIENT";
+  // const userType = sessionStorage.getItem("userType");
+  // const isClient = userType === "CLIENT";
 
   // Handle filter changes
   const handleFilterChange = (key: NewsFilterKey, value: string) => {
@@ -319,22 +319,8 @@ const NewsListPage: React.FC = () => {
 
       <PageContainer>
         <div className="w-full max-w-[95%] md:max-w-[90%]">
-          <h1 className="mb-4 text-[32px] font-bold leading-tight tracking-tight text-[var(--color-text-primary)]">
-            All News Items
-          </h1>
-
-          <NewsFilters
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            onResetFilters={resetFilters}
-            isResetDisabled={areFiltersDefault()}
-            // hideSearch={true}
-          />
-
           {userInfoError ? (
-            <div className="mb-4 rounded-md bg-red-50 p-4">
+            <div className="mb-4 rounded-md bg-red-50 p-4 mt-4">
               <div className="flex">
                 <div className="flex-shrink-0">
                   <svg
@@ -381,6 +367,19 @@ const NewsListPage: React.FC = () => {
             </div>
           ) : (
             <>
+              <h1 className="mb-4 text-[32px] font-bold leading-tight tracking-tight text-[var(--color-text-primary)]">
+                All News Items
+              </h1>
+
+              <NewsFilters
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                filters={filters}
+                onFilterChange={handleFilterChange}
+                onResetFilters={resetFilters}
+                isResetDisabled={areFiltersDefault()}
+                // hideSearch={true}
+              />
               <NewsTable items={newsItems} />
               {loadingMore && (
                 <div className="mt-4 text-center text-[var(--color-text-primary)]">

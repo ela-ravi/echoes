@@ -12,6 +12,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import "./theme/global.css";
+import Tenants from "./pages/Tenants/Tenants";
 
 const App: React.FC = () => {
   return (
@@ -47,6 +48,14 @@ const App: React.FC = () => {
         <Route path="/register" element={<Registration />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logged-out" element={<Login />} />
+        <Route
+          path="/tenants"
+          element={
+            <ProtectedRoute requiredRole="ADMIN">
+              <Tenants />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       <ToastContainer position="bottom-right" autoClose={3000} />
     </>
