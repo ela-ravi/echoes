@@ -15,6 +15,7 @@ import {
   handleAction,
   NEWSACTION,
 } from "../../utils/newsUtils";
+import { useTheme } from "../../context/ThemeContext";
 
 // Define NEWSACTION enum locally since it's only used in this file
 
@@ -38,6 +39,7 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [rejectComment, setRejectComment] = useState("");
+  const { theme } = useTheme();
 
   const newsDetailRoute = (id: string) =>
     isAdmin ? `/news-detail?id=${id}` : `/client-news-detail?id=${id}`;
@@ -80,7 +82,7 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
                 await onUpdate();
               }
             }
-          : undefined,
+          : undefined
       );
     } catch (error) {
       console.error("Error refreshing AI status:", error);
@@ -92,11 +94,11 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
 
   return (
     <div
-      className={`overflow-x-auto rounded-xl border border-[var(--color-ui-border-light)] bg-[var(--color-bg-header)] my-4`}
+      className={`overflow-x-auto rounded-xl border-${theme === "light" ? 4 : 2} border-[var(--color-table-border)] bg-[var(--color-bg-header)] my-4`}
     >
       <table className="w-full text-sm text-[var(--color-text-primary)]">
-        <thead>
-          <tr className={`bg-[var(--color-bg-card)] text-left`}>
+        <thead className="border-[var(--color-bg-header)]">
+          <tr className={`bg-[var(--color-table-header)] text-left`}>
             <th className="px-4 py-3 w-[160px]">News ID</th>
             <th className="px-4 py-3">Title</th>
             {isAdmin && <th className="px-4 py-3">User</th>}
@@ -114,7 +116,7 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
           {items.map((item) => (
             <tr
               key={item.id}
-              className={`border-t border-[var(--color-ui-border-light)] hover:bg-[var(--color-bg-card)]/50`}
+              className={`border-t-2 border-[var(--color-table-border)] hover:bg-[var(--color-bg-card)]`}
             >
               <td className="px-4 py-2 font-medium tracking-wide w-[160px]">
                 <Link

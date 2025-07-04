@@ -83,7 +83,7 @@
 
 .outline {
   color: var(--color-status-info);
-  background-color: transparent;
+  background-color: var(--color-bg-interactive);
   border: 1px solid currentColor;
 
   &:hover:not(:disabled) {
@@ -97,7 +97,7 @@
 
 .text {
   color: var(--color-status-info);
-  background-color: transparent;
+  background-color: var(--color-bg-interactive);
   border: none;
   padding: 0.25rem 0.5rem;
 

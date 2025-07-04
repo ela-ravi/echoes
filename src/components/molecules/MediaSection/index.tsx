@@ -32,7 +32,7 @@ const MediaSection: React.FC<MediaSectionProps> = ({
 
   return (
     <div
-      className={`border rounded-lg overflow-hidden mb-6 transition-all duration-300 border-[var(--color-ui-border-light)] hover:border-[var(--color-ui-primary)]`}
+      className={`border rounded-lg overflow-hidden mb-6 transition-all duration-300 border-2 border-[var(--color-bg-card)] hover:border-[var(--color-ui-primary)]`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -53,7 +53,7 @@ const MediaSection: React.FC<MediaSectionProps> = ({
         </span>
       </div>
       <div
-        className={`relative aspect-video bg-[var(--color-bg-header)] overflow-hidden`}
+        className={`relative aspect-video bg-[var(--color-bg-header)] border-[var(--color-bg-card)] overflow-hidden`}
       >
         {type === "image" ? (
           <img
@@ -81,7 +81,7 @@ const MediaSection: React.FC<MediaSectionProps> = ({
           </>
         )}
       </div>
-      <div className="p-2 text-right">
+      <div className="p-2 text-right bg-[var(--color-bg-card)]">
         <span className="text-xs text-[var(--color-text-placeholder)]">
           {isAI ? "AI-Generated" : "User Uploaded"}
         </span>
