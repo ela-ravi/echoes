@@ -68,6 +68,15 @@ export type TRANSLATION_LANGUAGES =
   | "mal_Mlym" // Malayalam
   | "eng_Latn"; // English
 
+export const LANGUAGE_MAP: Record<TRANSLATION_LANGUAGES, string> = {
+  hin_Deva: "Hindi",
+  tam_Taml: "Tamil",
+  tel_Telu: "Telugu",
+  kan_Knda: "Kannada",
+  mal_Mlym: "Malayalam",
+  eng_Latn: "English",
+};
+
 export enum ClientStatus {
   SUBMITTED = "SUBMITTED",
   PENDING = "PENDING",

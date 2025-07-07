@@ -18,7 +18,7 @@ import UserInfoItem from "../../components/molecules/UserInfoItem";
 import MediaRow from "../../components/molecules/MediaRow";
 
 // Hooks
-import { INewsItem } from "../../types/NewsItem";
+import { INewsItem, LANGUAGE_MAP } from "../../types/NewsItem";
 // import { useAIRefresh } from "../../hooks/useAIRefresh";
 import { newsService } from "../../services/newsService";
 import { TRANSLATION_LANGUAGES } from "../../types/NewsItem";
@@ -195,7 +195,9 @@ const ClientNewsDetailPage: React.FC = () => {
         ...data,
         // Only update these fields if they exist in the response
         ...(data.originalText && { originalText: data.originalText }),
-        ...(data.aiGeneratedText && { aiGeneratedText: data.aiGeneratedText }),
+        ...(data.aiGeneratedText && {
+          aiGeneratedText: (data.title ? "\n\n" : "") + data.aiGeneratedText,
+        }),
         ...(data.keyIndividuals && { keyIndividuals: data.keyIndividuals }),
         ...(data.potentialImpact && { potentialImpact: data.potentialImpact }),
         ...(data.translatedTitle && { translatedTitle: data.translatedTitle }),
@@ -212,7 +214,10 @@ const ClientNewsDetailPage: React.FC = () => {
       setFormData((prev) => ({
         ...(prev || {}),
         originalText: data.originalText || prev?.originalText || "",
-        aiGeneratedText: data.aiGeneratedText || prev?.aiGeneratedText || "",
+        aiGeneratedText:
+          data.title + (data.title ? "\n\n" : "") + data.aiGeneratedText ||
+          prev?.aiGeneratedText ||
+          "",
         keyIndividuals: data.keyIndividuals || prev?.keyIndividuals || "",
         potentialImpact: data.potentialImpact || prev?.potentialImpact || "",
         translatedTitle: data.translatedTitle || prev?.translatedTitle || "",
@@ -247,31 +252,31 @@ const ClientNewsDetailPage: React.FC = () => {
   };
 
   // Save form data
-  const handleSave = async () => {
-    if (!newsItem || !hasChanges || !formData) return;
+  // const handleSave = async () => {
+  //   if (!newsItem || !hasChanges || !formData) return;
 
-    try {
-      const updatedNewsItem = await newsService.updateNewsItem(
-        newsItem.id.toString(),
-        {
-          ...formData,
-          id: newsItem.id,
-        },
-      );
+  //   try {
+  //     const updatedNewsItem = await newsService.updateNewsItem(
+  //       newsItem.id.toString(),
+  //       {
+  //         ...formData,
+  //         id: newsItem.id,
+  //       }
+  //     );
 
-      setNewsItem(updatedNewsItem);
-      setInitialFormData(formData);
-      setHasChanges(false);
-      toast.success("Changes saved successfully!");
-    } catch (error) {
-      console.error("Error saving changes:", error);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Failed to save changes. Please try again.",
-      );
-    }
-  };
+  //     setNewsItem(updatedNewsItem);
+  //     setInitialFormData(formData);
+  //     setHasChanges(false);
+  //     toast.success("Changes saved successfully!");
+  //   } catch (error) {
+  //     console.error("Error saving changes:", error);
+  //     toast.error(
+  //       error instanceof Error
+  //         ? error.message
+  //         : "Failed to save changes. Please try again."
+  //     );
+  //   }
+  // };
 
   // Reset hasChanges when form data is reset
   const handleDiscard = async () => {
@@ -340,7 +345,10 @@ const ClientNewsDetailPage: React.FC = () => {
         // Update form data when newsItem changes
         if (newsItem) {
           const newFormData = {
-            originalText: newsItem?.originalText || "",
+            originalText:
+              newsItem?.title + newsItem?.title
+                ? "\n\n"
+                : "" + newsItem?.originalText || "",
             aiGeneratedText: newsItem?.aiGeneratedText || "",
             keyIndividuals: newsItem?.keyIndividuals || "",
             potentialImpact: newsItem?.potentialImpact || "",
@@ -392,41 +400,41 @@ const ClientNewsDetailPage: React.FC = () => {
   }, []);
 
   // Handle form input changes and track modifications
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => {
-      if (!prev) return prev; // Don't update if formData is not initialized
+  // const handleInputChange = (
+  //   e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  // ) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev) => {
+  //     if (!prev) return prev; // Don't update if formData is not initialized
 
-      const newData = {
-        ...prev,
-        [name]: value,
-      };
+  //     const newData = {
+  //       ...prev,
+  //       [name]: value,
+  //     };
 
-      // Check if any field has changed from its initial value
-      if (initialFormData) {
-        const hasChanges = Object.entries(newData).some(
-          ([key, val]) => initialFormData[key as keyof FormDataState] !== val,
-        );
-        setHasChanges(hasChanges);
-      }
+  //     // Check if any field has changed from its initial value
+  //     if (initialFormData) {
+  //       const hasChanges = Object.entries(newData).some(
+  //         ([key, val]) => initialFormData[key as keyof FormDataState] !== val
+  //       );
+  //       setHasChanges(hasChanges);
+  //     }
 
-      return newData;
-    });
-  };
+  //     return newData;
+  //   });
+  // };
 
   // Update hasChanges when initial data is loaded
-  useEffect(() => {
-    if (formData && initialFormData) {
-      const changes = Object.entries(formData).some(
-        ([key, val]) => initialFormData[key as keyof FormDataState] !== val,
-      );
-      setHasChanges(changes);
-    } else {
-      setHasChanges(false);
-    }
-  }, [formData, initialFormData]);
+  // useEffect(() => {
+  //   if (formData && initialFormData) {
+  //     const changes = Object.entries(formData).some(
+  //       ([key, val]) => initialFormData[key as keyof FormDataState] !== val
+  //     );
+  //     setHasChanges(changes);
+  //   } else {
+  //     setHasChanges(false);
+  //   }
+  // }, [formData, initialFormData]);
 
   // Loading and error states
   if (loading) return <div>Loading...</div>;
@@ -465,7 +473,7 @@ const ClientNewsDetailPage: React.FC = () => {
               News Item ID: {newsItem.id}
             </h1>
           </div>
-          <Section title={isAdmin ? "User Details" : "News Metadata"}>
+          <Section title={isAdmin ? "User Details" : "Metadata"}>
             <div className="bg-[var(--color-bg-card)] p-6 my-3 rounded-xl">
               <div className="flex flex-col space-y-4">
                 {/* Top Row: User Info */}
@@ -505,12 +513,12 @@ const ClientNewsDetailPage: React.FC = () => {
                     <TranslationSection
                       onLanguageChange={async (languageCode) => {
                         try {
-                          setLoading(true);
+                          // setLoading(true);
                           await fetchNewsDetail(languageCode);
                         } catch (error) {
                           console.error("Error changing language:", error);
                         } finally {
-                          setLoading(false);
+                          // setLoading(false);
                         }
                       }}
                       onRequestTranslation={async (languageCode) => {
@@ -547,7 +555,7 @@ const ClientNewsDetailPage: React.FC = () => {
                           }
 
                           toast.success(
-                            `Successfully requested translation to ${languageCode}`,
+                            `Successfully requested translation to ${LANGUAGE_MAP[languageCode as TRANSLATION_LANGUAGES]}.\nThis takes some time. Please come back after some time.`,
                           );
                         } catch (error) {
                           console.error("Error requesting translation:", error);
@@ -709,7 +717,7 @@ const ClientNewsDetailPage: React.FC = () => {
               <TextArea
                 name="originalText"
                 value={formData.originalText}
-                onChange={handleInputChange}
+                onChange={() => {}}
                 placeholder="Original Raw Submission"
                 readOnly={true}
                 borderColor={
@@ -727,7 +735,7 @@ const ClientNewsDetailPage: React.FC = () => {
             </Section>
           )}
 
-          <Section title="AI-Curated Summary">
+          <Section title="Summary">
             <TextArea
               name="aiGeneratedText"
               className="bg-[var(--color-bg-card)]"
@@ -742,13 +750,15 @@ const ClientNewsDetailPage: React.FC = () => {
                   ? formData.aiGeneratedText
                   : `${formData.translatedTitle} \n ${formData.translatedSummary}`
               }
-              onChange={handleInputChange}
+              onChange={() => {}}
               placeholder="AI-generated summary will appear here..."
               readOnly={isClient}
               onViewFullContent={() => {
                 setOverlayContent({
                   title: "AI-Curated Summary",
-                  content: formData.aiGeneratedText,
+                  content: isEnglishSelected
+                    ? formData.aiGeneratedText
+                    : `${formData.translatedTitle} \n ${formData.translatedSummary}`,
                 });
               }}
             />
@@ -765,18 +775,53 @@ const ClientNewsDetailPage: React.FC = () => {
                 "var(--color-ui-border-light)"
               }
               value={
-                isEnglishSelected
-                  ? formData.keyIndividuals
-                  : formData.translatedIndividual
+                (() => {
+                  console.log("isEnglishSelected:", isEnglishSelected);
+                  try {
+                    const parsed = JSON.parse(
+                      isEnglishSelected
+                        ? formData.keyIndividuals
+                        : formData.translatedIndividual,
+                    );
+                    if (Array.isArray(parsed)) {
+                      return parsed.join(", ");
+                    }
+                    return parsed || "No key individuals mentioned";
+                  } catch (e) {
+                    return (
+                      formData.keyIndividuals.split(".")[0] ||
+                      "No key individuals mentioned"
+                    );
+                  }
+                })()
+                // isEnglishSelected
+                //   ? formData.keyIndividuals
+                //   : formData.translatedIndividual
               }
-              onChange={handleInputChange}
+              onChange={() => {}}
               placeholder="List key individuals mentioned in the article..."
               readOnly={isClient}
               onViewFullContent={() => {
-                setOverlayContent({
-                  title: "Key Individuals Mentioned",
-                  content: formData.keyIndividuals,
-                });
+                try {
+                  const parsed = JSON.parse(
+                    isEnglishSelected
+                      ? formData.keyIndividuals
+                      : formData.translatedIndividual,
+                  );
+                  setOverlayContent({
+                    title: "Key Individuals Mentioned",
+                    content: Array.isArray(parsed)
+                      ? parsed.join(", ")
+                      : parsed || "No key individuals mentioned",
+                  });
+                } catch (e) {
+                  setOverlayContent({
+                    title: "Key Individuals Mentioned",
+                    content:
+                      formData.keyIndividuals.split(".")[0] ||
+                      "No key individuals mentioned",
+                  });
+                }
               }}
             />
           </Section>
@@ -796,7 +841,7 @@ const ClientNewsDetailPage: React.FC = () => {
                   ? formData.potentialImpact
                   : formData.translatedRisk
               }
-              onChange={handleInputChange}
+              onChange={() => {}}
               borderColor={
                 // isClient
                 //   ? "var(--color-ui-client-border)"
@@ -808,7 +853,9 @@ const ClientNewsDetailPage: React.FC = () => {
               onViewFullContent={() => {
                 setOverlayContent({
                   title: "Potential Risks",
-                  content: formData.potentialImpact,
+                  content: isEnglishSelected
+                    ? formData.potentialImpact
+                    : formData.translatedRisk,
                 });
               }}
             />
@@ -875,7 +922,7 @@ const ClientNewsDetailPage: React.FC = () => {
 
           {isAdmin && (
             <CTASection
-              onSave={handleSave}
+              onSave={() => {}}
               onDiscard={handleDiscard}
               backLink="/news"
               hasChanges={hasChanges}

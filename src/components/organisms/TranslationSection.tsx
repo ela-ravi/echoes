@@ -34,6 +34,7 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLanguage = e.target.value;
+    console.log("===>>> newLanguage", newLanguage, e);
     setSelectedLanguage(newLanguage);
     console.log("===>>> newLanguage", newLanguage, e);
     if (onLanguageChange) {
@@ -58,6 +59,7 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
   );
   console.log(
     "Languages:",
+    selectedLanguage,
     availableLanguages,
     filteredAvailableLanguages,
     filteredUnavailableLanguages

@@ -91,7 +91,8 @@ export const handleAction = async (
   } catch (error) {
     console.error(`Error ${action.toLowerCase()}ing news item:`, error);
     toast.error(
-      `Failed to ${action.toLowerCase()} news item: ${error instanceof Error ? error.message : "Unknown error"
+      `Failed to ${action.toLowerCase()} news item: ${
+        error instanceof Error ? error.message : "Unknown error"
       }`,
     );
   }
