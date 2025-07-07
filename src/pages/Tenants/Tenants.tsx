@@ -58,7 +58,7 @@ const Tenants: React.FC = () => {
                           Rejected News
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-[var(--color-text-primary)] uppercase tracking-wider">
-                          In Review
+                          Reviewed News
                         </th>
                       </tr>
                     </thead>

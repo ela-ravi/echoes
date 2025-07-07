@@ -604,7 +604,7 @@ const ClientNewsDetailPage: React.FC = () => {
                     {/* Submitted At */}
                     <UserInfoItem
                       userName={newsItem.user}
-                      label="SUBMITTED AT"
+                      label="SUBMITTED"
                       timestamp={newsItem.submittedAt}
                       fallbackText="N/A"
                     />
@@ -658,7 +658,7 @@ const ClientNewsDetailPage: React.FC = () => {
                     {/* Rejected By */}
                     <div className="col-span-1">
                       <div className="text-xs text-gray-500 mb-1">
-                        REJECTED BY
+                        {isAdmin ? "REJECTED BY" : "REJECTED COUNT"}
                       </div>
                       {newsItem.rejectedBy && newsItem.rejectedBy.length > 0 ? (
                         isAdmin ? (

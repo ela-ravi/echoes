@@ -54,7 +54,7 @@ const Registration: React.FC = () => {
   };
 
   const handleDateChange = (
-    value: Date | null | [Date | null, Date | null],
+    value: Date | null | [Date | null, Date | null]
   ) => {
     // Handle both single date and range selection (we only care about single date here)
     const selectedDate = Array.isArray(value) ? value[0] : value;
@@ -121,7 +121,7 @@ const Registration: React.FC = () => {
       alert(
         error instanceof Error
           ? error.message
-          : "Registration failed. Please try again.",
+          : "Registration failed. Please try again."
       );
     }
   };
@@ -247,19 +247,23 @@ const Registration: React.FC = () => {
             Register
           </Button>
 
-          {registrationSuccess && (
-            <div className="mb-4 p-4 bg-green-100 text-green-700 rounded">
-              <p className="font-bold">Registration successful!</p>
-              {generatedPassword && (
-                <p className="mt-2">
-                  Your password is:{" "}
-                  <span className="font-mono bg-green-50 px-2 py-1 rounded">
-                    {generatedPassword}
-                  </span>
-                </p>
-              )}
-            </div>
-          )}
+          <div
+            className={`mt-4 mb-4 p-4 ${registrationSuccess ? "bg-green-100 text-green-700" : ""} rounded h-[100px]`}
+          >
+            {registrationSuccess && (
+              <>
+                <p className="font-bold">Registration successful!</p>
+                {generatedPassword && (
+                  <p className="mt-2">
+                    Your password is:{" "}
+                    <span className="font-mono bg-green-50 px-2 py-1 rounded">
+                      {generatedPassword}
+                    </span>
+                  </p>
+                )}
+              </>
+            )}
+          </div>
         </form>
       </div>
     </PageContainer>

@@ -94,9 +94,6 @@ const NewsDetailPage: React.FC = () => {
   const [showImageOverlay, setShowImageOverlay] = useState(false);
   const [selectedImage, setSelectedImage] = useState<SelectedImage>(null);
 
-  const userType = sessionStorage.getItem("userType");
-  const isClient = userType === "CLIENT";
-
   const [formData, setFormData] = useState<FormDataState>({
     originalText: "",
     aiGeneratedText: "",
@@ -197,7 +194,10 @@ const NewsDetailPage: React.FC = () => {
       setInitialFormData((prev) => ({
         ...(prev || {}),
         originalText: data.originalText || prev?.originalText || "",
-        aiGeneratedText: data.aiGeneratedText || prev?.aiGeneratedText || "",
+        aiGeneratedText:
+          data.title + "\n\n" + data.aiGeneratedText ||
+          prev?.aiGeneratedText ||
+          "",
         keyIndividuals: data.keyIndividuals || prev?.keyIndividuals || "",
         potentialImpact: data.potentialImpact || prev?.potentialImpact || "",
       }));
@@ -205,7 +205,10 @@ const NewsDetailPage: React.FC = () => {
       setFormData((prev) => ({
         ...(prev || {}),
         originalText: data.originalText || prev?.originalText || "",
-        aiGeneratedText: data.aiGeneratedText || prev?.aiGeneratedText || "",
+        aiGeneratedText:
+          data.title + "\n\n" + data.aiGeneratedText ||
+          prev?.aiGeneratedText ||
+          "",
         keyIndividuals: data.keyIndividuals || prev?.keyIndividuals || "",
         potentialImpact: data.potentialImpact || prev?.potentialImpact || "",
       }));
@@ -328,7 +331,10 @@ const NewsDetailPage: React.FC = () => {
         if (newsItem) {
           const newFormData = {
             originalText: newsItem?.originalText || "",
-            aiGeneratedText: newsItem?.aiGeneratedText || "",
+            aiGeneratedText:
+              newsItem?.title +
+                (newsItem?.title ? "\n\n" : "") +
+                newsItem?.aiGeneratedText || "",
             keyIndividuals: newsItem?.keyIndividuals || "",
             potentialImpact: newsItem?.potentialImpact || "",
           };
@@ -570,7 +576,7 @@ const NewsDetailPage: React.FC = () => {
                     {/* Submitted At */}
                     <UserInfoItem
                       userName={newsItem.user}
-                      label="SUBMITTED AT"
+                      label="SUBMITTED"
                       timestamp={newsItem.submittedAt}
                       fallbackText="N/A"
                     />
@@ -653,7 +659,7 @@ const NewsDetailPage: React.FC = () => {
             </div>
           </Section>
 
-          <Section title="Original Raw Submission">
+          <Section title="Original Raw Submission (Read Only)">
             <TextArea
               name="originalText"
               value={formData.originalText}
@@ -688,14 +694,35 @@ const NewsDetailPage: React.FC = () => {
           <Section title="Key Individuals Mentioned">
             <TextArea
               name="keyIndividuals"
-              value={formData.keyIndividuals}
+              value={(() => {
+                try {
+                  const parsed = JSON.parse(formData.keyIndividuals);
+                  if (Array.isArray(parsed)) {
+                    return parsed.join(", ");
+                  }
+                  return parsed || "No key individuals mentioned";
+                } catch (e) {
+                  return "No key individuals mentioned";
+                }
+              })()}
               onChange={handleInputChange}
               placeholder="List key individuals mentioned in the article..."
               onViewFullContent={() => {
-                setOverlayContent({
-                  title: "Key Individuals Mentioned",
-                  content: formData.keyIndividuals,
-                });
+                try {
+                  const parsed = JSON.parse(formData.keyIndividuals);
+                  setOverlayContent({
+                    title: "Key Individuals Mentioned",
+                    content: Array.isArray(parsed)
+                      ? parsed.join("\n")
+                      : formData.keyIndividuals ||
+                        "No key individuals mentioned",
+                  });
+                } catch (e) {
+                  setOverlayContent({
+                    title: "Key Individuals Mentioned",
+                    content: "No key individuals mentioned",
+                  });
+                }
               }}
             />
           </Section>

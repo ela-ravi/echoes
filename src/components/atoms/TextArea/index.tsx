@@ -32,7 +32,7 @@ const TextArea: React.FC<TextAreaProps> = ({
           overflow-hidden rounded-xl 
           ${
             readOnly
-              ? "text-gray-400"
+              ? "text-[var(--color-text-primary)] cursor-not-allowed"
               : `text-[var(--color-text-primary)] 
                  hover:border-[2px] hover:border-[var(--color-ui-primary)]`
           } 

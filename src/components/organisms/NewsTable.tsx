@@ -104,7 +104,9 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
             {isAdmin && <th className="px-4 py-3">User</th>}
             <th className="px-4 py-3">Categories</th>
             <th className="px-4 py-3">Similar Source</th>
-            <th className="px-4 py-3 whitespace-nowrap">Published At</th>
+            {isClient && (
+              <th className="px-4 py-3 whitespace-nowrap">Published At</th>
+            )}
             {isAdmin && <th className="px-4 py-3">AI Status</th>}
             <th className="px-4 py-3">
               {isAdmin ? "Client Status" : "Status"}
@@ -161,9 +163,11 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
                     <span className="text-gray-400">No similar source</span>
                   )}
                 </td>
-                <td className="px-4 py-2 whitespace-nowrap">
-                  {item.publishedAt}
-                </td>
+                {isClient && (
+                  <td className="px-4 py-2 whitespace-nowrap">
+                    {item.publishedAt}
+                  </td>
+                )}
                 {isAdmin && (
                   <td className="px-4 py-2">
                     <div className="flex items-center gap-2">
