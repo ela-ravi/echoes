@@ -18,7 +18,7 @@ import UserInfoItem from "../../components/molecules/UserInfoItem";
 import MediaRow from "../../components/molecules/MediaRow";
 
 // Hooks
-import { INewsItem, LANGUAGE_MAP } from "../../types/NewsItem";
+import { ClientStatus, INewsItem, LANGUAGE_MAP } from "../../types/NewsItem";
 // import { useAIRefresh } from "../../hooks/useAIRefresh";
 import { newsService } from "../../services/newsService";
 import { TRANSLATION_LANGUAGES } from "../../types/NewsItem";
@@ -30,6 +30,7 @@ import {
   isActionAllowed,
   NEWSACTION,
 } from "../../utils/newsUtils";
+import { getClientStatus } from "../../components/organisms/utils";
 
 // Language options for the translation dropdown
 const LANGUAGES = [
@@ -153,7 +154,13 @@ const ClientNewsDetailPage: React.FC = () => {
 
   const statusContent = (
     <div className="flex items-center gap-2">
-      <StatusBadge status={newsItem?.clientStatus} />
+      <StatusBadge
+        status={getClientStatus(
+          newsItem?.clientStatus || ClientStatus.SUBMITTED,
+          newsItem?.publishedBy,
+          newsItem?.rejectedBy,
+        )}
+      />
       {newsItem?.clientStatus?.toLowerCase() === "rejected" &&
         newsItem?.comments && (
           <button

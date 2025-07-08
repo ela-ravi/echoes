@@ -3,6 +3,7 @@ export interface INewsItem {
   id: string;
   /** Title of the news item */
   title: string; // AI generated title
+  originalTitle?: string;
   /** Original text content of the news */
   originalText?: string; // Client submitted
   /** AI-generated content */
@@ -98,4 +99,6 @@ export interface INewsList {
   comments?: string;
   publishedCount?: number;
   rejectedCount?: number;
+  publishedBy?: string[];
+  rejectedBy?: string[];
 }

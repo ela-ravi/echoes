@@ -18,12 +18,13 @@ import UserInfoItem from "../components/molecules/UserInfoItem";
 import MediaRow from "../components/molecules/MediaRow";
 
 // Hooks
-import { INewsItem } from "../types/NewsItem";
+import { ClientStatus, INewsItem } from "../types/NewsItem";
 import { useAIRefresh } from "../hooks/useAIRefresh";
 import { newsService } from "../services/newsService";
 import { TRANSLATION_LANGUAGES } from "../types/NewsItem";
 import { API_ENDPOINTS, getHeaders } from "../config/api";
 import { NEWSACTION } from "../utils/newsUtils";
+import { getClientStatus } from "../components/organisms/utils";
 
 // Language options for the translation dropdown
 const LANGUAGES = [
@@ -127,7 +128,13 @@ const NewsDetailPage: React.FC = () => {
 
   const statusContent = (
     <div className="flex items-center gap-2">
-      <StatusBadge status={newsItem?.clientStatus} />
+      <StatusBadge
+        status={getClientStatus(
+          newsItem?.clientStatus || ClientStatus.SUBMITTED,
+          newsItem?.publishedBy || [],
+          newsItem?.rejectedBy || []
+        )}
+      />
       {newsItem?.clientStatus?.toLowerCase() === "rejected" &&
         newsItem?.comments && (
           <button
@@ -155,7 +162,7 @@ const NewsDetailPage: React.FC = () => {
       await handleAIRefresh(newsItem.id.toString(), async () => {
         // Refetch the news item to get updated status after successful refresh
         const updatedData = await newsService.fetchNewsDetail(
-          newsItem.id.toString(),
+          newsItem.id.toString()
         );
         setNewsItem(updatedData);
       });
@@ -195,7 +202,12 @@ const NewsDetailPage: React.FC = () => {
       }));
       setInitialFormData((prev) => ({
         ...(prev || {}),
-        originalText: data.originalText || prev?.originalText || "",
+        originalText:
+          (data.originalTitle ? data.originalTitle : "") +
+            (data.originalTitle ? "\n\n" : "") +
+            data.originalText ||
+          prev?.originalText ||
+          "",
         aiGeneratedText:
           data.title + (data.title ? "\n\n" : "") + data.aiGeneratedText ||
           prev?.aiGeneratedText ||
@@ -206,9 +218,14 @@ const NewsDetailPage: React.FC = () => {
       // Update form data with the new values, ensuring all fields are strings
       setFormData((prev) => ({
         ...(prev || {}),
-        originalText: data.originalText || prev?.originalText || "",
+        originalText:
+          (data.originalTitle ? data.originalTitle : "") +
+            (data.originalTitle ? "\n\n" : "") +
+            data.originalText ||
+          prev?.originalText ||
+          "",
         aiGeneratedText:
-          data.title + "\n\n" + data.aiGeneratedText ||
+          data.title + (data.title ? "\n\n" : "") + data.aiGeneratedText ||
           prev?.aiGeneratedText ||
           "",
         keyIndividuals: data.keyIndividuals || prev?.keyIndividuals || "",
@@ -220,7 +237,7 @@ const NewsDetailPage: React.FC = () => {
         const languageName =
           LANGUAGES.find(
             (lang: { value: string; label: string }) =>
-              lang.value === languageCode,
+              lang.value === languageCode
           )?.label || languageCode;
         toast.success(`Switched to ${languageName} translation`);
       }
@@ -248,7 +265,7 @@ const NewsDetailPage: React.FC = () => {
         {
           ...formData,
           id: newsItem.id,
-        },
+        }
       );
 
       setNewsItem(updatedNewsItem);
@@ -260,7 +277,7 @@ const NewsDetailPage: React.FC = () => {
       toast.error(
         error instanceof Error
           ? error.message
-          : "Failed to save changes. Please try again.",
+          : "Failed to save changes. Please try again."
       );
     }
   };
@@ -282,7 +299,7 @@ const NewsDetailPage: React.FC = () => {
       await newsService.reviewNewsItem(
         newsItem.id.toString(),
         NEWSACTION.REJECTED,
-        rejectComment,
+        rejectComment
       );
 
       toast.success("Successfully rejected news item");
@@ -294,7 +311,7 @@ const NewsDetailPage: React.FC = () => {
     } catch (error) {
       console.error("Error rejecting news item:", error);
       toast.error(
-        error instanceof Error ? error.message : "Failed to reject news item",
+        error instanceof Error ? error.message : "Failed to reject news item"
       );
     }
   };
@@ -332,7 +349,10 @@ const NewsDetailPage: React.FC = () => {
         // Update form data when newsItem changes
         if (newsItem) {
           const newFormData = {
-            originalText: newsItem?.originalText || "",
+            originalText:
+              (newsItem?.originalTitle ? newsItem?.originalTitle : "") +
+                (newsItem?.originalTitle ? "\n\n" : "") +
+                newsItem?.originalText || "",
             aiGeneratedText:
               newsItem?.title +
                 (newsItem?.title ? "\n\n" : "") +
@@ -354,9 +374,7 @@ const NewsDetailPage: React.FC = () => {
             console.log("Fetch aborted");
           } else {
             setError(
-              err instanceof Error
-                ? err.message
-                : "Failed to load news details",
+              err instanceof Error ? err.message : "Failed to load news details"
             );
           }
         }
@@ -384,7 +402,7 @@ const NewsDetailPage: React.FC = () => {
 
   // Handle form input changes and track modifications
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => {
@@ -404,7 +422,7 @@ const NewsDetailPage: React.FC = () => {
       // }
       console.log("==>> prev, new:", prev, newData);
       const hasChanges = Object.entries(newData).some(
-        ([key, val]) => prev[key as keyof FormDataState] !== val,
+        ([key, val]) => prev[key as keyof FormDataState] !== val
       );
       setHasChanges(hasChanges);
 
@@ -417,7 +435,7 @@ const NewsDetailPage: React.FC = () => {
     console.log("==> Data:", formData, initialFormData);
     if (formData && initialFormData) {
       const changes = Object.entries(formData).some(
-        ([key, val]) => initialFormData[key as keyof FormDataState] !== val,
+        ([key, val]) => initialFormData[key as keyof FormDataState] !== val
       );
       setHasChanges(changes);
     } else {
@@ -490,7 +508,7 @@ const NewsDetailPage: React.FC = () => {
                           try {
                             setLoading(true);
                             const urlParams = new URLSearchParams(
-                              window.location.search,
+                              window.location.search
                             );
                             const newsId = urlParams.get("id");
 
@@ -506,7 +524,7 @@ const NewsDetailPage: React.FC = () => {
                                   ...getHeaders(),
                                   accept: "*/*",
                                 },
-                              },
+                              }
                             );
 
                             if (!response.ok) {
@@ -515,22 +533,22 @@ const NewsDetailPage: React.FC = () => {
                                 .catch(() => ({}));
                               throw new Error(
                                 errorData.message ||
-                                  "Failed to request translation",
+                                  "Failed to request translation"
                               );
                             }
 
                             toast.success(
-                              `Successfully requested translation to ${languageCode}`,
+                              `Successfully requested translation to ${languageCode}`
                             );
                           } catch (error) {
                             console.error(
                               "Error requesting translation:",
-                              error,
+                              error
                             );
                             toast.error(
                               error instanceof Error
                                 ? error.message
-                                : "Failed to request translation",
+                                : "Failed to request translation"
                             );
                           } finally {
                             setLoading(false);

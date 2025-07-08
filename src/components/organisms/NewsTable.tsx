@@ -15,6 +15,7 @@ import {
   handleAction,
   NEWSACTION,
 } from "../../utils/newsUtils";
+import { getClientStatus } from "./utils";
 
 // Define NEWSACTION enum locally since it's only used in this file
 
@@ -46,6 +47,21 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
   const [refreshingItems, setRefreshingItems] = useState<
     Record<string, boolean>
   >({});
+
+  // const getClientStatus = useCallback(
+  //   (status: ClientStatus, publishedBy: string[], rejectedBy: string[]) => {
+  //     if (isClient) {
+  //       if (publishedBy?.includes(userName)) {
+  //         return ClientStatus.PUBLISHED;
+  //       } else if (rejectedBy?.includes(userName)) {
+  //         return ClientStatus.REJECTED;
+  //       }
+  //       return status;
+  //     }
+  //     return status;
+  //   },
+  //   [isClient, userName],
+  // );
 
   const handleRejectClick = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
@@ -201,26 +217,27 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
                 )}
                 <td className="px-4 py-2">
                   <StatusBadge
-                    status={(() => {
-                      if (isClient) {
-                        return item.publishedCount && item.publishedCount > 0
-                          ? ClientStatus.PUBLISHED
-                          : item.clientStatus;
-                      }
-                      return item.clientStatus;
-                    })()}
-                    count={
-                      isClient && item.publishedCount && item.publishedCount > 0
-                        ? item.publishedCount
-                        : undefined
-                    }
+                    status={getClientStatus(
+                      item.clientStatus,
+                      item.publishedBy || [],
+                      item.rejectedBy || [],
+                    )}
+                    // count={
+                    //   isClient && item.publishedCount && item.publishedCount > 0
+                    //     ? item.publishedCount
+                    //     : undefined
+                    // }
                   />
                 </td>
                 {isClient && (
                   <td className="px-4 py-2">
                     <NewsItemActions
                       itemId={item.id}
-                      status={item.clientStatus}
+                      status={getClientStatus(
+                        item.clientStatus,
+                        item.publishedBy || [],
+                        item.rejectedBy || [],
+                      )}
                       onAction={handleAction}
                       onReject={handleRejectClick}
                       isActionAllowed={isActionAllowed}
