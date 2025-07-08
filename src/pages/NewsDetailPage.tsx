@@ -658,24 +658,27 @@ const NewsDetailPage: React.FC = () => {
                       )}
                     </div>
 
-                    {/* Reward Points - Always show, default to 0 if not available */}
-                    <UserInfoItem
-                      label="REWARD POINTS"
-                      rewardPoints={
-                        typeof newsItem.rewardPoints === "number"
-                          ? newsItem.rewardPoints
-                          : 0
-                      }
-                    />
+                    {/* Third Row */}
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-[var(--color-ui-border)] col-span-full">
+                      {/* Reward Points - Always show, default to 0 if not available */}
+                      <UserInfoItem
+                        label="REWARD POINTS"
+                        rewardPoints={
+                          typeof newsItem.rewardPoints === "number"
+                            ? newsItem.rewardPoints
+                            : 0
+                        }
+                      />
 
-                    {/* Badges - Show with default values if not available */}
-                    <BadgesSection
-                      badges={{
-                        GOLD: newsItem.badges?.GOLD || 0,
-                        SILVER: newsItem.badges?.SILVER || 0,
-                        BRONZE: newsItem.badges?.BRONZE || 0,
-                      }}
-                    />
+                      {/* Badges - Show with default values if not available */}
+                      <BadgesSection
+                        badges={{
+                          GOLD: newsItem.badges?.GOLD || 0,
+                          SILVER: newsItem.badges?.SILVER || 0,
+                          BRONZE: newsItem.badges?.BRONZE || 0,
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
