@@ -163,7 +163,7 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
                 </td>
                 {isClient && (
                   <td className="px-4 py-2 whitespace-nowrap">
-                    {item.publishedAt}
+                    {item.publishedAt || "N/A"}
                   </td>
                 )}
                 {isAdmin && (
@@ -210,7 +210,7 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
                       return item.clientStatus;
                     })()}
                     count={
-                      item.publishedCount && item.publishedCount > 0
+                      isClient && item.publishedCount && item.publishedCount > 0
                         ? item.publishedCount
                         : undefined
                     }

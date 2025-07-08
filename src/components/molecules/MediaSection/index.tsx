@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaImage, FaVideo, FaPlay } from "react-icons/fa";
 import { SiOpenai } from "react-icons/si";
 
 export interface MediaSectionProps {
   title: string;
   type: "image" | "video";
-  url?: string;
+  url: string;
   isAI?: boolean;
   onClick?: () => void;
 }
@@ -21,6 +21,29 @@ const MediaSection: React.FC<MediaSectionProps> = ({
   const [isVideoReady, setIsVideoReady] = useState(false);
   // const userType = sessionStorage.getItem("userType");
   // const isClient = userType === "CLIENT";
+  const [imgUrl, setImgUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadImage = async () => {
+      try {
+        const response = await fetch(url, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch image");
+
+        const blob = await response.blob();
+        const objectURL = URL.createObjectURL(blob);
+        setImgUrl(objectURL);
+      } catch (error) {
+        console.error("Image load failed:", error);
+      }
+    };
+
+    loadImage();
+  }, []);
 
   if (!url) {
     return null;
@@ -57,7 +80,7 @@ const MediaSection: React.FC<MediaSectionProps> = ({
       >
         {type === "image" ? (
           <img
-            src={url}
+            src={imgUrl || ""}
             alt={title}
             className="w-full h-full object-cover cursor-pointer"
             onClick={onClick}
@@ -65,7 +88,7 @@ const MediaSection: React.FC<MediaSectionProps> = ({
         ) : (
           <>
             <video
-              src={url}
+              src={imgUrl || ""}
               className="w-full h-full object-cover"
               controls={isHovered}
               onCanPlay={handleVideoReady}
