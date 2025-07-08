@@ -77,17 +77,13 @@ export const handleAction = async (
   comment?: string,
 ) => {
   try {
-    // const reviewAction =
-    //   action === "REVIEWED"
-    //     ? NewsReviewAction.REVIEW
-    //     : action === "REJECTED"
-    //       ? NewsReviewAction.REJECT
-    //       : action === "PUBLISHED"
-    //         ? NewsReviewAction.PUBLISH
-    //         : NewsReviewAction.PENDING;
-
     await newsService.reviewNewsItem(id, action, comment);
     toast.success(`News item ${action.toLowerCase()} successfully`);
+    if (process.env.RELOAD_AFTER_ACTION === "true") {
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+    }
   } catch (error) {
     console.error(`Error ${action.toLowerCase()}ing news item:`, error);
     toast.error(

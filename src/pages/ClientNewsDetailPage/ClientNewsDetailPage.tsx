@@ -505,7 +505,11 @@ const ClientNewsDetailPage: React.FC = () => {
                   ) : (
                     <NewsItemActions
                       itemId={newsItem.id}
-                      status={newsItem.clientStatus}
+                      status={getClientStatus(
+                        newsItem?.clientStatus || ClientStatus.SUBMITTED,
+                        newsItem?.publishedBy,
+                        newsItem?.rejectedBy,
+                      )}
                       onAction={handleAction}
                       onReject={(e: React.MouseEvent) => {
                         e.stopPropagation();

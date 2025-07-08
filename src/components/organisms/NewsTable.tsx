@@ -222,11 +222,6 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
                       item.publishedBy || [],
                       item.rejectedBy || [],
                     )}
-                    // count={
-                    //   isClient && item.publishedCount && item.publishedCount > 0
-                    //     ? item.publishedCount
-                    //     : undefined
-                    // }
                   />
                 </td>
                 {isClient && (
