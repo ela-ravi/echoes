@@ -4,11 +4,13 @@ import { AIStatus, ClientStatus } from "types/NewsItem";
 interface StatusBadgeProps {
   status: AIStatus | ClientStatus;
   type?: "client" | "ai";
+  count?: number;
 }
 
 const StatusBadge: React.FC<StatusBadgeProps> = ({
   status,
   type = "client",
+  count,
 }) => {
   const statusLower = status.toLowerCase();
   let badgeClass = "";
@@ -41,7 +43,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
     <span
       className={`px-3 py-1 rounded-full text-xs font-medium font-bold ${badgeClass} whitespace-nowrap`}
     >
-      {status}
+      {`${status} ${count ? `(${count})` : ""}`}
     </span>
   );
 };

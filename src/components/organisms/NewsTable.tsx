@@ -15,7 +15,6 @@ import {
   handleAction,
   NEWSACTION,
 } from "../../utils/newsUtils";
-import { useTheme } from "../../context/ThemeContext";
 
 // Define NEWSACTION enum locally since it's only used in this file
 
@@ -39,7 +38,6 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [rejectComment, setRejectComment] = useState("");
-  const { theme } = useTheme();
 
   const newsDetailRoute = (id: string) =>
     isAdmin ? `/news-detail?id=${id}` : `/client-news-detail?id=${id}`;
@@ -82,7 +80,7 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
                 await onUpdate();
               }
             }
-          : undefined
+          : undefined,
       );
     } catch (error) {
       console.error("Error refreshing AI status:", error);
@@ -202,7 +200,21 @@ const NewsTable: React.FC<NewsTableProps> = ({ items, onUpdate }) => {
                   </td>
                 )}
                 <td className="px-4 py-2">
-                  <StatusBadge status={item.clientStatus} />
+                  <StatusBadge
+                    status={(() => {
+                      if (isClient) {
+                        return item.publishedCount && item.publishedCount > 0
+                          ? ClientStatus.PUBLISHED
+                          : item.clientStatus;
+                      }
+                      return item.clientStatus;
+                    })()}
+                    count={
+                      item.publishedCount && item.publishedCount > 0
+                        ? item.publishedCount
+                        : undefined
+                    }
+                  />
                 </td>
                 {isClient && (
                   <td className="px-4 py-2">
