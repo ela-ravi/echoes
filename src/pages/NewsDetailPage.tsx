@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -125,30 +125,31 @@ const NewsDetailPage: React.FC = () => {
       {newsItem?.similarSourceName || "N/A"}
     </span>
   );
-
+  const clientStatus = useMemo(
+    () =>
+      getClientStatus(
+        newsItem?.clientStatus || ClientStatus.SUBMITTED,
+        newsItem?.publishedBy || [],
+        newsItem?.rejectedBy || []
+      ),
+    [newsItem]
+  );
   const statusContent = (
     <div className="flex items-center gap-2">
-      <StatusBadge
-        status={getClientStatus(
-          newsItem?.clientStatus || ClientStatus.SUBMITTED,
-          newsItem?.publishedBy || [],
-          newsItem?.rejectedBy || []
-        )}
-      />
-      {newsItem?.clientStatus?.toLowerCase() === "rejected" &&
-        newsItem?.comments && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowCommentOverlay(true);
-            }}
-            className="text-gray-400 hover:text-blue-400 transition-colors"
-            title="View rejection comment"
-          >
-            <FaComment className="w-3.5 h-3.5" />
-          </button>
-        )}
+      <StatusBadge status={clientStatus} />
+      {clientStatus?.toLowerCase() === "rejected" && newsItem?.comments && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowCommentOverlay(true);
+          }}
+          className="text-gray-400 hover:text-blue-400 transition-colors"
+          title="View rejection comment"
+        >
+          <FaComment className="w-3.5 h-3.5" />
+        </button>
+      )}
     </div>
   );
 
@@ -644,12 +645,27 @@ const NewsDetailPage: React.FC = () => {
                         REJECTED BY
                       </div>
                       {newsItem.rejectedBy && newsItem.rejectedBy.length > 0 ? (
-                        <div>
+                        <div className="flex">
                           <TagCell
                             tags={newsItem.rejectedBy}
-                            className="text-sm"
+                            className="text-sm mr-4"
                             type="rejectedBy"
                           />
+                          {newsItem.rejectedBy &&
+                            newsItem.rejectedBy.length > 0 &&
+                            newsItem?.comments && (
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setShowCommentOverlay(true);
+                                }}
+                                className="text-gray-400 hover:text-blue-400 transition-colors"
+                                title="View rejection comment"
+                              >
+                                <FaComment className="w-3.5 h-3.5" />
+                              </button>
+                            )}
                         </div>
                       ) : (
                         <div className="text-sm text-gray-400">

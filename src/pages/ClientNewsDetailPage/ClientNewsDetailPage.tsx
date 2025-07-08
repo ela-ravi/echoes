@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -136,6 +136,13 @@ const ClientNewsDetailPage: React.FC = () => {
     translatedRisk: "",
   });
   const [hasChanges, setHasChanges] = useState(false);
+  const clientStatus = useMemo(() => {
+    return getClientStatus(
+      newsItem?.clientStatus || ClientStatus.SUBMITTED,
+      newsItem?.publishedBy,
+      newsItem?.rejectedBy,
+    );
+  }, [newsItem]);
 
   const similarSourceContent = newsItem?.similarSourceUrl ? (
     <a
@@ -154,27 +161,20 @@ const ClientNewsDetailPage: React.FC = () => {
 
   const statusContent = (
     <div className="flex items-center gap-2">
-      <StatusBadge
-        status={getClientStatus(
-          newsItem?.clientStatus || ClientStatus.SUBMITTED,
-          newsItem?.publishedBy,
-          newsItem?.rejectedBy,
-        )}
-      />
-      {newsItem?.clientStatus?.toLowerCase() === "rejected" &&
-        newsItem?.comments && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowCommentOverlay(true);
-            }}
-            className="text-gray-400 hover:text-blue-400 transition-colors"
-            title="View rejection comment"
-          >
-            <FaComment className="w-3.5 h-3.5" />
-          </button>
-        )}
+      <StatusBadge status={clientStatus} />
+      {clientStatus.toLowerCase() === "rejected" && newsItem?.comments && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowCommentOverlay(true);
+          }}
+          className="text-gray-400 hover:text-blue-400 transition-colors"
+          title="View rejection comment"
+        >
+          <FaComment className="w-3.5 h-3.5" />
+        </button>
+      )}
     </div>
   );
 
@@ -505,11 +505,7 @@ const ClientNewsDetailPage: React.FC = () => {
                   ) : (
                     <NewsItemActions
                       itemId={newsItem.id}
-                      status={getClientStatus(
-                        newsItem?.clientStatus || ClientStatus.SUBMITTED,
-                        newsItem?.publishedBy,
-                        newsItem?.rejectedBy,
-                      )}
+                      status={clientStatus}
                       onAction={handleAction}
                       onReject={(e: React.MouseEvent) => {
                         e.stopPropagation();
