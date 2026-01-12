@@ -12,7 +12,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import "./theme/global.css";
-import ClientNewsListPage from "./pages/ClientNewsListPage";
 
 const App: React.FC = () => {
   return (
@@ -40,7 +39,7 @@ const App: React.FC = () => {
           path="/client-news"
           element={
             <ProtectedRoute requiredRole="CLIENT">
-              <ClientNewsListPage />
+              <NewsListPage />
             </ProtectedRoute>
           }
         />

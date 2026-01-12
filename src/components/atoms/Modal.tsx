@@ -49,7 +49,7 @@ const Modal: React.FC<ModalProps> = ({
         <div className="mt-4">{children}</div>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 };
 

@@ -13,17 +13,16 @@ import TextArea from "../../components/atoms/TextArea";
 import ContentModal from "../../components/molecules/ContentModal";
 import RejectModal from "../../components/molecules/RejectModal";
 import CTASection from "../../components/molecules/CTASection";
-import BadgesSection from "../../components/molecules/BadgesSection";
+// import BadgesSection from "../../components/molecules/BadgesSection";
 import UserInfoItem from "../../components/molecules/UserInfoItem";
 import MediaRow from "../../components/molecules/MediaRow";
 
 // Hooks
 import { INewsItem } from "../../types/NewsItem";
-import { useAIRefresh } from "../../hooks/useAIRefresh";
+// import { useAIRefresh } from "../../hooks/useAIRefresh";
 import { NewsReviewAction, newsService } from "../../services/newsService";
 import { TRANSLATION_LANGUAGES } from "../../types/NewsItem";
 import { API_ENDPOINTS, getHeaders } from "../../config/api";
-import ClientHeaderNav from "../../components/organisms/ClientHeaderNav";
 import { NewsItemActions } from "../../components/molecules/NewsItemActions";
 import {
   getActionTooltip,
@@ -51,24 +50,22 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
 
   const getStatusColor = (status: string) => {
     switch (status?.toLowerCase()) {
-      case "approved":
-        return "bg-green-900/30 text-green-400";
-      case "rejected":
-        return "bg-red-900/30 text-red-400";
-      case "reviewed":
-        return "bg-[var(--color-ui-client-border)]/30 text-[var(--color-ui-primary)]";
-      case "submitted":
-        return "bg-[var(--color-ui-border)] text-[var(--color-text-primary)]";
       case "published":
-        return "bg-[var(--color-ui-client-border)]/30 text-[var(--color-ui-primary)]";
+        return "bg-[var(--color-status-bg-published)] text-[var(--color-status-text-published)]";
+      case "rejected":
+        return "bg-[var(--color-status-bg-rejected)] text-[var(--color-status-text-rejected)]";
+      case "reviewed":
+        return "bg-[var(--color-status-bg-reviewed)] text-[var(--color-status-text-reviewed)]";
+      case "submitted":
+        return "bg-[var(--color-status-bg-submitted)] text-[var(--color-status-text-submitted)]";
       default:
-        return "bg-yellow-900/30 text-yellow-400";
+        return "bg-[var(--color-status-bg-pending)] text-[var(--color-status-text-pending)]";
     }
   };
 
   return (
     <span
-      className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getStatusColor(statusLower)}`}
+      className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap border border-[var(--color-ui-border)] ${getStatusColor(statusLower)}`}
     >
       {statusText}
     </span>
@@ -173,26 +170,6 @@ const ClientNewsDetailPage: React.FC = () => {
     </div>
   );
 
-  // Custom hooks must be called unconditionally
-  const { isRefreshing, handleAIRefresh } = useAIRefresh();
-
-  const handleRefreshClick = async () => {
-    if (!newsItem?.id) return;
-
-    try {
-      await handleAIRefresh(newsItem.id.toString(), async () => {
-        // Refetch the news item to get updated status after successful refresh
-        const updatedData = await newsService.fetchNewsDetail(
-          newsItem.id.toString()
-        );
-        setNewsItem(updatedData);
-      });
-    } catch (err) {
-      console.error("Error refreshing AI status:", err);
-      // Error is already handled by useAIRefresh hook
-    }
-  };
-
   const fetchNewsDetail = async (languageCode?: string) => {
     const urlParams = new URLSearchParams(window.location.search);
     const newsId = urlParams.get("id");
@@ -250,7 +227,7 @@ const ClientNewsDetailPage: React.FC = () => {
         const languageName =
           LANGUAGES.find(
             (lang: { value: string; label: string }) =>
-              lang.value === languageCode
+              lang.value === languageCode,
           )?.label || languageCode;
         toast.success(`Switched to ${languageName} translation`);
       }
@@ -278,7 +255,7 @@ const ClientNewsDetailPage: React.FC = () => {
         {
           ...formData,
           id: newsItem.id,
-        }
+        },
       );
 
       setNewsItem(updatedNewsItem);
@@ -290,7 +267,7 @@ const ClientNewsDetailPage: React.FC = () => {
       toast.error(
         error instanceof Error
           ? error.message
-          : "Failed to save changes. Please try again."
+          : "Failed to save changes. Please try again.",
       );
     }
   };
@@ -312,7 +289,7 @@ const ClientNewsDetailPage: React.FC = () => {
       await newsService.reviewNewsItem(
         newsItem.id.toString(),
         NewsReviewAction.REJECT,
-        rejectComment
+        rejectComment,
       );
 
       toast.success("Successfully rejected news item");
@@ -324,7 +301,7 @@ const ClientNewsDetailPage: React.FC = () => {
     } catch (error) {
       console.error("Error rejecting news item:", error);
       toast.error(
-        error instanceof Error ? error.message : "Failed to reject news item"
+        error instanceof Error ? error.message : "Failed to reject news item",
       );
     }
   };
@@ -385,7 +362,9 @@ const ClientNewsDetailPage: React.FC = () => {
             console.log("Fetch aborted");
           } else {
             setError(
-              err instanceof Error ? err.message : "Failed to load news details"
+              err instanceof Error
+                ? err.message
+                : "Failed to load news details",
             );
           }
         }
@@ -413,7 +392,7 @@ const ClientNewsDetailPage: React.FC = () => {
 
   // Handle form input changes and track modifications
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => {
@@ -427,7 +406,7 @@ const ClientNewsDetailPage: React.FC = () => {
       // Check if any field has changed from its initial value
       if (initialFormData) {
         const hasChanges = Object.entries(newData).some(
-          ([key, val]) => initialFormData[key as keyof FormDataState] !== val
+          ([key, val]) => initialFormData[key as keyof FormDataState] !== val,
         );
         setHasChanges(hasChanges);
       }
@@ -440,7 +419,7 @@ const ClientNewsDetailPage: React.FC = () => {
   useEffect(() => {
     if (formData && initialFormData) {
       const changes = Object.entries(formData).some(
-        ([key, val]) => initialFormData[key as keyof FormDataState] !== val
+        ([key, val]) => initialFormData[key as keyof FormDataState] !== val,
       );
       setHasChanges(changes);
     } else {
@@ -455,7 +434,7 @@ const ClientNewsDetailPage: React.FC = () => {
 
   if (!newsItem) {
     return (
-      <div className="relative flex min-h-screen flex-col bg-[var(--color-client-bg-dark)] text-[var(--color-text-primary)]">
+      <div className="relative flex min-h-screen flex-col bg-[var(--color-bg-header)] text-[var(--color-text-primary)]">
         <HeaderNav hideSearch />
         <main className="flex flex-1 flex-col items-center justify-center p-6">
           <h1 className="text-2xl font-bold">News Item Not Found</h1>
@@ -471,13 +450,13 @@ const ClientNewsDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-[var(--color-client-bg-dark)] text-[var(--color-text-primary)]">
+    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-[var(--color-bg-header)] text-[var(--color-text-primary)]">
       {/* <HeaderNav hideSearch /> */}
-      {isClient ? (
+      {/* {isClient ? (
         <ClientHeaderNav hideSearch={true} />
-      ) : (
-        <HeaderNav hideSearch={true} />
-      )}
+      ) : ( */}
+      <HeaderNav hideSearch={true} />
+      {/* )} */}
       <main className="flex flex-1 justify-center px-3 md:px-10 pt-24 pb-5">
         <div className="w-full max-w-[95%] md:max-w-[90%]">
           <div className="flex justify-between items-center mb-4">
@@ -486,7 +465,7 @@ const ClientNewsDetailPage: React.FC = () => {
             </h1>
           </div>
           <Section title={isAdmin ? "User Details" : "News Metadata"}>
-            <div className="bg-[var(--color-client-card-dark)] p-6 my-3 rounded-xl">
+            <div className="bg-[var(--color-bg-card)] p-6 my-3 rounded-xl">
               <div className="flex flex-col space-y-4">
                 {/* Top Row: User Info */}
                 <div className="flex items-center space-x-4 justify-between">
@@ -537,7 +516,7 @@ const ClientNewsDetailPage: React.FC = () => {
                         try {
                           setLoading(true);
                           const urlParams = new URLSearchParams(
-                            window.location.search
+                            window.location.search,
                           );
                           const newsId = urlParams.get("id");
 
@@ -553,7 +532,7 @@ const ClientNewsDetailPage: React.FC = () => {
                                 ...getHeaders(),
                                 accept: "*/*",
                               },
-                            }
+                            },
                           );
 
                           if (!response.ok) {
@@ -562,24 +541,25 @@ const ClientNewsDetailPage: React.FC = () => {
                               .catch(() => ({}));
                             throw new Error(
                               errorData.message ||
-                                "Failed to request translation"
+                                "Failed to request translation",
                             );
                           }
 
                           toast.success(
-                            `Successfully requested translation to ${languageCode}`
+                            `Successfully requested translation to ${languageCode}`,
                           );
                         } catch (error) {
                           console.error("Error requesting translation:", error);
                           toast.error(
                             error instanceof Error
                               ? error.message
-                              : "Failed to request translation"
+                              : "Failed to request translation",
                           );
                         } finally {
                           setLoading(false);
                         }
                       }}
+                      availableLanguages={newsItem.languages}
                     />
                   </div>
                 </div>
@@ -657,7 +637,7 @@ const ClientNewsDetailPage: React.FC = () => {
                             {newsItem.publishedAt && (
                               <div className="text-xs text-gray-400 mt-1">
                                 {new Date(
-                                  newsItem.publishedAt
+                                  newsItem.publishedAt,
                                 ).toLocaleString()}
                               </div>
                             )}
@@ -749,11 +729,12 @@ const ClientNewsDetailPage: React.FC = () => {
           <Section title="AI-Curated Summary">
             <TextArea
               name="aiGeneratedText"
-              className="bg-[var(--color-client-card-dark)]"
+              className="bg-[var(--color-bg-card)]"
               borderColor={
-                isClient
-                  ? "var(--color-ui-client-border)"
-                  : "var(--color-ui-border-light)"
+                // isClient
+                //   ? "var(--color-ui-client-border)"
+                //   :
+                "var(--color-ui-border-light)"
               }
               value={
                 isEnglishSelected
@@ -775,11 +756,12 @@ const ClientNewsDetailPage: React.FC = () => {
           <Section title="Key Individuals Mentioned">
             <TextArea
               name="keyIndividuals"
-              className="bg-[var(--color-client-card-dark)]"
+              className="bg-[var(--color-bg-card)]"
               borderColor={
-                isClient
-                  ? "var(--color-ui-client-border)"
-                  : "var(--color-ui-border-light)"
+                // isClient
+                //   ? "var(--color-ui-client-border)"
+                // :
+                "var(--color-ui-border-light)"
               }
               value={
                 isEnglishSelected
@@ -807,7 +789,7 @@ const ClientNewsDetailPage: React.FC = () => {
           >
             <TextArea
               name="potentialImpact"
-              className="bg-[var(--color-client-card-dark)]"
+              className="bg-[var(--color-bg-card)]"
               value={
                 isEnglishSelected
                   ? formData.potentialImpact
@@ -815,9 +797,10 @@ const ClientNewsDetailPage: React.FC = () => {
               }
               onChange={handleInputChange}
               borderColor={
-                isClient
-                  ? "var(--color-ui-client-border)"
-                  : "var(--color-ui-border-light)"
+                // isClient
+                //   ? "var(--color-ui-client-border)"
+                // :
+                "var(--color-ui-border-light)"
               }
               placeholder="Describe the potential impact of this news..."
               readOnly={isClient}

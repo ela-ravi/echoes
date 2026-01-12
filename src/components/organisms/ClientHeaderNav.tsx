@@ -16,7 +16,7 @@ const ClientHeaderNav: React.FC<HeaderNavProps> = ({ hideSearch = false }) => {
   const userType = sessionStorage.getItem("userType");
   const isAdmin = userType === "ADMIN";
   const userInfo: UserInfo | null = JSON.parse(
-    sessionStorage.getItem("userInfo") || "{}"
+    sessionStorage.getItem("userInfo") || "{}",
   );
   const homeText = isAdmin ? "Echoes" : userInfo?.name || "Home";
 

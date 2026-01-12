@@ -12,7 +12,6 @@ import useDebounce from "../hooks/useDebounce";
 import PageContainer from "../components/atoms/PageContainer";
 import NewsFilters from "../components/organisms/NewsFilters";
 import { ROUTES } from "../config/routes";
-import ClientHeaderNav from "../components/organisms/ClientHeaderNav";
 
 export type NewsFilterKey = "category" | "status" | "search";
 
@@ -124,7 +123,7 @@ const ClientNewsListPage: React.FC = () => {
         if (!response.ok) {
           const errorText = await response.text();
           throw new Error(
-            `Failed to fetch news: ${response.status} ${errorText}`
+            `Failed to fetch news: ${response.status} ${errorText}`,
           );
         }
 
@@ -143,7 +142,7 @@ const ClientNewsListPage: React.FC = () => {
         // Only update state if component is still mounted and not aborted
         if (isMounted.current && !isAborted.current) {
           setNewsItems((prevItems) =>
-            append ? [...prevItems, ...paginatedItems] : paginatedItems
+            append ? [...prevItems, ...paginatedItems] : paginatedItems,
           );
           setHasMore(paginatedItems.length === PAGE_SIZE);
           // setPage(pageNum);
@@ -170,7 +169,7 @@ const ClientNewsListPage: React.FC = () => {
         abortController.abort();
       };
     },
-    [PAGE_SIZE, filters, isMounted, loading, loadingMore, hasMore]
+    [PAGE_SIZE, filters, isMounted, loading, loadingMore, hasMore],
   );
 
   // Fetch user info on initial load only
@@ -316,12 +315,12 @@ const ClientNewsListPage: React.FC = () => {
     <div
       className={`relative flex min-h-screen flex-col overflow-x-hidden ${isClient ? styles.clientPageRoot : styles.pageRoot}`}
     >
+      <HeaderNav hideSearch={true} />
+      {/* {isClient ? ( */}
+      {/* <ClientHeaderNav hideSearch={true} /> */}
+      {/* ) : ( */}
       {/* <HeaderNav hideSearch={true} /> */}
-      {isClient ? (
-        <ClientHeaderNav hideSearch={true} />
-      ) : (
-        <HeaderNav hideSearch={true} />
-      )}
+      {/* )} */}
       {/* <ClientHeaderNav hideSearch={true} /> */}
 
       <PageContainer>

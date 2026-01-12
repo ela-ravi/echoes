@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import { Select } from "../atoms/Select";
 import { Button } from "../atoms/Button";
 import ContentModal from "../molecules/ContentModal";
+import { TRANSLATION_LANGUAGES } from "types/NewsItem";
 
 interface TranslationSectionProps {
   onRequestTranslation: (language: string) => void;
   onLanguageChange?: (language: string) => void;
   className?: string;
+  availableLanguages?: TRANSLATION_LANGUAGES[];
 }
 
-const LANGUAGES: Array<{ value: string; label: string }> = [
-  { value: "english", label: "English (Default)" },
+const LANGUAGES: Array<{ value: TRANSLATION_LANGUAGES; label: string }> = [
+  { value: "eng_Latn", label: "English (Default)" },
   { value: "tam_Taml", label: "Tamil" },
   { value: "tel_Telu", label: "Telugu" },
   { value: "kan_Knda", label: "Kannada" },
@@ -22,8 +24,9 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
   onRequestTranslation,
   onLanguageChange,
   className = "",
+  availableLanguages,
 }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState("english");
+  const [selectedLanguage, setSelectedLanguage] = useState("eng_Latn");
   const [translationLanguage, setTranslationLanguage] = useState("tamil");
   const [showModal, setShowModal] = useState(false);
   const userType = sessionStorage.getItem("userType");
@@ -43,8 +46,15 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
     setShowModal(false);
   };
 
-  const filteredLanguages = LANGUAGES.filter(
-    (lang) => lang.value !== "english"
+  const filteredAvailableLanguages = availableLanguages?.length
+    ? LANGUAGES.filter(
+        (lang) =>
+          lang.value === "eng_Latn" || availableLanguages.includes(lang.value),
+      )
+    : LANGUAGES.filter((lang) => lang.value === "eng_Latn");
+  const filteredUnavailableLanguages = LANGUAGES.filter(
+    (lang) =>
+      lang.value !== "eng_Latn" && !availableLanguages?.includes(lang.value),
   );
 
   return (
@@ -54,7 +64,7 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
           <Select
             value={selectedLanguage}
             onChange={handleLanguageChange}
-            options={LANGUAGES}
+            options={filteredAvailableLanguages}
             className="w-full"
           />
         </div>
@@ -84,7 +94,7 @@ const TranslationSection: React.FC<TranslationSectionProps> = ({
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                   setTranslationLanguage(e.target.value)
                 }
-                options={filteredLanguages}
+                options={filteredUnavailableLanguages}
               />
               <div className="flex justify-end space-x-3 mt-6">
                 <Button
